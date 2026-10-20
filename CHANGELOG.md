@@ -1,6 +1,6 @@
-# Novella Changelog
+# Kineo Changelog
 
-All notable changes to Novella (Novella AI) will be documented in this file.
+All notable changes to Kineo (Kineo AI) will be documented in this file.
 
 ---
 

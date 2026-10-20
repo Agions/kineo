@@ -26,7 +26,7 @@ export function nowIso(): string {
 export function generateExportFilename(projectName: string, format: ExportFormat): string {
   const timestamp = new Date().toISOString().slice(0, 10);
   const safe = projectName.replace(/[^a-zA-Z0-9一-龥]/g, '_');
-  return `novella_${safe}_${timestamp}.${format}`;
+  return `kineo_${safe}_${timestamp}.${format}`;
 }
 
 /** 生成备份文件名 */

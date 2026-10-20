@@ -1,4 +1,4 @@
-//! Novella 视频渲染与媒体处理中心
+//! Kineo 视频渲染与媒体处理中心
 
 pub mod ffmpeg;
 pub mod encoder;

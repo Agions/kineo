@@ -1,12 +1,12 @@
 {
-  "name": "@novella/render-pipeline",
+  "name": "@kineo/render-pipeline",
   "version": "0.0.1",
-  "description": "Novella 硬件加速渲染管线与控制台",
+  "description": "Kineo 硬件加速渲染管线与控制台",
   "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",
   "license": "MIT",
   "dependencies": {
-    "@novella/ui": "workspace:*"
+    "@kineo/ui": "workspace:*"
   }
 }

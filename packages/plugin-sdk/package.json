@@ -1,7 +1,7 @@
 {
-  "name": "@novella/plugin-sdk",
+  "name": "@kineo/plugin-sdk",
   "version": "0.0.1",
-  "description": "Novella (Novella AI) - 插件化微模块 SDK 与 Hook 生命周期调度中心",
+  "description": "Kineo (Kineo AI) - 插件化微模块 SDK 与 Hook 生命周期调度中心",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "types": "src/index.ts",

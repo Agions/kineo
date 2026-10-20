@@ -100,10 +100,10 @@ const AppLayout = ({ children, header, sidebar, footer: _footer }: AppLayoutProp
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-black tracking-wider bg-gradient-to-r from-[var(--neon-cyan)] via-[var(--neon-purple)] to-[var(--neon-pink)] bg-clip-text text-transparent">
-                  Novella
+                  Kineo
                 </span>
                 <span className="text-[10px] text-[var(--muted-foreground)] font-semibold -mt-1 tracking-widest">
-                  Novella AI
+                  Kineo AI
                 </span>
               </div>
               <span className="ml-1 px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[var(--neon-cyan-bg)] text-[var(--neon-cyan)] border border-[var(--neon-cyan-border)]">
@@ -320,7 +320,7 @@ const AppLayout = ({ children, header, sidebar, footer: _footer }: AppLayoutProp
             <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
               <div className="flex items-center gap-2 font-bold text-sm text-[var(--foreground)]">
                 <BookOpen className="w-5 h-5 text-[var(--neon-cyan)]" />
-                <span>Novella (Novella AI) · 操作指南</span>
+                <span>Kineo (Kineo AI) · 操作指南</span>
               </div>
               <button
                 onClick={() => setShowDocsModal(false)}
@@ -360,7 +360,7 @@ const AppLayout = ({ children, header, sidebar, footer: _footer }: AppLayoutProp
             <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
               <div className="flex items-center gap-2 font-bold text-sm text-[var(--foreground)]">
                 <Info className="w-5 h-5 text-[var(--neon-purple)]" />
-                <span>关于 Novella (Novella AI)</span>
+                <span>关于 Kineo (Kineo AI)</span>
               </div>
               <button
                 onClick={() => setShowAboutModal(false)}
@@ -372,7 +372,7 @@ const AppLayout = ({ children, header, sidebar, footer: _footer }: AppLayoutProp
 
             <div className="p-4 rounded-xl bg-[var(--accent)] border border-[var(--border)] space-y-2">
               <h4 className="font-bold text-sm text-[var(--foreground)]">
-                Novella AI 漫剧创作平台
+                Kineo AI 漫剧创作平台
               </h4>
               <p className="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
                 采用了 Tauri v2 + React 19 + Rust + Monorepo

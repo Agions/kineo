@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Novella Standardized CSS Design Tokens
+ * Kineo Standardized CSS Design Tokens
  */
 export const THEME_TOKENS = {
   brandPrimary: '#6366f1',

@@ -14,8 +14,8 @@ import ModelConfigGuardModal from '@/common/components/model/ModelConfigGuardMod
 import { toast } from '@/common/components/ui/toast';
 import { hasAnyConfiguredModelProvider } from '@/core/config/model-providers';
 import { secureStorage } from '@/core/services/project/secure-storage-service';
-import { RoleType, WorkflowEngine } from '@novella/core';
-import { StatusBadge } from '@novella/ui';
+import { RoleType, WorkflowEngine } from '@kineo/core';
+import { StatusBadge } from '@kineo/ui';
 
 interface StepDefinition {
   key: string;

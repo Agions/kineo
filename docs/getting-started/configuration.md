@@ -7,7 +7,7 @@ version: '>=2.2'
 
 # 配置 API Key
 
-> Novella 支持 7 个 AI Provider，至少配置一个才能开始创作。
+> Kineo 支持 7 个 AI Provider，至少配置一个才能开始创作。
 
 ---
 

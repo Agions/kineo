@@ -22,7 +22,7 @@ async function screenshot(page: Page, name: string) {
 test('home page: should load without errors', async ({ page }) => {
   await page.goto('/');
   await waitForSkeleton(page);
-  await expect(page).toHaveTitle(/Novella/i);
+  await expect(page).toHaveTitle(/Kineo/i);
 });
 
 test('home page: should display empty state', async ({ page }) => {

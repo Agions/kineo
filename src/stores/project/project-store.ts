@@ -55,7 +55,7 @@ export const useProjectStore = create<ProjectState>()(
       };
     },
     {
-      name: 'novella-project-storage-v2',
+      name: 'kineo-project-storage-v2',
       storage: createJSONStorage(() => createDebouncedStorage(localStorage, 1500)),
       partialize: (state) => ({
         projects: state.projects,

@@ -51,7 +51,7 @@ const VideoEditor = () => {
         <div className="lg:col-span-2 space-y-4">
           <div className="p-6 rounded-3xl bg-[var(--card)] border border-[var(--border)] backdrop-blur-2xl shadow-xl">
             <h3 className="text-base font-bold text-[var(--foreground)] mb-3">
-              Novella 4K 视听视频播放器
+              Kineo 4K 视听视频播放器
             </h3>
             {renderVideoPlayer(
               videoSrc,

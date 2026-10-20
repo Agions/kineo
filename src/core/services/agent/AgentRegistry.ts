@@ -14,7 +14,7 @@ import { SoundEngineerAgent } from './SoundEngineerAgent';
 import { StoryboardArtistAgent } from './StoryboardArtistAgent';
 import { VideoEditorAgent } from './VideoEditorAgent';
 
-const STORAGE_KEY = 'novella_custom_agents_registry_v1';
+const STORAGE_KEY = 'kineo_custom_agents_registry_v1';
 
 export class AgentRegistry {
   private static instance: AgentRegistry;

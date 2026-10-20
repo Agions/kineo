@@ -25,15 +25,15 @@ describe('A2A (Agent-to-Agent) Protocol Adapter Suite', () => {
     const msg = await a2aProtocolAdapter.sendA2AMessage(
       'agent-chief',
       { id: 'voko-runtime-agent', name: 'VOKO Runtime Agent', role: 'external_host' },
-      'novella:storyboard_sync',
+      'kineo:storyboard_sync',
       { sceneCount: 5 }
     );
 
-    expect(msg.action).toBe('novella:storyboard_sync');
+    expect(msg.action).toBe('kineo:storyboard_sync');
     expect(msg.protocolVersion).toBe('a2a/1.0');
     expect(msg.recipient.id).toBe('voko-runtime-agent');
     expect(capturedMessage).not.toBeNull();
-    expect((capturedMessage as any)?.action).toBe('novella:storyboard_sync');
+    expect((capturedMessage as any)?.action).toBe('kineo:storyboard_sync');
 
     unsubscribe();
   });
@@ -53,7 +53,7 @@ describe('A2A (Agent-to-Agent) Protocol Adapter Suite', () => {
         name: 'CHIEF',
         role: 'director',
       },
-      action: 'novella:request_render_status',
+      action: 'kineo:request_render_status',
       payload: { projectId: 'test-123' },
       timestamp: Date.now(),
     };
@@ -61,7 +61,7 @@ describe('A2A (Agent-to-Agent) Protocol Adapter Suite', () => {
     const ack = await a2aProtocolAdapter.handleIncomingA2AMessage(inboundMessage);
 
     expect(ack.type).toBe('response');
-    expect(ack.action).toBe('novella:request_render_status:ack');
+    expect(ack.action).toBe('kineo:request_render_status:ack');
     expect(ack.recipient.id).toBe('external-voko-client');
     expect(ack.payload.status).toBe('success');
   });

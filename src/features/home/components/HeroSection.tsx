@@ -95,7 +95,7 @@ const HeroSection = () => {
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div>
                   <h1 className="text-2xl md:text-3xl font-black text-slate-100 tracking-tight flex items-center gap-2">
-                    Novella Gemini AI 漫剧创作车间
+                    Kineo Gemini AI 漫剧创作车间
                     <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#00f5d4]/10 text-[#00f5d4] border border-[#00f5d4]/30 font-mono font-bold">
                       Gemini Studio 2026
                     </span>
@@ -210,7 +210,7 @@ const HeroSection = () => {
               </div>
 
               <p className="text-xs text-slate-400 leading-relaxed">
-                Novella 集成 Hub-and-Spoke 多智能体编导调度、3D 运镜矢量、角色 Consistency 锁脸与 WebAssembly GPU 4K 压制。
+                Kineo 集成 Hub-and-Spoke 多智能体编导调度、3D 运镜矢量、角色 Consistency 锁脸与 WebAssembly GPU 4K 压制。
               </p>
 
               <div className="space-y-2 pt-2 text-xs">

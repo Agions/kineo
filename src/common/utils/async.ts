@@ -1,5 +1,5 @@
 /**
- * Novella Shared Utils - Async Error Handling Utilities
+ * Kineo Shared Utils - Async Error Handling Utilities
  */
 
 import { toast } from '@/common/components/ui/toast';

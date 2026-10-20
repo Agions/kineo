@@ -1,8 +1,8 @@
-# Novella 开发指南
+# Kineo 开发指南
 
 ## 项目概述
 
-Novella 是 AI 驱动的 **AI 漫剧创作平台**，输入一本小说，AI 自动把它拍成一部漫剧。基于 Tauri 2.1 + Rust 桌面端，集成多模型 AI（GLM-5 / M2.5 / Kimi / Seedream / Kling / Vidu / Edge TTS）实现端到端自动化。
+Kineo 是 AI 驱动的 **AI 漫剧创作平台**，输入一本小说，AI 自动把它拍成一部漫剧。基于 Tauri 2.1 + Rust 桌面端，集成多模型 AI（GLM-5 / M2.5 / Kimi / Seedream / Kling / Vidu / Edge TTS）实现端到端自动化。
 
 ## 技术栈
 
@@ -16,7 +16,7 @@ Novella 是 AI 驱动的 **AI 漫剧创作平台**，输入一本小说，AI 自
 
 ## 项目分层架构
 
-Novella 采用严格的 **downward dependency（向下依赖）** 架构：
+Kineo 采用严格的 **downward dependency（向下依赖）** 架构：
 
 ```
 app（应用入口 + 路由 + Providers）
@@ -127,7 +127,7 @@ src/features/
 ## 开发指南
 
 ```
-Novella/
+Kineo/
 ├── src/                          # 前端 UI 层（React + Tauri API 包装）
 │   ├── features/                 # 14 个 Feature 模块（DDD 风格）
 │   │   ├── ai/                   # AI 模型选择

@@ -22,7 +22,7 @@ pub fn cut(params: &CutVideoParams) -> Result<String, String> {
         return Err("未安装FFmpeg，请先安装FFmpeg后再试".into());
     }
 
-    let temp_dir = temp_subdir("novella_temp");
+    let temp_dir = temp_subdir("kineo_temp");
     fs::create_dir_all(&temp_dir).map_err(|e| format!("创建临时目录失败: {}", e))?;
 
     let format = params.format.clone().unwrap_or_else(|| "mp4".to_string());

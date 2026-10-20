@@ -1,12 +1,12 @@
 {
-  "name": "@novella/ai-engine",
+  "name": "@kineo/ai-engine",
   "version": "0.0.1",
-  "description": "Novella AI 引擎、PromptBuilder 与画风预设",
+  "description": "Kineo AI 引擎、PromptBuilder 与画风预设",
   "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",
   "license": "MIT",
   "dependencies": {
-    "@novella/core": "workspace:*"
+    "@kineo/core": "workspace:*"
   }
 }

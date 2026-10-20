@@ -9,7 +9,7 @@ export interface HardwareAccelInfo {
   active_encoder: string;
 }
 
-export function useNovellaStudio() {
+export function useKineoStudio() {
   const [project, setProject] = useState<DramaProject | null>(null);
   const [isParsing, setIsParsing] = useState(false);
   const [hardwareInfo, setHardwareInfo] = useState<HardwareAccelInfo | null>(null);

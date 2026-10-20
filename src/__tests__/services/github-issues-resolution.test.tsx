@@ -23,21 +23,21 @@ describe('GitHub Issues #47 & #48 Resolution Verification Suite', () => {
     const inputs = screen.getAllByRole('textbox');
     const workDirInput = inputs[inputs.length - 1] as HTMLInputElement;
 
-    fireEvent.change(workDirInput, { target: { value: '/Custom/Novella/Path' } });
+    fireEvent.change(workDirInput, { target: { value: '/Custom/Kineo/Path' } });
 
     await waitFor(() => {
-      expect(localStorage.getItem('novella_working_dir')).toBe('/Custom/Novella/Path');
+      expect(localStorage.getItem('kineo_working_dir')).toBe('/Custom/Kineo/Path');
     });
   });
 
   it('Should restore custom working directory from localStorage on mount (Issue #48)', () => {
-    localStorage.setItem('novella_working_dir', '/Saved/Novella/Workspace');
+    localStorage.setItem('kineo_working_dir', '/Saved/Kineo/Workspace');
 
     renderWithProviders(<SettingsPage />);
 
     const inputs = screen.getAllByRole('textbox');
     const workDirInput = inputs[inputs.length - 1] as HTMLInputElement;
 
-    expect(workDirInput.value).toBe('/Saved/Novella/Workspace');
+    expect(workDirInput.value).toBe('/Saved/Kineo/Workspace');
   });
 });

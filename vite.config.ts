@@ -88,12 +88,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@novella/core': path.resolve(__dirname, './packages/core/src'),
-      '@novella/ai-engine': path.resolve(__dirname, './packages/ai-engine/src'),
-      '@novella/storyboard': path.resolve(__dirname, './packages/storyboard/src'),
-      '@novella/audio-studio': path.resolve(__dirname, './packages/audio-studio/src'),
-      '@novella/render-pipeline': path.resolve(__dirname, './packages/render-pipeline/src'),
-      '@novella/ui': path.resolve(__dirname, './packages/ui/src'),
+      '@kineo/core': path.resolve(__dirname, './packages/core/src'),
+      '@kineo/ai-engine': path.resolve(__dirname, './packages/ai-engine/src'),
+      '@kineo/storyboard': path.resolve(__dirname, './packages/storyboard/src'),
+      '@kineo/audio-studio': path.resolve(__dirname, './packages/audio-studio/src'),
+      '@kineo/render-pipeline': path.resolve(__dirname, './packages/render-pipeline/src'),
+      '@kineo/ui': path.resolve(__dirname, './packages/ui/src'),
     },
   },
 

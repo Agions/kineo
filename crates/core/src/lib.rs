@@ -6,7 +6,7 @@ use std::fs;
 use std::path::Path;
 
 #[derive(Debug)]
-pub enum NovellaError {
+pub enum KineoError {
     IoError(std::io::Error),
     SerializationError(serde_json::Error),
     ValidationError(String),
@@ -14,33 +14,33 @@ pub enum NovellaError {
     InvalidStageTransition,
 }
 
-impl fmt::Display for NovellaError {
+impl fmt::Display for KineoError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            NovellaError::IoError(e) => write!(f, "IO Error: {}", e),
-            NovellaError::SerializationError(e) => write!(f, "Serialization Error: {}", e),
-            NovellaError::ValidationError(msg) => write!(f, "Validation Error: {}", msg),
-            NovellaError::ProjectNotFound => write!(f, "Project Not Found"),
-            NovellaError::InvalidStageTransition => write!(f, "Invalid Stage Transition"),
+            KineoError::IoError(e) => write!(f, "IO Error: {}", e),
+            KineoError::SerializationError(e) => write!(f, "Serialization Error: {}", e),
+            KineoError::ValidationError(msg) => write!(f, "Validation Error: {}", msg),
+            KineoError::ProjectNotFound => write!(f, "Project Not Found"),
+            KineoError::InvalidStageTransition => write!(f, "Invalid Stage Transition"),
         }
     }
 }
 
-impl std::error::Error for NovellaError {}
+impl std::error::Error for KineoError {}
 
-impl From<std::io::Error> for NovellaError {
+impl From<std::io::Error> for KineoError {
     fn from(err: std::io::Error) -> Self {
-        NovellaError::IoError(err)
+        KineoError::IoError(err)
     }
 }
 
-impl From<serde_json::Error> for NovellaError {
+impl From<serde_json::Error> for KineoError {
     fn from(err: serde_json::Error) -> Self {
-        NovellaError::SerializationError(err)
+        KineoError::SerializationError(err)
     }
 }
 
-pub type Result<T> = std::result::Result<T, NovellaError>;
+pub type Result<T> = std::result::Result<T, KineoError>;
 
 pub struct ProjectStore;
 
@@ -74,10 +74,10 @@ impl ProjectStore {
 
     pub fn validate_project(project: &MangaProject) -> Result<()> {
         if project.metadata.name.is_empty() {
-            return Err(NovellaError::ValidationError("Project name cannot be empty".into()));
+            return Err(KineoError::ValidationError("Project name cannot be empty".into()));
         }
         if project.metadata.author.is_empty() {
-            return Err(NovellaError::ValidationError("Project author cannot be empty".into()));
+            return Err(KineoError::ValidationError("Project author cannot be empty".into()));
         }
         Ok(())
     }
@@ -95,7 +95,7 @@ impl ProjectStore {
         if valid {
             Ok(())
         } else {
-            Err(NovellaError::InvalidStageTransition)
+            Err(KineoError::InvalidStageTransition)
         }
     }
 

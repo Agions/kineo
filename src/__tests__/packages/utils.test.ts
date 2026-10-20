@@ -1,10 +1,10 @@
 /**
- * utils.test.ts — Unit tests for @novella/utils package
+ * utils.test.ts — Unit tests for @kineo/utils package
  */
 
 import { delay, simpleHash, formatTime, formatBytes } from '../../../packages/utils/src/index';
 
-describe('@novella/utils Package Suite', () => {
+describe('@kineo/utils Package Suite', () => {
   it('Should delay execution by specified milliseconds', async () => {
     const start = Date.now();
     await delay(50);
@@ -13,8 +13,8 @@ describe('@novella/utils Package Suite', () => {
   });
 
   it('Should compute deterministic hash strings', () => {
-    const hash1 = simpleHash('Novella AI Studio');
-    const hash2 = simpleHash('Novella AI Studio');
+    const hash1 = simpleHash('Kineo AI Studio');
+    const hash2 = simpleHash('Kineo AI Studio');
     const hash3 = simpleHash('Different Prompt');
 
     expect(hash1).toBe(hash2);

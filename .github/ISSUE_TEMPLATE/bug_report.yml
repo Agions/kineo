@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in Novella
+description: Report a bug in Kineo
 labels: ["bug", "needs-triage"]
 body:
   - type: markdown
@@ -43,7 +43,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Novella Version
+      label: Kineo Version
       placeholder: e.g., 3.0.0
 
   - type: dropdown

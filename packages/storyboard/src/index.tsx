@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Shot } from '@novella/core';
-import { MangaCard, MangaButton } from '@novella/ui';
+import { Shot } from '@kineo/core';
+import { MangaCard, MangaButton } from '@kineo/ui';
 import {
   parseNovelToScript,
   parseDirectScript,
   generateScriptFromIdea,
   ArtStylePreset,
   ScriptParseResult,
-} from '@novella/ai-engine';
+} from '@kineo/ai-engine';
 
 export interface StoryboardGridProps {
   shots: Shot[];

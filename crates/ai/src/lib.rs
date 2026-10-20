@@ -1,8 +1,8 @@
-//! Novella Industry-Grade AI Generation & Consistency Engine
+//! Kineo Industry-Grade AI Generation & Consistency Engine
 
 pub mod parser;
 pub mod prompt;
-use novella_core::models::{CharacterAsset, EpisodeModel, SceneModel, ShotModel};
+use kineo_core::models::{CharacterAsset, EpisodeModel, SceneModel, ShotModel};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

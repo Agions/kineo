@@ -1,7 +1,7 @@
 {
-  "name": "@novella/ui",
+  "name": "@kineo/ui",
   "version": "0.0.1",
-  "description": "Novella 基础设计系统与 UI 通用组件库",
+  "description": "Kineo 基础设计系统与 UI 通用组件库",
   "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",

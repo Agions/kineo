@@ -115,10 +115,10 @@ const TOP_2_LATEST_PROVIDERS = [
 const SettingsPage = () => {
   const [workingDir, setWorkingDir] = useState<string>(() => {
     if (typeof window !== 'undefined') {
-      const savedDir = localStorage.getItem('novella_working_dir');
+      const savedDir = localStorage.getItem('kineo_working_dir');
       if (savedDir && savedDir.trim().length > 0) return savedDir;
     }
-    return '/Users/Novella/NovellaWorkingDirectory';
+    return '/Users/Kineo/KineoWorkingDirectory';
   });
   const [testingId, setTestingId] = useState<string | null>(null);
 
@@ -127,7 +127,7 @@ const SettingsPage = () => {
     if (!trimmed) return;
     setWorkingDir(trimmed);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('novella_working_dir', trimmed);
+      localStorage.setItem('kineo_working_dir', trimmed);
     }
     toast.success(`🎉 已应用新的工作目录路径: ${trimmed}`);
   };
@@ -185,7 +185,7 @@ const SettingsPage = () => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(`api_${id}_key`, keyVal);
       localStorage.setItem(`ai_model_settings_${id}`, JSON.stringify({ apiKey: keyVal }));
-      localStorage.setItem(`novella_api_key_${id}`, keyVal);
+      localStorage.setItem(`kineo_api_key_${id}`, keyVal);
     }
   };
 
@@ -216,7 +216,7 @@ const SettingsPage = () => {
         const trimmed = (val || '').trim();
         localStorage.setItem(`api_${id}_key`, trimmed);
         localStorage.setItem(`ai_model_settings_${id}`, JSON.stringify({ apiKey: trimmed }));
-        localStorage.setItem(`novella_api_key_${id}`, trimmed);
+        localStorage.setItem(`kineo_api_key_${id}`, trimmed);
       });
     }
     toast.success('🎉 已持久化保存所有已配置的 AI 模型 API Key！');

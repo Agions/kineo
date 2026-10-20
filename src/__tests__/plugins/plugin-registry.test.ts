@@ -2,9 +2,9 @@
  * plugin-registry.test.ts — Plugin Architecture & Hook Engine Unit Tests
  */
 
-import { pluginRegistry, type NovellaPlugin } from '@/core/plugins/PluginRegistry';
+import { pluginRegistry, type KineoPlugin } from '@/core/plugins/PluginRegistry';
 
-describe('Novella Plugin Architecture & Hook Extension Engine Suite', () => {
+describe('Kineo Plugin Architecture & Hook Extension Engine Suite', () => {
   it('Should register builtin plugins automatically on initialization', () => {
     const plugins = pluginRegistry.getAll();
     expect(plugins.length).toBeGreaterThanOrEqual(5);
@@ -38,7 +38,7 @@ describe('Novella Plugin Architecture & Hook Extension Engine Suite', () => {
   });
 
   it('Should register and execute custom plugin hooks in waterfall pipeline', async () => {
-    const testPlugin: NovellaPlugin = {
+    const testPlugin: KineoPlugin = {
       id: 'plugin-test-custom',
       name: 'Test Custom Plugin',
       version: '1.0.0',
@@ -52,14 +52,14 @@ describe('Novella Plugin Architecture & Hook Extension Engine Suite', () => {
 
     pluginRegistry.register(testPlugin);
 
-    const result = await pluginRegistry.executeHook('onBeforeScriptParse', 'Hello Novella');
-    expect(result).toBe('Hello Novella [Hook Applied]');
+    const result = await pluginRegistry.executeHook('onBeforeScriptParse', 'Hello Kineo');
+    expect(result).toBe('Hello Kineo [Hook Applied]');
 
     pluginRegistry.unregister('plugin-test-custom');
   });
 
   it('Should allow enabling and disabling plugins dynamically', async () => {
-    const testPlugin: NovellaPlugin = {
+    const testPlugin: KineoPlugin = {
       id: 'plugin-test-toggle',
       name: 'Toggle Test Plugin',
       version: '1.0.0',

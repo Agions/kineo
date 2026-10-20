@@ -95,7 +95,7 @@ pub fn extract_key_frames(path: &str, count: u32) -> Result<Vec<String>, String>
     let metadata = analyze(path)?;
     let duration = metadata.duration;
 
-    let temp_dir = temp_subdir("novella_keyframes");
+    let temp_dir = temp_subdir("kineo_keyframes");
     fs::create_dir_all(&temp_dir).map_err(|e| format!("创建临时目录失败: {}", e))?;
 
     let mut frame_positions = Vec::new();
@@ -143,7 +143,7 @@ pub fn generate_thumbnail(path: &str) -> Result<String, String> {
         return Err("未安装FFmpeg，请先安装FFmpeg后再试".into());
     }
 
-    let temp_dir = temp_subdir("novella_thumbnails");
+    let temp_dir = temp_subdir("kineo_thumbnails");
     fs::create_dir_all(&temp_dir).map_err(|e| format!("创建临时目录失败: {}", e))?;
 
     let thumbnail_path = temp_dir.join(format!("thumb_{}.jpg", random_id()));

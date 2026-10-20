@@ -1,14 +1,14 @@
-//! Novella Strong-Typed IPC & Tauri Command Module
+//! Kineo Strong-Typed IPC & Tauri Command Module
 
 pub mod commands {
-    use novella_ai::{parser::NovelScriptParser, parser::ScriptParseResult, ArtStylePreset, GenerationPipeline};
-    use novella_core::models::{EpisodeModel, MangaProject};
-    use novella_core::ProjectStore;
-    use novella_media::{detect_hardware_capabilities, HardwareEncoderCaps};
+    use kineo_ai::{parser::NovelScriptParser, parser::ScriptParseResult, ArtStylePreset, GenerationPipeline};
+    use kineo_core::models::{EpisodeModel, MangaProject};
+    use kineo_core::ProjectStore;
+    use kineo_media::{detect_hardware_capabilities, HardwareEncoderCaps};
     use tauri::command;
 
     #[command]
-    pub fn get_novella_version() -> String {
+    pub fn get_kineo_version() -> String {
         "0.0.1".to_string()
     }
 
@@ -41,8 +41,8 @@ pub mod commands {
     }
 
     #[command]
-    pub fn get_project_config() -> novella_core::models::ProjectConfig {
-        novella_core::models::ProjectConfig::default()
+    pub fn get_project_config() -> kineo_core::models::ProjectConfig {
+        kineo_core::models::ProjectConfig::default()
     }
 
     #[command]

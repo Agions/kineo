@@ -147,7 +147,7 @@ export const MultiAgentStudio: React.FC = () => {
           </div>
           <div>
             <h2 className="text-base font-extrabold text-slate-100 flex items-center gap-2">
-              Novella Multi-Agent 智能体协作中心
+              Kineo Multi-Agent 智能体协作中心
               <Badge className="bg-[#00f5d4]/15 text-[#00f5d4] border-[#00f5d4]/30 font-mono text-[10px]">
                 Auto-Swarm 引擎
               </Badge>

@@ -1,5 +1,5 @@
 /**
- * Novella Core Package - Domain Types & Core Engine Interfaces
+ * Kineo Core Package - Domain Types & Core Engine Interfaces
  */
 
 export type RoleType = 'writer' | 'storyboarder' | 'animator' | 'auditor';

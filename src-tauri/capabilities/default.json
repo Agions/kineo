@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Novella AI 默认权限配置（v3.1 收紧：移除未用 plugin）",
+  "description": "Kineo AI 默认权限配置（v3.1 收紧：移除未用 plugin）",
   "windows": ["main"],
   "permissions": [
     "core:default",

@@ -1,11 +1,11 @@
 [package]
-name = "novella-ai"
+name = "kineo-ai"
 version = "0.0.1"
 edition = "2021"
-description = "Novella 高性能 Async AI 服务 Client"
+description = "Kineo 高性能 Async AI 服务 Client"
 
 [dependencies]
-novella-core = { path = "../core" }
+kineo-core = { path = "../core" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 log = "0.4"

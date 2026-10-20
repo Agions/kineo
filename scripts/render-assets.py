@@ -41,7 +41,7 @@ def resize_png(src: Path, dst: Path, size: int) -> None:
 
 
 def main() -> int:
-    print("🎨 Novella 资产渲染器\n")
+    print("🎨 Kineo 资产渲染器\n")
 
     # === 1. 主方形 logo PNG (assets/) ===
     print("📦 assets/logo.svg → 多尺寸 PNG")

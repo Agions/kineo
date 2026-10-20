@@ -36,7 +36,7 @@ export const AutoUpdaterModal: React.FC<{ isOpen: boolean; onClose: () => void }
   const handleCheckUpdate = async () => {
     setChecking(true);
     try {
-      const res = await fetch('https://api.github.com/repos/Agions/novella/releases/latest', {
+      const res = await fetch('https://api.github.com/repos/Agions/kineo/releases/latest', {
         headers: {
           Accept: 'application/vnd.github.v3+json',
         },

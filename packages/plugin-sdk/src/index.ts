@@ -1,5 +1,5 @@
 /**
- * @novella/plugin-sdk — Novella 插件化微模块 SDK 与 Hook 扩展引擎
+ * @kineo/plugin-sdk — Kineo 插件化微模块 SDK 与 Hook 扩展引擎
  */
 
 import { logger } from '@/core/utils/logger';
@@ -15,7 +15,7 @@ export interface PluginHooks {
   onRenderComplete?: (result: any) => Promise<void> | void;
 }
 
-export interface NovellaPlugin {
+export interface KineoPlugin {
   id: string;
   name: string;
   version: string;
@@ -26,7 +26,7 @@ export interface NovellaPlugin {
 
 export class PluginRegistry {
   private static instance: PluginRegistry;
-  private plugins: Map<string, NovellaPlugin> = new Map();
+  private plugins: Map<string, KineoPlugin> = new Map();
 
   private constructor() {
     this.registerBuiltinPlugins();
@@ -40,7 +40,7 @@ export class PluginRegistry {
   }
 
   /** 注册扩展插件 */
-  public register(plugin: NovellaPlugin): void {
+  public register(plugin: KineoPlugin): void {
     if (this.plugins.has(plugin.id)) {
       logger.warn(`[PluginRegistry] 插件 ${plugin.id} 已存在，正在覆盖...`);
     }
@@ -67,12 +67,12 @@ export class PluginRegistry {
   }
 
   /** 获取所有注册插件列表 */
-  public getAll(): NovellaPlugin[] {
+  public getAll(): KineoPlugin[] {
     return Array.from(this.plugins.values());
   }
 
   /** 获取已启用的插件列表 */
-  public getEnabledPlugins(): NovellaPlugin[] {
+  public getEnabledPlugins(): KineoPlugin[] {
     return Array.from(this.plugins.values()).filter((p) => p.enabled !== false);
   }
 

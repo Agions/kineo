@@ -1,5 +1,5 @@
 name: Feature Request
-description: Suggest a new feature for Novella
+description: Suggest a new feature for Kineo
 labels: ["enhancement", "needs-triage"]
 body:
   - type: markdown

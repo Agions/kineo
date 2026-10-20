@@ -1,12 +1,12 @@
 {
-  "name": "@novella/audio-studio",
+  "name": "@kineo/audio-studio",
   "version": "0.0.1",
-  "description": "Novella 音轨合成与 TTS 声音编辑器",
+  "description": "Kineo 音轨合成与 TTS 声音编辑器",
   "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",
   "license": "MIT",
   "dependencies": {
-    "@novella/ui": "workspace:*"
+    "@kineo/ui": "workspace:*"
   }
 }

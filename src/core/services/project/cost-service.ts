@@ -348,7 +348,7 @@ export function renderCostReport(
   suggestions: string[]
 ): string {
   return `
-# Novella AI 成本报告
+# Kineo AI 成本报告
 
 生成时间: ${new Date().toLocaleString('zh-CN')}
 
@@ -383,7 +383,7 @@ ${Object.entries(stats.byModel)
 ${suggestions.join('\n\n')}
 
 ---
-*报告由 Novella AI 成本追踪服务生成*
+*报告由 Kineo AI 成本追踪服务生成*
   `.trim();
 }
 

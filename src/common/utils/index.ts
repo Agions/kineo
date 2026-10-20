@@ -1,5 +1,5 @@
 /**
- * Novella Shared Utils - Root Exports
+ * Kineo Shared Utils - Root Exports
  * 统一收口所有通用纯工具，保持零 core 依赖。
  */
 

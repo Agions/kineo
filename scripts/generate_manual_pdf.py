@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Novella AI 漫剧创作平台 - 官方用户使用手册 (PDF 生成器)
+Kineo AI 漫剧创作平台 - 官方用户使用手册 (PDF 生成器)
 基于 ReportLab 构建出版级 A4 多页中文手册
 """
 
@@ -18,7 +18,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-OUTPUT_PATH = sys.argv[1] if len(sys.argv) > 1 else "resources/docs/Novella_User_Manual.pdf"
+OUTPUT_PATH = sys.argv[1] if len(sys.argv) > 1 else "resources/docs/Kineo_User_Manual.pdf"
 
 # 1. 注册系统中文字体
 CHINESE_FONT = "Helvetica"
@@ -34,8 +34,8 @@ chinese_font_candidates = [
 for font_path in chinese_font_candidates:
     if os.path.exists(font_path):
         try:
-            pdfmetrics.registerFont(TTFont("NovellaChinese", font_path))
-            CHINESE_FONT = "NovellaChinese"
+            pdfmetrics.registerFont(TTFont("KineoChinese", font_path))
+            CHINESE_FONT = "KineoChinese"
             break
         except Exception:
             continue
@@ -71,7 +71,7 @@ class NumberedCanvas(canvas.Canvas):
         self.setFillColor(colors.HexColor("#64748b"))
 
         # 页眉
-        self.drawString(40, PAGE_HEIGHT - 32, "Novella (Novella AI) 漫剧创作平台 · 官方用户手册")
+        self.drawString(40, PAGE_HEIGHT - 32, "Kineo (Kineo AI) 漫剧创作平台 · 官方用户手册")
         self.setStrokeColor(colors.HexColor("#e2e8f0"))
         self.setLineWidth(0.5)
         self.line(40, PAGE_HEIGHT - 36, PAGE_WIDTH - 40, PAGE_HEIGHT - 36)
@@ -79,7 +79,7 @@ class NumberedCanvas(canvas.Canvas):
         # 页脚
         page_str = f"第 {self._pageNumber} 页 / 共 {page_count} 页"
         self.drawRightString(PAGE_WIDTH - 40, 24, page_str)
-        self.drawString(40, 24, "Novella Core Engineering Team · https://github.com/Agions/novella")
+        self.drawString(40, 24, "Kineo Core Engineering Team · https://github.com/Agions/kineo")
         self.line(40, 36, PAGE_WIDTH - 40, 36)
 
         self.restoreState()
@@ -177,9 +177,9 @@ def build_pdf():
     # ================= 封面页 =================
     story.append(Spacer(1, 100))
     cover_card_data = [
-        [Paragraph("NOVELLA AI · OFFICIAL USER & CREATOR MANUAL", ParagraphStyle('CoverBadge', fontName=CHINESE_FONT, fontSize=11, leading=14, textColor=colors.HexColor("#818cf8"), alignment=1))],
+        [Paragraph("KINEO AI · OFFICIAL USER & CREATOR MANUAL", ParagraphStyle('CoverBadge', fontName=CHINESE_FONT, fontSize=11, leading=14, textColor=colors.HexColor("#818cf8"), alignment=1))],
         [Spacer(1, 16)],
-        [Paragraph("Novella AI 漫剧创作平台", title_style)],
+        [Paragraph("Kineo AI 漫剧创作平台", title_style)],
         [Spacer(1, 6)],
         [Paragraph("官方用户使用与创作全流程实操手册", title_style)],
         [Spacer(1, 16)],
@@ -188,7 +188,7 @@ def build_pdf():
         [Paragraph("⚡ Tauri v2 原生引擎  |  🎬 9 步标准管线  |  🤖 Multi-Agent 导演工坊  |  🖥️ 4K 压制加速", subtitle_style)],
         [Spacer(1, 80)],
         [Paragraph("适用平台：macOS (Apple Silicon / Intel) · Windows 10/11 · Linux", ParagraphStyle('CoverSub', fontName=CHINESE_FONT, fontSize=10, leading=14, textColor=colors.HexColor("#64748b"), alignment=1))],
-        [Paragraph("Novella Core Engineering Team 编撰 · 版本：v0.0.1 Release", ParagraphStyle('CoverVer', fontName=CHINESE_FONT, fontSize=9.5, leading=14, textColor=colors.HexColor("#64748b"), alignment=1))],
+        [Paragraph("Kineo Core Engineering Team 编撰 · 版本：v0.0.1 Release", ParagraphStyle('CoverVer', fontName=CHINESE_FONT, fontSize=9.5, leading=14, textColor=colors.HexColor("#64748b"), alignment=1))],
     ]
     cover_table = Table(cover_card_data, colWidths=[PAGE_WIDTH - 80])
     cover_table.setStyle(TableStyle([
@@ -205,7 +205,7 @@ def build_pdf():
     # ================= 第一章：产品概述与系统配置 =================
     story.append(Paragraph("1. 产品架构与系统环境要求", h1_style))
     story.append(Paragraph(
-        "Novella 是一款融合现代生成式人工智能（LLM、扩散图像模型、多音轨 TTS、运镜合成与 4K 硬件压制）的专业漫剧视频创作工坊。"
+        "Kineo 是一款融合现代生成式人工智能（LLM、扩散图像模型、多音轨 TTS、运镜合成与 4K 硬件压制）的专业漫剧视频创作工坊。"
         "软件基于 <b>Tauri v2 + Rust 微内核 + React 19</b> 模块化架构构建，具备内存占用低、毫秒级响应、本地持久化工程存储及跨平台原生支持等特点。",
         body_style
     ))
@@ -238,7 +238,7 @@ def build_pdf():
     model_table_data = [
         [Paragraph("模型领域", table_header_style), Paragraph("推荐服务商与型号", table_header_style), Paragraph("核心功能职责", table_header_style), Paragraph("配置注意点", table_header_style)],
         [Paragraph("文本理解 / 分镜拆解", table_cell_style), Paragraph("Google Gemini 2.0 / 1.5 Pro<br/>OpenAI GPT-4o / DeepSeek", table_cell_style), Paragraph("小说长文本解析、情绪走势提炼、镜头构图提示词切分", table_cell_style), Paragraph("支持超长上下文整书拆解，兼容 OpenAI 代理端点", table_cell_style)],
-        [Paragraph("场景分镜图像渲染", table_cell_style), Paragraph("Novella Seedream 5.0 (内置)<br/>Flux / Midjourney / SDXL", table_cell_style), Paragraph("概念图绘制、角色锁脸 (LoRA)、动漫二次元风格生成", table_cell_style), Paragraph("支持 16:9 横屏与 9:16 竖屏高分辨率出图", table_cell_style)],
+        [Paragraph("场景分镜图像渲染", table_cell_style), Paragraph("Kineo Seedream 5.0 (内置)<br/>Flux / Midjourney / SDXL", table_cell_style), Paragraph("概念图绘制、角色锁脸 (LoRA)、动漫二次元风格生成", table_cell_style), Paragraph("支持 16:9 横屏与 9:16 竖屏高分辨率出图", table_cell_style)],
         [Paragraph("语音合成与音频 (TTS)", table_cell_style), Paragraph("微软 EdgeTTS (内置免费高速)<br/>阿里 CosyVoice / 百度语音", table_cell_style), Paragraph("台词对白旁白配音、情感音调控制、波形时间轴对齐", table_cell_style), Paragraph("<b>免配置即可使用</b> EdgeTTS 云希/晓晓等人声", table_cell_style)],
     ]
     model_table = Table(model_table_data, colWidths=[90, 140, 160, 125])
@@ -256,7 +256,7 @@ def build_pdf():
     # ================= 第三章：9 步标准漫剧创作管线 =================
     story.append(Paragraph("3. 漫剧创作 9 步标准工坊管线", h1_style))
     story.append(Paragraph(
-        "在首页点击【新建工程】后，进入项目编辑工坊。Novella 提供了业界领先的 9 步工业级流水线，每步均配备严格的数据校验与质检门禁：",
+        "在首页点击【新建工程】后，进入项目编辑工坊。Kineo 提供了业界领先的 9 步工业级流水线，每步均配备严格的数据校验与质检门禁：",
         body_style
     ))
 
@@ -328,15 +328,15 @@ def build_pdf():
         "<b>Q2: 导出的 4K 漫剧视频在微信或手机相册中播放黑屏？</b><br/>"
         "答：由于某些移动设备对超高码率 H.265 (HEVC) 支持不完善，建议在 Step 09 导出面板中将视频编码器切换为兼容性最好的 <b>H.264 (AVC)</b> 格式重新导出。<br/><br/>"
         "<b>Q3: 制作途中软件意外关闭，工程进度会丢失吗？</b><br/>"
-        "答：不会。Novella 内置毫秒级断点续传（Checkpoint Engine），每个分镜出图及音频对齐成果均会即时持久化写入本地工程，重新打开项目即可继续制作。"
+        "答：不会。Kineo 内置毫秒级断点续传（Checkpoint Engine），每个分镜出图及音频对齐成果均会即时持久化写入本地工程，重新打开项目即可继续制作。"
     )
     story.append(Paragraph(faq_text, body_style))
 
     story.append(Spacer(1, 10))
     story.append(Paragraph(
         "🎉 <b>社区技术支持与版本更新</b><br/>"
-        "• 官方开源代码仓库：https://github.com/Agions/novella<br/>"
-        "• 问题反馈与建议提交：https://github.com/Agions/novella/issues<br/>"
+        "• 官方开源代码仓库：https://github.com/Agions/kineo<br/>"
+        "• 问题反馈与建议提交：https://github.com/Agions/kineo/issues<br/>"
         "• 在线与离线帮助：随时点击软件顶栏右上角的【? 帮助】进入多功能文档中心。",
         info_box_style
     ))

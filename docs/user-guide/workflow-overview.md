@@ -1,4 +1,4 @@
-# Novella (Novella AI) 6 阶 SOP 漫剧生产流程
+# Kineo (Kineo AI) 6 阶 SOP 漫剧生产流程
 
 > 从小说文本导入到 4K 视频导出的标准生产 SOP
 
@@ -21,12 +21,12 @@ graph TD
 
 ### 1. `Draft` (草稿与全局设置)
 
-- 新建 `.novella` 专属项目文件，导入小说原文本（支持 txt / markdown / docx）。
+- 新建 `.kineo` 专属项目文件，导入小说原文本（支持 txt / markdown / docx）。
 - 选择全剧视觉风格预设（仙侠国风、现代日漫、赛博朋克、热血战斗、暗黑奇幻）。
 
 ### 2. `Parse` (剧本拆解与角色锚定)
 
-- **`novella-ai`** 解析器识别剧情，分离对白与旁白。
+- **`kineo-ai`** 解析器识别剧情，分离对白与旁白。
 - 提炼 `CharacterAsset` 资产并写入性别、年龄、服饰与 LoRA 绑定词，启用 **Master Reference Protocol** 锁定角色防漂移。
 
 ### 3. `Board` (分镜构建与画面渲染)
@@ -41,9 +41,9 @@ graph TD
 
 ### 5. `Build` (硬件加速渲染)
 
-- `novella-media` 调度 VideoToolbox (Mac) 或 NVENC (Windows) 硬编。
+- `kineo-media` 调度 VideoToolbox (Mac) 或 NVENC (Windows) 硬编。
 - 自动加入镜头 Keyframe 缩放平移（Pan/Zoom）过渡动效。
 
 ### 6. `Final` (归档发布)
 
-- 输出 1080p / 4K 高清视听漫剧视频并封存 `.novella` 归档包。
+- 输出 1080p / 4K 高清视听漫剧视频并封存 `.kineo` 归档包。

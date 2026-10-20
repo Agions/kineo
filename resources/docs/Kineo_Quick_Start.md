@@ -1,7 +1,7 @@
-# 🚀 Novella (Novella AI) 快速上手指南
+# 🚀 Kineo (Kineo AI) 快速上手指南
 
-欢迎使用 **Novella (Novella AI) 漫剧创作平台**！
-Novella 是一款面向内容创作者、编剧、独立动画师及自媒体工作者的全流程 AI 漫剧视频生成器。它采用 **Tauri v2 + React 19 + Rust + Monorepo** 模块化微内核架构，能够将纯文本小说或分镜剧本，通过流水线引擎一键转化为具备镜头语言、角色一致性、多音轨 TTS 配音以及 4K 规格的专业漫剧视频。
+欢迎使用 **Kineo (Kineo AI) 漫剧创作平台**！
+Kineo 是一款面向内容创作者、编剧、独立动画师及自媒体工作者的全流程 AI 漫剧视频生成器。它采用 **Tauri v2 + React 19 + Rust + Monorepo** 模块化微内核架构，能够将纯文本小说或分镜剧本，通过流水线引擎一键转化为具备镜头语言、角色一致性、多音轨 TTS 配音以及 4K 规格的专业漫剧视频。
 
 ---
 
@@ -29,7 +29,7 @@ Novella 是一款面向内容创作者、编剧、独立动画师及自媒体工
 
 ## 2. 首次启动与模型配置
 
-Novella 支持主流大模型供应商直连，亦支持本地部署模型（如 Ollama / vLLM / LocalAI）。首次使用前，建议先前往 **【设置 (Settings)】** 配置至少一个 LLM 供应商以及图像生成服务：
+Kineo 支持主流大模型供应商直连，亦支持本地部署模型（如 Ollama / vLLM / LocalAI）。首次使用前，建议先前往 **【设置 (Settings)】** 配置至少一个 LLM 供应商以及图像生成服务：
 
 ### 2.1 支持的模型供应商与功能映射
 1. **文本分析与分镜拆解 (LLM)**：
@@ -118,6 +118,6 @@ Novella 支持主流大模型供应商直连，亦支持本地部署模型（如
 ---
 
 > **技术支持与更新反馈**：
-> - 官方代码仓库：[GitHub - Agions/novella](https://github.com/Agions/novella)
-> - 问题与建议提交：[GitHub Issues](https://github.com/Agions/novella/issues)
+> - 官方代码仓库：[GitHub - Agions/kineo](https://github.com/Agions/kineo)
+> - 问题与建议提交：[GitHub Issues](https://github.com/Agions/kineo/issues)
 > - 官方文档中心：请在软件内点击右上角 `?` 帮助图标进入完整文档专区。

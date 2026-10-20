@@ -1,4 +1,4 @@
-# Novella (Novella AI) 系统架构设计说明书 (Gemini Studio Auto-Swarm Edition)
+# Kineo (Kineo AI) 系统架构设计说明书 (Gemini Studio Auto-Swarm Edition)
 
 > **设计目标**: 构建企业级、可扩展、解耦的 Auto-Swarm AI 漫剧桌面创作平台，支撑从小说/剧本/提示词导入到 4K 视频导出的全流程多智能体自动化。
 
@@ -6,7 +6,7 @@
 
 ## 1. 架构总览 (High-Level Architecture)
 
-`Novella` 采用了 **pnpm workspace (前端)** + **Cargo workspace (Rust 后端)** + **Auto-Swarm Multi-Agent Engine (智能体引擎)** 的解耦架构：
+`Kineo` 采用了 **pnpm workspace (前端)** + **Cargo workspace (Rust 后端)** + **Auto-Swarm Multi-Agent Engine (智能体引擎)** 的解耦架构：
 
 ```mermaid
 graph TD
@@ -32,9 +32,9 @@ graph TD
     end
 
     subgraph Backend ["Rust Native 后端 (Cargo Workspace)"]
-        CoreRS["novella-core<br/>ProjectStore & 校验"]
-        AIRS["novella-ai<br/>NovelScriptParser & 镜头推导"]
-        MediaRS["novella-media<br/>FFmpeg 硬件加速 (VideoToolbox/NVENC)"]
+        CoreRS["kineo-core<br/>ProjectStore & 校验"]
+        AIRS["kineo-ai<br/>NovelScriptParser & 镜头推导"]
+        MediaRS["kineo-media<br/>FFmpeg 硬件加速 (VideoToolbox/NVENC)"]
     end
 
     SwarmEngine --> Store

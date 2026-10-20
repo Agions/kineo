@@ -82,7 +82,7 @@ export const useAppStore = create<AppState>()(
       },
     }),
     {
-      name: 'novella-app-storage',
+      name: 'kineo-app-storage',
       partialize: (state) => ({
         language: state.language,
       }),

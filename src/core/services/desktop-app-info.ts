@@ -20,7 +20,7 @@ export function getAppVersion(): string {
 
 /** 应用名称 */
 export function getAppName(): string {
-  return 'Novella AI';
+  return 'Kineo AI';
 }
 
 /**

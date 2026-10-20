@@ -1,11 +1,11 @@
 [package]
-name = "novella-plugin"
+name = "kineo-plugin"
 version = "0.0.1"
 edition = "2021"
-description = "Novella 基于 WASM / Extism 的插件系统"
+description = "Kineo 基于 WASM / Extism 的插件系统"
 
 [dependencies]
-novella-core = { path = "../core" }
+kineo-core = { path = "../core" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 thiserror = "1.0"

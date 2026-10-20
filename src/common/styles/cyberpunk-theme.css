@@ -1,62 +1,62 @@
-/* Novella v0.0.1 Studio - Cyberpunk Dark Design System Tokens */
+/* Kineo v0.0.1 Studio - Cyberpunk Dark Design System Tokens */
 
 :root {
-  --novella-bg-dark: #0b0d14;
-  --novella-bg-card: rgba(18, 21, 34, 0.78);
-  --novella-bg-card-hover: rgba(28, 32, 52, 0.88);
-  --novella-purple: #7c3aed;
-  --novella-purple-glow: rgba(124, 58, 237, 0.45);
-  --novella-cyan: #06b6d4;
-  --novella-cyan-glow: rgba(6, 182, 212, 0.45);
-  --novella-pink: #ec4899;
-  --novella-amber: #f59e0b;
-  --novella-border: rgba(124, 58, 237, 0.2);
-  --novella-border-highlight: rgba(6, 182, 212, 0.5);
+  --kineo-bg-dark: #0b0d14;
+  --kineo-bg-card: rgba(18, 21, 34, 0.78);
+  --kineo-bg-card-hover: rgba(28, 32, 52, 0.88);
+  --kineo-purple: #7c3aed;
+  --kineo-purple-glow: rgba(124, 58, 237, 0.45);
+  --kineo-cyan: #06b6d4;
+  --kineo-cyan-glow: rgba(6, 182, 212, 0.45);
+  --kineo-pink: #ec4899;
+  --kineo-amber: #f59e0b;
+  --kineo-border: rgba(124, 58, 237, 0.2);
+  --kineo-border-highlight: rgba(6, 182, 212, 0.5);
 }
 
 /* Glassmorphic Container Utilities */
-.novella-glass-card {
-  background: var(--novella-bg-card);
+.kineo-glass-card {
+  background: var(--kineo-bg-card);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--novella-border);
+  border: 1px solid var(--kineo-border);
   border-radius: 16px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.novella-glass-card:hover {
-  border-color: var(--novella-border-highlight);
+.kineo-glass-card:hover {
+  border-color: var(--kineo-border-highlight);
   box-shadow: 0 12px 40px 0 rgba(0, 245, 212, 0.15);
   transform: translateY(-2px);
 }
 
 /* Cyberpunk Neon Glow Buttons */
-.novella-btn-primary {
+.kineo-btn-primary {
   background: linear-gradient(135deg, #00f5d4 0%, #00b894 100%);
   color: #050810;
   font-weight: 700;
   border-radius: 12px;
-  box-shadow: 0 0 16px var(--novella-cyan-glow);
+  box-shadow: 0 0 16px var(--kineo-cyan-glow);
   transition: all 0.25s ease;
 }
 
-.novella-btn-primary:hover {
+.kineo-btn-primary:hover {
   box-shadow: 0 0 24px rgba(0, 245, 212, 0.6);
   transform: scale(1.02);
 }
 
 /* Status Pulsing Badge */
-.novella-pulse-dot {
+.kineo-pulse-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: #00f5d4;
   box-shadow: 0 0 10px #00f5d4;
-  animation: novella-pulse 2s infinite;
+  animation: kineo-pulse 2s infinite;
 }
 
-@keyframes novella-pulse {
+@keyframes kineo-pulse {
   0% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(0, 245, 212, 0.7);

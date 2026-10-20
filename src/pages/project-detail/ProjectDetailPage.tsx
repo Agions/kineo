@@ -59,7 +59,7 @@ const ProjectDetail = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh] text-[var(--muted-foreground)]">
-        <Spin size="large" tip="正在加载 Novella 漫剧工程大厅..." />
+        <Spin size="large" tip="正在加载 Kineo 漫剧工程大厅..." />
       </div>
     );
   }
@@ -85,7 +85,7 @@ const ProjectDetail = () => {
           <div>
             <h2 className="text-xl font-bold text-[var(--foreground)]">{project.name}</h2>
             <p className="text-xs text-[var(--muted-foreground)]">
-              {project.description || 'Novella 4K 漫剧视听项目'}
+              {project.description || 'Kineo 4K 漫剧视听项目'}
             </p>
           </div>
         </div>

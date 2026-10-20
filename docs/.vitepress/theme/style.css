@@ -1,5 +1,5 @@
 /**
- * Novella (Novella AI) v3.0 VitePress Theme
+ * Kineo (Kineo AI) v3.0 VitePress Theme
  *
  * Design system: Indigo (#6366F1) → Purple (#A855F7) → Pink (#EC4899)
  * Accent: warm orange (#FB923C) for AI pulse
@@ -892,7 +892,7 @@ html {
   }
   /* Show URL footer */
   .vp-doc::after {
-    content: 'Novella (Novella AI) docs';
+    content: 'Kineo (Kineo AI) docs';
     display: block;
     margin-top: 24pt;
     padding-top: 8pt;

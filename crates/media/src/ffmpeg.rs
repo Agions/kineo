@@ -1,4 +1,4 @@
-//! Novella FFmpeg CLI Command Builder with VideoToolbox & NVENC Hardware Acceleration
+//! Kineo FFmpeg CLI Command Builder with VideoToolbox & NVENC Hardware Acceleration
 
 pub struct FFmpegCommandBuilder {
     input: Option<String>,

@@ -3,7 +3,7 @@
  *
  * 规范参考：
  * 支持 A2A 开放协议，打破不同 AI 智能体框架之间的孤岛，
- * 允许外部 Agent 运行时（如 VOKO、OpenClaw、AstrBot 等生态）与 Novella 智能体无缝即时互通。
+ * 允许外部 Agent 运行时（如 VOKO、OpenClaw、AstrBot 等生态）与 Kineo 智能体无缝即时互通。
  */
 
 import { logger } from '@/core/utils/logger';
@@ -56,7 +56,7 @@ export class A2AProtocolAdapter {
   }
 
   /**
-   * 发现与导出 Novella 本地运行时的所有 A2A 智能体描述符 (A2A Agent Discovery)
+   * 发现与导出 Kineo 本地运行时的所有 A2A 智能体描述符 (A2A Agent Discovery)
    */
   public discoverAgents(): A2AAgentDescriptor[] {
     const agents = agentRegistry.getAll();
@@ -92,7 +92,7 @@ export class A2AProtocolAdapter {
       type,
       sender: {
         id: senderId,
-        name: senderAgent?.metadata.name || 'NovellaDirector',
+        name: senderAgent?.metadata.name || 'KineoDirector',
         role: senderAgent?.metadata.role || 'director',
       },
       recipient,

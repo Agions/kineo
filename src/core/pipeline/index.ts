@@ -1,5 +1,5 @@
 /**
- * Novella Pipeline 统一入口
+ * Kineo Pipeline 统一入口
  *
  * 本文件是 Pipeline 类型的规范入口（Single Entry Point）。
  * 所有新代码应从这里导入 Pipeline 相关类型和工厂函数。

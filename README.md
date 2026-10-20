@@ -1,24 +1,24 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="public/novella_brand_logo.jpg" />
-  <img src="public/novella_brand_logo.jpg" alt="Novella (Novella AI) · 端到端 Multi-Agent 多智能体漫剧创作平台" width="120" style="border-radius: 24px; box-shadow: 0 0 30px rgba(0,245,212,0.4);" />
+  <source media="(prefers-color-scheme: dark)" srcset="public/kineo_brand_logo.jpg" />
+  <img src="public/kineo_brand_logo.jpg" alt="Kineo (Kineo AI) · 端到端 Multi-Agent 多智能体漫剧创作平台" width="120" style="border-radius: 24px; box-shadow: 0 0 30px rgba(0,245,212,0.4);" />
 </picture>
 
 <br/>
 
-# Novella (Novella AI) · Studio v0.0.1 (Multi-Agent Edition)
+# Kineo (Kineo AI) · Studio v0.0.1 (Multi-Agent Edition)
 
 > **输入剧本、小说或 AI 提示词，Multi-Agent 智能体集群自动协同精织为 4K 原生视听漫剧 —— 基于 Tauri v2 + React 19 + Rust Engine 的端到端开源桌面应用体系。**
 
-[![Build Status](https://img.shields.io/badge/build-passing-emerald?style=for-the-badge&logo=github-actions)](https://github.com/Agions/novella/actions)
-[![License](https://img.shields.io/github/license/Agions/novella?style=for-the-badge&color=45B8AC)](https://opensource.org/licenses/MIT)
-[![Multi-Agent](https://img.shields.io/badge/Multi--Agent-Hub--and--Spoke-8B5CF6?style=for-the-badge&logo=openai)](https://github.com/Agions/novella)
+[![Build Status](https://img.shields.io/badge/build-passing-emerald?style=for-the-badge&logo=github-actions)](https://github.com/Agions/kineo/actions)
+[![License](https://img.shields.io/github/license/Agions/kineo?style=for-the-badge&color=45B8AC)](https://opensource.org/licenses/MIT)
+[![Multi-Agent](https://img.shields.io/badge/Multi--Agent-Hub--and--Spoke-8B5CF6?style=for-the-badge&logo=openai)](https://github.com/Agions/kineo)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
 [![Tauri](https://img.shields.io/badge/Tauri-2.1-FFC131?style=for-the-badge&logo=tauri)](https://tauri.app)
 [![Rust](https://img.shields.io/badge/Rust-2021-000000?style=for-the-badge&logo=rust)](https://www.rust-lang.org)
 
-[**📖 在线文档**](https://agions.github.io/novella/) · [**📥 下载桌面端**](https://github.com/Agions/novella/releases) · [**🐛 报告问题**](https://github.com/Agions/novella/issues/new)
+[**📖 在线文档**](https://agions.github.io/kineo/) · [**📥 下载桌面端**](https://github.com/Agions/kineo/releases) · [**🐛 报告问题**](https://github.com/Agions/kineo/issues/new)
 
 </div>
 
@@ -26,7 +26,7 @@
 
 ## 📖 简介 (Overview)
 
-**Novella (Novella AI)** 是一款面向漫剧创作者、短视频博主与影视编导的开源桌面端 **Multi-Agent 多智能体协作漫剧创作平台**。
+**Kineo (Kineo AI)** 是一款面向漫剧创作者、短视频博主与影视编导的开源桌面端 **Multi-Agent 多智能体协作漫剧创作平台**。
 
 项目重构废除了原有的单向线性 SOP，采用全新的 **Hub-and-Spoke 多智能体协作架构** 与 **ProjectBlackboard 共享黑板模式**。支持现成剧本文件、小说文本与 AI 创作提示词三类素材输入，由主控导演智能体 (`MasterDirectorAgent`) 协调各专门智能体（剧本识别、角色设计锁脸、分镜运镜规划、音效 TTS 配音、4K 视频压制）与用户自定义扩展 Agent 协同完成从原始文本到 4K 漫剧视频的全自动化推导。
 
@@ -108,8 +108,8 @@ graph TD
 
 ```bash
 # 1. 克隆代码库
-git clone https://github.com/Agions/novella.git
-cd novella
+git clone https://github.com/Agions/kineo.git
+cd kineo
 
 # 2. 安装项目依赖
 pnpm install
@@ -125,4 +125,4 @@ bash scripts/build-desktop.sh
 
 ## 📄 许可证 (License)
 
-[MIT License](LICENSE) © 2026 **Novella Team**
+[MIT License](LICENSE) © 2026 **Kineo Team**

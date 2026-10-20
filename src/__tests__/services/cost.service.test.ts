@@ -110,7 +110,7 @@ describe('costService enhancements', () => {
       const report = service.exportReport();
 
       expect(typeof report).toBe('string');
-      expect(report).toContain('Novella');
+      expect(report).toContain('Kineo');
       expect(report).toContain('成本报告');
       expect(report).toContain('总计');
     });

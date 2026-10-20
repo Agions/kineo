@@ -93,7 +93,7 @@ class EvaluationService {
 
   toMarkdown(report: EvaluationReport): string {
     const lines: string[] = [];
-    lines.push('# Novella AI 评测回归报告');
+    lines.push('# Kineo AI 评测回归报告');
     lines.push('');
     lines.push(`生成时间: ${report.generatedAt}`);
     lines.push('');

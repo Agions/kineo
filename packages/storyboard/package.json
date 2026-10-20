@@ -1,12 +1,12 @@
 {
-  "name": "@novella/storyboard",
+  "name": "@kineo/storyboard",
   "version": "0.0.1",
-  "description": "Novella 剧本分镜编辑器组件与 Hooks",
+  "description": "Kineo 剧本分镜编辑器组件与 Hooks",
   "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",
   "license": "MIT",
   "dependencies": {
-    "@novella/core": "workspace:*"
+    "@kineo/core": "workspace:*"
   }
 }

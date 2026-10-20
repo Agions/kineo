@@ -77,7 +77,7 @@ describe('reviewExportService', () => {
       generatedAt: new Date('2026-03-08T12:30:00.000Z'),
     });
 
-    expect(markdown).toContain('Novella AI 评审记录导出');
+    expect(markdown).toContain('Kineo AI 评审记录导出');
     expect(markdown).toContain('- 项目ID: p1');
     expect(markdown).toContain('- 评论数量: 1');
     expect(markdown).toContain('## 评论时间线');

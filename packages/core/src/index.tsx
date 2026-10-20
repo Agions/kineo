@@ -1,6 +1,6 @@
 /**
- * Novella Core Package - Domain Types & Core Engine Interfaces
+ * Kineo Core Package - Domain Types & Core Engine Interfaces
  */
 
 export * from './types';
-export * from './hooks/useNovellaStudio';
+export * from './hooks/useKineoStudio';

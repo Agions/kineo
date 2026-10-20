@@ -11,7 +11,7 @@ import { Button } from '@/common/components/ui/button';
 import { Card } from '@/common/components/ui/card';
 import { toast } from '@/common/components/ui/toast';
 import { useProject } from '@/core/hooks/useProject';
-import { AudioStudio, AudioTimeline } from '@novella/audio-studio';
+import { AudioStudio, AudioTimeline } from '@kineo/audio-studio';
 
 function StepAudio() {
   const { setCurrentStep } = useProject();

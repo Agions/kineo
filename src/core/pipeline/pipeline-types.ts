@@ -1,5 +1,5 @@
 /**
- * Novella Pipeline 核心类型定义
+ * Kineo Pipeline 核心类型定义
  *
  * 定义流水线步骤的标准化接口、数据契约和质量门控
  *

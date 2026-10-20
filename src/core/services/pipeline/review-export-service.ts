@@ -60,7 +60,7 @@ class ReviewExportService {
     const generatedAt = input.generatedAt || new Date();
     const lines: string[] = [];
 
-    lines.push('# Novella AI 评审记录导出');
+    lines.push('# Kineo AI 评审记录导出');
     lines.push('');
     lines.push(`- 项目ID: ${input.project.id}`);
     lines.push(`- 项目名称: ${input.project.name}`);

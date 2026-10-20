@@ -68,7 +68,7 @@ pub fn validate_output_path(path: &str) -> Result<PathBuf, String> {
 /// Used for cleanup operations where the file must already exist.
 ///
 /// 【v3.1 安全强化】原实现用 `canonical_path.starts_with(allowed)`，其中 `allowed`
-/// 来自 `ALLOWED_TEMP_CLEANUP_DIRS = &["novella_keyframes", ...]`，**这些是相对名**
+/// 来自 `ALLOWED_TEMP_CLEANUP_DIRS = &["kineo_keyframes", ...]`，**这些是相对名**
 /// 而 `canonical_path` 是绝对路径——`starts_with` 实际上永远不匹配，**漏洞：永远拒绝**。
 /// 修复：把 allowed 拼接成绝对 temp 目录后再 canonicalize 比较。
 pub fn validate_temp_path(path: &str) -> Result<PathBuf, String> {
@@ -88,7 +88,7 @@ pub fn validate_temp_path(path: &str) -> Result<PathBuf, String> {
         format!("路径无效: {}", e)
     })?;
 
-    // 【v3.1 修复】allowed_dirs 是子目录名（如 "novella_keyframes"），
+    // 【v3.1 修复】allowed_dirs 是子目录名（如 "kineo_keyframes"），
     // 需拼成 OS temp dir 下的绝对路径再 canonicalize 后比较
     let is_allowed = ALLOWED_TEMP_CLEANUP_DIRS.iter().any(|allowed| {
         let allowed_abs = temp_subdir(allowed);

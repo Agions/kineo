@@ -1,5 +1,5 @@
 /**
- * Novella Shared Utils - Request Utilities & Request Cache
+ * Kineo Shared Utils - Request Utilities & Request Cache
  */
 import { retry as retryRequest, type RetryOptions } from './timing';
 

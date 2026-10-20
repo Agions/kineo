@@ -109,7 +109,7 @@ describe('ProjectImportExportService', () => {
       const project = createMockProject();
       const result = await projectImportExportService.exportProject(project, { format: 'json' });
 
-      expect(result.filename).toMatch(/^novella_测试项目_\d{4}-\d{2}-\d{2}\.json$/);
+      expect(result.filename).toMatch(/^kineo_测试项目_\d{4}-\d{2}-\d{2}\.json$/);
       expect(typeof result.content).toBe('string');
     });
 
@@ -292,7 +292,7 @@ describe('ProjectImportExportService', () => {
       const project = createMockProject();
       await projectImportExportService.backupProject(project);
 
-      const backupContent = localStorage.getItem('novella_backup_mock-uuid-1');
+      const backupContent = localStorage.getItem('kineo_backup_mock-uuid-1');
       expect(backupContent).not.toBeNull();
 
       const parsed = JSON.parse(backupContent!);
@@ -348,7 +348,7 @@ describe('ProjectImportExportService', () => {
     });
 
     it('should return null for corrupted backup data', async () => {
-      localStorage.setItem('novella_backup_corrupted', 'not valid json {');
+      localStorage.setItem('kineo_backup_corrupted', 'not valid json {');
 
       const result = await projectImportExportService.restoreBackup('corrupted');
       expect(result).toBeNull();
@@ -391,7 +391,7 @@ describe('ProjectImportExportService', () => {
 
       projectImportExportService.deleteBackup(backupId);
 
-      expect(localStorage.getItem('novella_backup_mock-uuid-1')).toBeNull();
+      expect(localStorage.getItem('kineo_backup_mock-uuid-1')).toBeNull();
     });
 
     it('should remove backup from backup list', async () => {

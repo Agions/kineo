@@ -1,5 +1,5 @@
 /**
- * Novella 桌面端内置使用文档与帮助中心 (Desktop Documentation Center)
+ * Kineo 桌面端内置使用文档与帮助中心 (Desktop Documentation Center)
  * 支持全局深色与浅色双模式全自动自适应主题
  */
 
@@ -50,11 +50,11 @@ export const DocsPage: React.FC = () => {
   const [activeArticleId, setActiveArticleId] = useState<string>('getting-started');
 
   const handleOpenManual = () => {
-    window.open('/docs/Novella_User_Manual.pdf', '_blank');
+    window.open('/docs/Kineo_User_Manual.pdf', '_blank');
   };
 
   const handleOpenQuickStart = () => {
-    window.open('/docs/Novella_Quick_Start.md', '_blank');
+    window.open('/docs/Kineo_Quick_Start.md', '_blank');
   };
 
   // 完整桌面端内置文档数据 (支持主题色入参)
@@ -66,7 +66,7 @@ export const DocsPage: React.FC = () => {
         categoryIcon: Zap,
         title: '🚀 快速入门与软件简介',
         tags: ['入门', '简介', '系统配置'],
-        summary: '了解 Novella AI 漫剧视频生成器的核心架构、环境需求与零门槛快速上手步骤。',
+        summary: '了解 Kineo AI 漫剧视频生成器的核心架构、环境需求与零门槛快速上手步骤。',
         content: (isDark: boolean) => (
           <div className="space-y-6">
             <div
@@ -82,10 +82,10 @@ export const DocsPage: React.FC = () => {
                 }`}
               >
                 <Sparkles className={`w-5 h-5 ${isDark ? 'text-cyan-400' : 'text-purple-600'}`} />
-                欢迎使用 Novella (Novella AI)
+                欢迎使用 Kineo (Kineo AI)
               </h3>
               <p className="text-sm leading-relaxed">
-                Novella 是一款专为漫剧、动画短剧与小说视频化打造的{' '}
+                Kineo 是一款专为漫剧、动画短剧与小说视频化打造的{' '}
                 <strong className={isDark ? 'text-cyan-300' : 'text-purple-700 font-bold'}>
                   全流程 AI Agent 创作桌面端软件
                 </strong>
@@ -197,7 +197,7 @@ export const DocsPage: React.FC = () => {
             <p
               className={`text-sm leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}
             >
-              Novella 摒弃了单向线性的 SOP，升级为符合工业级 AI 动画制片标准的 <strong>Hub-and-Spoke 多智能体协作架构</strong>。
+              Kineo 摒弃了单向线性的 SOP，升级为符合工业级 AI 动画制片标准的 <strong>Hub-and-Spoke 多智能体协作架构</strong>。
               所有专职智能体围绕 <code>ProjectBlackboard</code> 共享黑板协同工作：
             </p>
 
@@ -325,7 +325,7 @@ export const DocsPage: React.FC = () => {
             <p
               className={`text-sm leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}
             >
-              Novella 支持两种灵活的创作模式，满足从极速批量出片到精细艺术创作的不同需求：
+              Kineo 支持两种灵活的创作模式，满足从极速批量出片到精细艺术创作的不同需求：
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -572,7 +572,7 @@ export const DocsPage: React.FC = () => {
                     isDark ? 'text-slate-400' : 'text-slate-600'
                   }`}
                 >
-                  Novella 内置了自动自适应环境防护机制。即使您的系统未手动配置全局
+                  Kineo 内置了自动自适应环境防护机制。即使您的系统未手动配置全局
                   FFmpeg，应用也会自动回退使用内置 WASM/Web-Audio 模块，保障软件不会崩溃停滞。
                 </p>
                 <div
@@ -683,14 +683,14 @@ export const DocsPage: React.FC = () => {
               <BookOpen
                 className={`w-3.5 h-3.5 ${isDarkMode ? 'text-cyan-400' : 'text-purple-600'}`}
               />
-              <span>Novella Desktop Help & Documentation Center</span>
+              <span>Kineo Desktop Help & Documentation Center</span>
             </div>
             <h1
               className={`text-2xl md:text-3xl font-extrabold tracking-tight flex items-center gap-3 ${
                 isDarkMode ? 'text-white' : 'text-slate-900'
               }`}
             >
-              Novella 桌面端使用文档与帮助中心
+              Kineo 桌面端使用文档与帮助中心
             </h1>
             <p
               className={`text-xs md:text-sm max-w-2xl ${
@@ -915,7 +915,7 @@ export const DocsPage: React.FC = () => {
                         : 'text-purple-700 bg-purple-100 border-purple-300 font-semibold'
                     }`}
                   >
-                    Novella Docs v0.0.1
+                    Kineo Docs v0.0.1
                   </span>
                   <span
                     className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}
@@ -947,7 +947,7 @@ export const DocsPage: React.FC = () => {
                   <ShieldCheck
                     className={`w-4 h-4 ${isDarkMode ? 'text-emerald-400' : 'text-emerald-600'}`}
                   />
-                  Novella AI 桌面官方使用指南
+                  Kineo AI 桌面官方使用指南
                 </span>
                 <span className={isDarkMode ? 'text-slate-700' : 'text-slate-300'}>|</span>
                 <button

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Novella (Novella AI) - Standardized Desktop Packaging & Build Script
+# Kineo (Kineo AI) - Standardized Desktop Packaging & Build Script
 # Usage: ./scripts/build-desktop.sh [--target macos|windows|linux|all] [--release]
 # ==============================================================================
 
@@ -20,7 +20,7 @@ log_error() { echo -e "${COLOR_ERROR}[ERROR] ${1}${COLOR_RESET}"; }
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
 
-log_info "Novella (Novella AI) v0.0.1 桌面端打包构建引擎启动..."
+log_info "Kineo (Kineo AI) v0.0.1 桌面端打包构建引擎启动..."
 log_info "工作区目录: ${ROOT_DIR}"
 
 # 1. 预检依赖环境
@@ -34,8 +34,8 @@ RUST_VER=$(cargo --version)
 log_success "Environment OK: Node ${NODE_VER}, Cargo ${RUST_VER}"
 
 # 2. Rust Workspace 增量校验
-log_info "[2/4] 编译 Rust 后端 Crates (novella-core, novella-ai, novella-media, novella-ipc)..."
-cargo check -p novella-ipc -p novella-ai -p novella-media -p novella-core -p novella-plugin -p novella-updater --offline
+log_info "[2/4] 编译 Rust 后端 Crates (kineo-core, kineo-ai, kineo-media, kineo-ipc)..."
+cargo check -p kineo-ipc -p kineo-ai -p kineo-media -p kineo-core -p kineo-plugin -p kineo-updater --offline
 log_success "Rust Crates 编译校验通过 (0 Errors)"
 
 # 3. 生成安装包使用文档与离线手册 (PDF / Markdown / TXT)
@@ -53,5 +53,5 @@ log_info "[5/5] 启动 Tauri v2 原生桌面端构建..."
 pnpm tauri build
 
 BUNDLE_PATH="${ROOT_DIR}/src-tauri/target/release/bundle"
-log_success "Novella 桌面应用打包全量完成！"
+log_success "Kineo 桌面应用打包全量完成！"
 log_info "产物路径: ${BUNDLE_PATH}"

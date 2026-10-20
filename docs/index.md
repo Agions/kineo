@@ -1,15 +1,15 @@
 ---
 layout: home
-title: Novella (Novella AI)
+title: Kineo (Kineo AI)
 titleTemplate: false
 
 hero:
-  name: 'Novella (Novella AI)'
+  name: 'Kineo (Kineo AI)'
   text: 'Gemini Studio 2026 Auto-Swarm 漫剧平台'
   tagline: '输入一本小说/剧本/提示词，Auto-Swarm 多智能体集群自动推导成片——你只需要按「开始」'
   image:
-    src: /novella_brand_logo.jpg
-    alt: Novella (Novella AI)
+    src: /kineo_brand_logo.jpg
+    alt: Kineo (Kineo AI)
   actions:
     - theme: brand
       text: 快速开始 →
@@ -19,7 +19,7 @@ hero:
       link: /developer-guide/architecture
     - theme: alt
       text: GitHub ⭐
-      link: https://github.com/Agions/novella
+      link: https://github.com/Agions/kineo
 
 features:
   - icon: 🤖
@@ -45,7 +45,7 @@ features:
 <!-- 为什么选择 -->
 
 <div class="vp-section-header">
-  <h2 class="vp-section-title">为什么选择 Novella (Novella AI)？</h2>
+  <h2 class="vp-section-title">为什么选择 Kineo (Kineo AI)？</h2>
   <p class="vp-section-sub">市面上唯一的<strong>高性能开源桌面端</strong> Auto-Swarm AI 漫剧创作平台。数据完全本地、MIT 协议、无云端锁死。</p>
 </div>
 

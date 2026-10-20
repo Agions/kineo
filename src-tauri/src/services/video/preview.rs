@@ -19,7 +19,7 @@ pub fn generate(params: &PreviewParams) -> Result<String, String> {
         return Err("未安装FFmpeg，请先安装FFmpeg后再试".into());
     }
 
-    let temp_dir = temp_subdir("novella_preview");
+    let temp_dir = temp_subdir("kineo_preview");
     fs::create_dir_all(&temp_dir).map_err(|e| format!("创建临时目录失败: {}", e))?;
 
     let preview_file = temp_dir.join(format!("preview_{}.mp4", random_id()));

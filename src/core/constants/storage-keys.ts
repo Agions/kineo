@@ -6,12 +6,12 @@
  */
 export const STORAGE_KEYS = {
   legacyProjects: 'STORAGE_KEYS.PROJECTS',
-  legacyProjectsZustand: 'novella-project-storage',
-  projects: 'novella:projects:v2',
-  settings: 'novella:settings:v2',
-  app: 'novella:app:v2',
-  storyboard: 'novella:storyboard:v2',
-  migrationVersion: 'novella:migration:version',
+  legacyProjectsZustand: 'kineo-project-storage',
+  projects: 'kineo:projects:v2',
+  settings: 'kineo:settings:v2',
+  app: 'kineo:app:v2',
+  storyboard: 'kineo:storyboard:v2',
+  migrationVersion: 'kineo:migration:version',
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

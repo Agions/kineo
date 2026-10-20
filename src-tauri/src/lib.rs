@@ -1,4 +1,4 @@
-//! Novella (Novella AI) Tauri desktop backend.
+//! Kineo (Kineo AI) Tauri desktop backend.
 //!
 //! This crate is the Rust-side first citizen of the desktop application.
 //! It exposes Tauri commands to the JS frontend, and is internally organized
@@ -30,7 +30,7 @@ pub fn run() {
     {
         let log_path = std::env::current_exe()
             .ok()
-            .and_then(|p| p.parent().map(|d| d.join("novella.log")));
+            .and_then(|p| p.parent().map(|d| d.join("kineo.log")));
         if let Some(path) = log_path {
             if let Ok(file) = std::fs::OpenOptions::new()
                 .create(true)
@@ -56,7 +56,7 @@ pub fn run() {
             .init();
     }
 
-    info!("Novella (Novella AI) 启动中...");
+    info!("Kineo (Kineo AI) 启动中...");
 
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())
@@ -96,14 +96,14 @@ pub fn run() {
         Ok(())
     })
         .invoke_handler(tauri::generate_handler![
-            novella_ipc::commands::get_novella_version,
-            novella_ipc::commands::create_new_project,
-            novella_ipc::commands::parse_novel_script,
-            novella_ipc::commands::execute_advanced_pipeline,
-            novella_ipc::commands::detect_hardware_accel,
-            novella_ipc::commands::parse_novel_to_script,
-            novella_ipc::commands::parse_direct_script,
-            novella_ipc::commands::generate_script_from_idea,
+            kineo_ipc::commands::get_kineo_version,
+            kineo_ipc::commands::create_new_project,
+            kineo_ipc::commands::parse_novel_script,
+            kineo_ipc::commands::execute_advanced_pipeline,
+            kineo_ipc::commands::detect_hardware_accel,
+            kineo_ipc::commands::parse_novel_to_script,
+            kineo_ipc::commands::parse_direct_script,
+            kineo_ipc::commands::generate_script_from_idea,
             commands::video::analyze_video,
             commands::video::extract_key_frames,
             commands::video::generate_thumbnail,

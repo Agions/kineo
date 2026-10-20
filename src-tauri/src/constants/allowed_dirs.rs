@@ -4,9 +4,9 @@
 //! of least privilege: output files may only be created inside these directories
 //! (typically the OS temp dir + per-app subdirectories).
 //!
-//! **Naming convention**: Each subdirectory uses the `novella_*` prefix for
-//! brand continuity with the Novella product line. No backwards-compatibility
-//! aliases are retained — old data in non-`novella_*` directories will be
+//! **Naming convention**: Each subdirectory uses the `kineo_*` prefix for
+//! brand continuity with the Kineo product line. No backwards-compatibility
+//! aliases are retained — old data in non-`kineo_*` directories will be
 //! rejected by the path validator.
 
 use std::path::PathBuf;
@@ -14,19 +14,19 @@ use std::path::PathBuf;
 /// Directories where FFmpeg output files are allowed to be created.
 /// Used by `validate_output_path`.
 pub const ALLOWED_OUTPUT_DIRS: &[&str] = &[
-    "novella_temp",
-    "novella_keyframes",
-    "novella_thumbnails",
-    "novella_preview",
+    "kineo_temp",
+    "kineo_keyframes",
+    "kineo_thumbnails",
+    "kineo_preview",
 ];
 
 /// Directories where cleanup is allowed (subset of output dirs).
 /// Used by `clean_temp_file` to verify a path is safe to delete.
 pub const ALLOWED_TEMP_CLEANUP_DIRS: &[&str] = &[
-    "novella_keyframes",
-    "novella_thumbnails",
-    "novella_temp",
-    "novella_preview",
+    "kineo_keyframes",
+    "kineo_thumbnails",
+    "kineo_temp",
+    "kineo_preview",
 ];
 
 /// Build the full OS temp dir + subdirectory path for a given subdir.
@@ -40,8 +40,8 @@ mod tests {
 
     #[test]
     fn output_dirs_includes_keyframes() {
-        assert!(ALLOWED_OUTPUT_DIRS.contains(&"novella_keyframes"));
-        assert!(ALLOWED_OUTPUT_DIRS.contains(&"novella_preview"));
+        assert!(ALLOWED_OUTPUT_DIRS.contains(&"kineo_keyframes"));
+        assert!(ALLOWED_OUTPUT_DIRS.contains(&"kineo_preview"));
     }
 
     #[test]
@@ -57,7 +57,7 @@ mod tests {
 
     #[test]
     fn temp_subdir_creates_under_temp() {
-        let p = temp_subdir("novella_keyframes");
-        assert!(p.ends_with("novella_keyframes"));
+        let p = temp_subdir("kineo_keyframes");
+        assert!(p.ends_with("kineo_keyframes"));
     }
 }

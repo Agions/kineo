@@ -252,13 +252,13 @@ importers:
 
   packages/ai-engine:
     dependencies:
-      '@novella/core':
+      '@kineo/core':
         specifier: workspace:*
         version: link:../core
 
   packages/audio-studio:
     dependencies:
-      '@novella/core':
+      '@kineo/core':
         specifier: workspace:*
         version: link:../core
 
@@ -266,13 +266,13 @@ importers:
 
   packages/render-pipeline:
     dependencies:
-      '@novella/core':
+      '@kineo/core':
         specifier: workspace:*
         version: link:../core
 
   packages/storyboard:
     dependencies:
-      '@novella/core':
+      '@kineo/core':
         specifier: workspace:*
         version: link:../core
 

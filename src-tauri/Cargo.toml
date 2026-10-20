@@ -1,10 +1,10 @@
 [package]
-name = "novella-desktop"
+name = "kineo-desktop"
 version = "0.0.1"
-description = "Novella - AI 漫剧创作平台 (Tauri v2 + Rust)"
+description = "Kineo - AI 漫剧创作平台 (Tauri v2 + Rust)"
 authors = ["Agions"]
 license = "MIT"
-repository = "https://github.com/Agions/novella"
+repository = "https://github.com/Agions/kineo"
 edition = "2021"
 
 [lib]
@@ -15,12 +15,12 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = ">=2.6.3", features = [] }
 
 [dependencies]
-novella-core = { path = "../crates/core" }
-novella-ai = { path = "../crates/ai" }
-novella-media = { path = "../crates/media" }
-novella-plugin = { path = "../crates/plugin" }
-novella-updater = { path = "../crates/updater" }
-novella-ipc = { path = "../crates/ipc" }
+kineo-core = { path = "../crates/core" }
+kineo-ai = { path = "../crates/ai" }
+kineo-media = { path = "../crates/media" }
+kineo-plugin = { path = "../crates/plugin" }
+kineo-updater = { path = "../crates/updater" }
+kineo-ipc = { path = "../crates/ipc" }
 
 tauri = { version = "2", features = ["tray-icon"] }
 serde = { version = "1.0", features = ["derive"] }

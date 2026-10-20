@@ -293,11 +293,11 @@ export function hasAnyConfiguredModelProvider(): boolean {
       // ignore
     }
 
-    // 2. 检查 api_${p}_key 与 novella_api_key_${p}
+    // 2. 检查 api_${p}_key 与 kineo_api_key_${p}
     try {
       const k1 = localStorage.getItem(`api_${p}_key`);
       if (isValValid(k1)) return true;
-      const k2 = localStorage.getItem(`novella_api_key_${p}`) || localStorage.getItem(`${p}_api_key`);
+      const k2 = localStorage.getItem(`kineo_api_key_${p}`) || localStorage.getItem(`${p}_api_key`);
       if (isValValid(k2)) return true;
     } catch (_e) {
       // ignore

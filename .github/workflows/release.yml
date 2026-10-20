@@ -66,16 +66,16 @@ jobs:
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           body: |
-            ## Download Novella (Novella AI) ${{ steps.version.outputs.version }}
+            ## Download Kineo (Kineo AI) ${{ steps.version.outputs.version }}
 
             | Platform | Architecture | Download |
             |----------|-------------|----------|
-            | Windows | x64 | [.exe](novella-${{ steps.version.outputs.version }}-windows-x64.exe) |
-            | Windows | ARM64 | [.exe](novella-${{ steps.version.outputs.version }}-windows-arm64.exe) |
-            | macOS | Universal | [.tar.gz](novella-${{ steps.version.outputs.version }}-macos-universal.tar.gz) |
-            | Linux | x64 | [.tar.gz](novella-${{ steps.version.outputs.version }}-linux-x64.tar.gz) |
+            | Windows | x64 | [.exe](kineo-${{ steps.version.outputs.version }}-windows-x64.exe) |
+            | Windows | ARM64 | [.exe](kineo-${{ steps.version.outputs.version }}-windows-arm64.exe) |
+            | macOS | Universal | [.tar.gz](kineo-${{ steps.version.outputs.version }}-macos-universal.tar.gz) |
+            | Linux | x64 | [.tar.gz](kineo-${{ steps.version.outputs.version }}-linux-x64.tar.gz) |
 
-            > Full release notes: [CHANGELOG.md](https://github.com/Agions/novella/blob/${{ steps.version.outputs.tag }}/CHANGELOG.md)
+            > Full release notes: [CHANGELOG.md](https://github.com/Agions/kineo/blob/${{ steps.version.outputs.tag }}/CHANGELOG.md)
           draft: true
           prerelease: ${{ contains(steps.version.outputs.tag, 'alpha') || contains(steps.version.outputs.tag, 'beta') || contains(steps.version.outputs.tag, 'rc') }}
         env:
@@ -120,7 +120,7 @@ jobs:
         run: |
           $src = "src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis"
           $exe = Get-ChildItem -Path $src -Filter "*.exe" | Select-Object -First 1
-          $out = "novella-${{ needs.prepare.outputs.version }}-windows-x64.exe"
+          $out = "kineo-${{ needs.prepare.outputs.version }}-windows-x64.exe"
           Copy-Item $exe.FullName $out
           echo "artifact_name=$out" >> $env:GITHUB_OUTPUT
 
@@ -129,7 +129,7 @@ jobs:
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
           draft: true
-          files: novella-${{ needs.prepare.outputs.version }}-windows-x64.exe
+          files: kineo-${{ needs.prepare.outputs.version }}-windows-x64.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -174,7 +174,7 @@ jobs:
         run: |
           $src = "src-tauri/target/aarch64-pc-windows-msvc/release/bundle/nsis"
           $exe = Get-ChildItem -Path $src -Filter "*.exe" | Select-Object -First 1
-          $out = "novella-${{ needs.prepare.outputs.version }}-windows-arm64.exe"
+          $out = "kineo-${{ needs.prepare.outputs.version }}-windows-arm64.exe"
           Copy-Item $exe.FullName $out
           echo "artifact_name=$out" >> $env:GITHUB_OUTPUT
 
@@ -183,7 +183,7 @@ jobs:
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
           draft: true
-          files: novella-${{ needs.prepare.outputs.version }}-windows-arm64.exe
+          files: kineo-${{ needs.prepare.outputs.version }}-windows-arm64.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -224,15 +224,15 @@ jobs:
         id: package
         run: |
           cd $GITHUB_WORKSPACE/src-tauri/target/release/bundle
-          tar -czf "$GITHUB_WORKSPACE/novella-${{ needs.prepare.outputs.version }}-macos-universal.tar.gz" -C macos "Novella.app"
-          echo "artifact_name=novella-${{ needs.prepare.outputs.version }}-macos-universal.tar.gz" >> $GITHUB_OUTPUT
+          tar -czf "$GITHUB_WORKSPACE/kineo-${{ needs.prepare.outputs.version }}-macos-universal.tar.gz" -C macos "Kineo.app"
+          echo "artifact_name=kineo-${{ needs.prepare.outputs.version }}-macos-universal.tar.gz" >> $GITHUB_OUTPUT
 
       - name: Upload macOS tar.gz
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
           draft: true
-          files: novella-${{ needs.prepare.outputs.version }}-macos-universal.tar.gz
+          files: kineo-${{ needs.prepare.outputs.version }}-macos-universal.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -284,15 +284,15 @@ jobs:
         id: package
         run: |
           cd src-tauri/target/release
-          tar -czf "$GITHUB_WORKSPACE/novella-${{ needs.prepare.outputs.version }}-linux-x64.tar.gz" novella*
-          echo "artifact_name=novella-${{ needs.prepare.outputs.version }}-linux-x64.tar.gz" >> $GITHUB_OUTPUT
+          tar -czf "$GITHUB_WORKSPACE/kineo-${{ needs.prepare.outputs.version }}-linux-x64.tar.gz" kineo*
+          echo "artifact_name=kineo-${{ needs.prepare.outputs.version }}-linux-x64.tar.gz" >> $GITHUB_OUTPUT
 
       - name: Upload Linux tar.gz
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.prepare.outputs.tag }}
           draft: true
-          files: novella-${{ needs.prepare.outputs.version }}-linux-x64.tar.gz
+          files: kineo-${{ needs.prepare.outputs.version }}-linux-x64.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

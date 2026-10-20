@@ -1,7 +1,7 @@
 {
-  "name": "@novella/utils",
+  "name": "@kineo/utils",
   "version": "0.0.1",
-  "description": "Novella (Novella AI) - 通用基础工具函数与类型定义助手包",
+  "description": "Kineo (Kineo AI) - 通用基础工具函数与类型定义助手包",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "types": "src/index.ts",

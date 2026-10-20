@@ -4,13 +4,13 @@
 
 /** 存储键名 */
 export const STORAGE_KEYS = {
-  PROJECTS: 'novella_projects',
-  STORYBOARDS: 'novella-storyboards',
-  COMPOSITIONS: 'novella-compositions',
+  PROJECTS: 'kineo_projects',
+  STORYBOARDS: 'kineo-storyboards',
+  COMPOSITIONS: 'kineo-compositions',
   ASSETS: 'panelcraft_assets',
   CHARACTERS: 'man ga-characters',
-  BACKUPS: 'novella_backups',
-  REVIEW_EXPORT_ACTIVITIES: 'novella_review_export_activities',
+  BACKUPS: 'kineo_backups',
+  REVIEW_EXPORT_ACTIVITIES: 'kineo_review_export_activities',
   TOKEN: 'reelforge_token',
 } as const;
 

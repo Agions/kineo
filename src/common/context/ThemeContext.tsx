@@ -52,7 +52,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const [activeTheme, setActiveThemeState] = useState<ThemeMode>(() => {
     if (typeof localStorage !== 'undefined') {
-      const saved = localStorage.getItem('novella-theme') as ThemeMode;
+      const saved = localStorage.getItem('kineo-theme') as ThemeMode;
       if (saved) return saved;
     }
     return storeTheme;
@@ -72,7 +72,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const setTheme = (t: ThemeMode) => {
     setActiveThemeState(t);
     if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('novella-theme', t);
+      localStorage.setItem('kineo-theme', t);
     }
     updateSettings?.({ theme: t });
     applyThemeToDOM(resolveTheme(t));

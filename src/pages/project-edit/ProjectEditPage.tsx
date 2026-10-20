@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/common/components/ui/button';
 import { toast } from '@/common/components/ui/toast';
 import { useProject } from '@/core/hooks/useProject';
-import type { RoleType } from '@novella/core';
+import type { RoleType } from '@kineo/core';
 
 import { StepContentSwitcher } from './components/StepContentSwitcher';
 import { StepNavigation } from './components/StepNavigation';
@@ -39,7 +39,7 @@ const ProjectEdit = () => {
           </Button>
           <div className="h-4 w-[1px] bg-[var(--border)]" />
           <h2 className="text-base font-bold text-[var(--foreground)]">
-            {loaderData?.name || 'Novella 视听分镜 Studio 工作台'}
+            {loaderData?.name || 'Kineo 视听分镜 Studio 工作台'}
           </h2>
           <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 font-mono font-bold">
             Multi-Agent 联通中
@@ -78,7 +78,7 @@ export const ProjectEditPage = () => {
 
   const projectMetadata = useMemo(
     () => ({
-      name: loaderData?.name || 'Novella AI 漫剧工程',
+      name: loaderData?.name || 'Kineo AI 漫剧工程',
       description: loaderData?.description || '',
       exportPreset: loaderData?.exportPreset || ('16:9' as const),
       exportSettings: loaderData?.exportSettings || {},

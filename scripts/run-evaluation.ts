@@ -86,7 +86,7 @@ const summary = {
 };
 
 const lines: string[] = [];
-lines.push('# Novella 回归评测报告');
+lines.push('# Kineo 回归评测报告');
 lines.push('');
 lines.push(`生成时间: ${new Date().toISOString()}`);
 lines.push(`样例数: ${samples.length}`);

@@ -830,7 +830,7 @@ describe('CompositionService', () => {
           updatedAt: new Date().toISOString(),
         },
       ];
-      localStorageMock.data['novella-compositions'] = JSON.stringify(storedData);
+      localStorageMock.data['kineo-compositions'] = JSON.stringify(storedData);
 
       const service = new CompositionService();
       const composition = service.getById('stored-id');
@@ -840,7 +840,7 @@ describe('CompositionService', () => {
     });
 
     it('应该处理 localStorage 解析错误', () => {
-      localStorageMock.data['novella-compositions'] = 'invalid json';
+      localStorageMock.data['kineo-compositions'] = 'invalid json';
 
       const service = new CompositionService();
 

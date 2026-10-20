@@ -9,8 +9,8 @@
 pnpm tauri build
 
 # 输出
-# macOS: src-tauri/target/release/bundle/macos/Novella.app
-# Windows: src-tauri/target/release/bundle/msi/Novella_x64.msi
+# macOS: src-tauri/target/release/bundle/macos/Kineo.app
+# Windows: src-tauri/target/release/bundle/msi/Kineo_x64.msi
 # Linux: src-tauri/target/release/bundle/appimage/Story_Weaver.AppImage
 ```
 

@@ -1,17 +1,17 @@
 /**
- * plugin-sdk.test.ts — Unit tests for @novella/plugin-sdk package
+ * plugin-sdk.test.ts — Unit tests for @kineo/plugin-sdk package
  */
 
-import { pluginRegistry, type NovellaPlugin } from '../../../packages/plugin-sdk/src/index';
+import { pluginRegistry, type KineoPlugin } from '../../../packages/plugin-sdk/src/index';
 
-describe('@novella/plugin-sdk Package Suite', () => {
-  it('Should initialize 5 built-in plugins matrix in @novella/plugin-sdk', () => {
+describe('@kineo/plugin-sdk Package Suite', () => {
+  it('Should initialize 5 built-in plugins matrix in @kineo/plugin-sdk', () => {
     const plugins = pluginRegistry.getAll();
     expect(plugins.length).toBeGreaterThanOrEqual(5);
   });
 
-  it('Should execute waterfall hooks via @novella/plugin-sdk', async () => {
-    const customPlugin: NovellaPlugin = {
+  it('Should execute waterfall hooks via @kineo/plugin-sdk', async () => {
+    const customPlugin: KineoPlugin = {
       id: 'plugin-sdk-unit-test',
       name: 'SDK Unit Test Plugin',
       version: '1.0.0',

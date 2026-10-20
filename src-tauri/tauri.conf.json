@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-  "productName": "Novella",
+  "productName": "Kineo",
   "version": "0.0.1",
-  "identifier": "ai.novella.desktop",
+  "identifier": "ai.kineo.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Novella (Novella AI) - AI 漫剧创作平台",
+        "title": "Kineo (Kineo AI) - AI 漫剧创作平台",
         "width": 1280,
         "height": 800,
         "minWidth": 960,
@@ -41,7 +41,7 @@
   "bundle": {
     "active": true,
     "category": "Video",
-    "copyright": "Copyright © 2024-2026 Novella Team",
+    "copyright": "Copyright © 2024-2026 Kineo Team",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -49,8 +49,8 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "longDescription": "Novella (Novella AI) - AI 漫剧创作平台。采用 Tauri v2 + React 19 + Rust + Packages Monorepo 模块化架构，将小说一键转化为专业级漫剧视频。",
-    "shortDescription": "Novella Novella AI 漫剧创作平台",
+    "longDescription": "Kineo (Kineo AI) - AI 漫剧创作平台。采用 Tauri v2 + React 19 + Rust + Packages Monorepo 模块化架构，将小说一键转化为专业级漫剧视频。",
+    "shortDescription": "Kineo Kineo AI 漫剧创作平台",
     "resources": [
       "resources/docs/*"
     ],
@@ -72,8 +72,8 @@
     },
     "fileAssociations": [
       {
-        "name": "Novella Project",
-        "ext": ["novella", "drama"],
+        "name": "Kineo Project",
+        "ext": ["kineo", "drama"],
         "mimeType": "application/json"
       }
     ]

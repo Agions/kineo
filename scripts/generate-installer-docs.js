@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /**
- * Novella 安装包与离线用户手册自动化生成脚本 (Installer Docs Generator)
+ * Kineo 安装包与离线用户手册自动化生成脚本 (Installer Docs Generator)
  *
  * 功能：
- * 1. 自动生成专业排版、Cyberpunk Midnight 风格的《Novella_User_Manual.pdf》
- * 2. 同步拷贝 Novella_Quick_Start.md 与 README_FIRST.txt 到：
+ * 1. 自动生成专业排版、Cyberpunk Midnight 风格的《Kineo_User_Manual.pdf》
+ * 2. 同步拷贝 Kineo_Quick_Start.md 与 README_FIRST.txt 到：
  *    - resources/docs/ (项目级共享根目录)
  *    - src-tauri/resources/docs/ (Tauri 打包器资源消费目录)
  */
@@ -23,21 +23,21 @@ const RESOURCES_DOCS_DIR = path.join(ROOT_DIR, 'resources', 'docs');
 const TAURI_DOCS_DIR = path.join(ROOT_DIR, 'src-tauri', 'resources', 'docs');
 const PUBLIC_DOCS_DIR = path.join(ROOT_DIR, 'public', 'docs');
 const TEMP_HTML_PATH = path.join(ROOT_DIR, 'resources', 'docs', '_manual_template.html');
-const OUTPUT_PDF_PATH = path.join(RESOURCES_DOCS_DIR, 'Novella_User_Manual.pdf');
+const OUTPUT_PDF_PATH = path.join(RESOURCES_DOCS_DIR, 'Kineo_User_Manual.pdf');
 
 // 确保目标目录存在
 fs.mkdirSync(RESOURCES_DOCS_DIR, { recursive: true });
 fs.mkdirSync(TAURI_DOCS_DIR, { recursive: true });
 fs.mkdirSync(PUBLIC_DOCS_DIR, { recursive: true });
 
-console.log('🚀 [Installer Docs] 正在生成 Novella 官方安装包使用文档...');
+console.log('🚀 [Installer Docs] 正在生成 Kineo 官方安装包使用文档...');
 
 // 1. 构建高保真 Cyber Midnight HTML 手册模版
 const manualHtml = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>Novella AI 漫剧创作平台 - 官方用户手册</title>
+  <title>Kineo AI 漫剧创作平台 - 官方用户手册</title>
   <style>
     @page {
       size: A4;
@@ -258,11 +258,11 @@ const manualHtml = `<!DOCTYPE html>
   <!-- 封面 -->
   <div class="cover-page">
     <div class="cover-header">
-      <span class="cover-badge">NOVELLA AI · OFFICIAL MANUAL</span>
+      <span class="cover-badge">KINEO AI · OFFICIAL MANUAL</span>
       <span style="color: #94a3b8; font-size: 13px;">版本：v0.0.1 Release</span>
     </div>
     <div class="cover-body">
-      <h1 class="cover-title">Novella AI 漫剧创作平台<br>官方用户使用手册</h1>
+      <h1 class="cover-title">Kineo AI 漫剧创作平台<br>官方用户使用手册</h1>
       <div class="cover-subtitle">从网络小说到 4K 专业级漫剧视频的一站式智能创作指南</div>
       <div class="cover-tags">
         <span class="tag-chip">⚡ Tauri v2 极速原生</span>
@@ -273,7 +273,7 @@ const manualHtml = `<!DOCTYPE html>
       </div>
     </div>
     <div class="cover-footer">
-      <span>Novella Core Engineering Team 编撰</span>
+      <span>Kineo Core Engineering Team 编撰</span>
       <span>适用于 macOS / Windows / Linux 桌面全平台</span>
     </div>
   </div>
@@ -282,7 +282,7 @@ const manualHtml = `<!DOCTYPE html>
   <div>
     <div class="section-title">1. 产品架构与系统环境要求</div>
     <p>
-      <strong>Novella</strong> 是一款融合现代生成式人工智能（LLM 大语言模型、扩散图像生成模型、神经网络 TTS、唇同步与运镜渲染）的桌面端专业漫剧视频创作工坊。
+      <strong>Kineo</strong> 是一款融合现代生成式人工智能（LLM 大语言模型、扩散图像生成模型、神经网络 TTS、唇同步与运镜渲染）的桌面端专业漫剧视频创作工坊。
       基于 <strong>Tauri v2 + Rust 微内核 + React 19</strong> 构建，提供极速响应、离线工程持久化与本地硬件加速编解码能力。
     </p>
 
@@ -327,7 +327,7 @@ const manualHtml = `<!DOCTYPE html>
   <div>
     <div class="section-title">2. 首次启动与模型引擎配置</div>
     <p>
-      首次打开 Novella 后，点击左侧导航底部的 <strong>【设置 (Settings)】</strong>。为保障自动化拆解与渲染质量，需配置至少一组大模型提供商密钥：
+      首次打开 Kineo 后，点击左侧导航底部的 <strong>【设置 (Settings)】</strong>。为保障自动化拆解与渲染质量，需配置至少一组大模型提供商密钥：
     </p>
 
     <table>
@@ -348,7 +348,7 @@ const manualHtml = `<!DOCTYPE html>
         </tr>
         <tr>
           <td><strong>视觉画面渲染</strong></td>
-          <td>Novella 内置 Seedream 5.0<br>Flux / Midjourney API / SDXL</td>
+          <td>Kineo 内置 Seedream 5.0<br>Flux / Midjourney API / SDXL</td>
           <td>场景分镜概念图绘制、角色 LoRA 锁脸、高精度动漫插画生成</td>
           <td>支持 16:9 横屏与 9:16 竖屏高分辨率出图。</td>
         </tr>
@@ -368,7 +368,7 @@ const manualHtml = `<!DOCTYPE html>
   <div>
     <div class="section-title">3. 漫剧创作 9 步标准管线详解</div>
     <p>
-      Novella 采用工业级流水线作业模式，将一部漫剧的诞生抽象为 9 个具备严格质量门禁的工坊阶段：
+      Kineo 采用工业级流水线作业模式，将一部漫剧的诞生抽象为 9 个具备严格质量门禁的工坊阶段：
     </p>
 
     <div class="pipeline-grid">
@@ -506,13 +506,13 @@ const manualHtml = `<!DOCTYPE html>
 
     <div class="subsection-title">Q3: 多智能体协同模式生成时中途意外中断，数据会丢失吗？</div>
     <p>
-      <strong>解答</strong>：不会。Novella 引擎内置 <strong>断点自动续传（Checkpoint Engine）</strong>。每个分镜出图及音频合成完成的瞬间均会持久化保存在本地工程库中，重新打开项目即可一键“继续未完任务”。
+      <strong>解答</strong>：不会。Kineo 引擎内置 <strong>断点自动续传（Checkpoint Engine）</strong>。每个分镜出图及音频合成完成的瞬间均会持久化保存在本地工程库中，重新打开项目即可一键“继续未完任务”。
     </p>
 
     <div class="tip-card">
       🎉 <strong>技术支持与社区生态</strong><br>
-      • 官方代码仓库与版本发布：<a href="https://github.com/Agions/novella" style="color: #4338ca;">https://github.com/Agions/novella</a><br>
-      • 提交 Bug 报告与功能需求：<a href="https://github.com/Agions/novella/issues" style="color: #4338ca;">https://github.com/Agions/novella/issues</a><br>
+      • 官方代码仓库与版本发布：<a href="https://github.com/Agions/kineo" style="color: #4338ca;">https://github.com/Agions/kineo</a><br>
+      • 提交 Bug 报告与功能需求：<a href="https://github.com/Agions/kineo/issues" style="color: #4338ca;">https://github.com/Agions/kineo/issues</a><br>
       • 软件内离线手册：可随时点击页面顶栏的 <strong>【? 帮助】</strong> 随时查阅离线图文指南。
     </div>
   </div>
@@ -594,8 +594,8 @@ try {
 
 // 3. 将文档同步复制到 src-tauri/resources/docs/ 与 public/docs/ 目录
 const filesToSync = [
-  'Novella_User_Manual.pdf',
-  'Novella_Quick_Start.md',
+  'Kineo_User_Manual.pdf',
+  'Kineo_Quick_Start.md',
   'README_FIRST.txt',
 ];
 
