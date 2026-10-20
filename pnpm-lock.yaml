@@ -222,9 +222,6 @@ importers:
       prettier:
         specifier: ^3.8.3
         version: 3.8.3
-      tailwindcss:
-        specifier: ^4.1.16
-        version: 4.3.0
       terser:
         specifier: ^5.46.0
         version: 5.46.2
@@ -258,17 +255,19 @@ importers:
 
   packages/audio-studio:
     dependencies:
-      '@kineo/core':
+      '@kineo/ui':
         specifier: workspace:*
-        version: link:../core
+        version: link:../ui
 
   packages/core: {}
 
+  packages/plugin-sdk: {}
+
   packages/render-pipeline:
     dependencies:
-      '@kineo/core':
+      '@kineo/ui':
         specifier: workspace:*
-        version: link:../core
+        version: link:../ui
 
   packages/storyboard:
     dependencies:
@@ -277,6 +276,8 @@ importers:
         version: link:../core
 
   packages/ui: {}
+
+  packages/utils: {}
 
 packages:
 

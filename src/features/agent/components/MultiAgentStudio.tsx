@@ -128,6 +128,10 @@ export const MultiAgentStudio: React.FC = () => {
       parsedScenes: data.scenes,
       storyboardFrames: data.scenes,
       characters: data.characters,
+      spatialMemory: data.spatialMemory,
+      cameraDirectingPlans: data.cameraDirectingPlans,
+      audioConfig: data.audioConfig,
+      renderQueue: data.renderQueue,
       updatedAt: new Date().toISOString(),
     };
 
