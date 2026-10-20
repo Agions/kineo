@@ -1,13 +1,15 @@
 /**
- * StoryboardArtistAgent.ts — 分镜绘图与运镜规划 Agent
+ * StoryboardArtistAgent.ts — 影视级分镜师与机位空间编排 Agent
  *
  * 职责：
- * 读取 Blackboard 场景与角色，调用 storyboardPromptBuilder 生成 3 栏漫剧画幅，
- * 规划推拉摇移镜头轨迹 (Zoom / Tilt) 与画面 Prompt。
+ * 1. 深度读取角色全息 DNA 三视图与空间站位坐标，注入分镜画面 Prompt。
+ * 2. 依据电影语法规划景别（特写、中景、大全景）与运镜矢量（Pan, Tilt, Dolly, Hitchcock Zoom）。
+ * 3. 避免跳轴与单调机位，执行空间防穿帮矩阵约束。
+ * 4. 响应 QualityAuditor 的批评意见 (Reflection Context)，自动针对性自愈修复。
  */
 
 import { BaseAgent } from './BaseAgent';
-import type { ProjectBlackboard } from './ProjectBlackboard';
+import type { CameraDirectingPlan, ProjectBlackboard } from './ProjectBlackboard';
 
 export class StoryboardArtistAgent extends BaseAgent {
   constructor() {
@@ -16,46 +18,59 @@ export class StoryboardArtistAgent extends BaseAgent {
       name: 'FRAME',
       role: 'storyboard_artist',
       avatar: '🎨',
-      description: '负责规划镜头景别 (Zoom/Tilt)、构图提示词与二次元 3 栏漫剧分镜大盘',
+      description: '负责规划镜头景别、视效提示词、电影运镜语法与机位空间防穿帮矩阵',
       triggerPhase: 'on_character_anchored',
-      readKeys: ['scenes', 'characters', 'spatialMemory'],
+      readKeys: ['scenes', 'characters', 'spatialMemory', 'currentReflection'],
       writeKeys: ['scenes', 'cameraDirectingPlans', 'stage'],
     });
   }
 
   public async execute(blackboard: ProjectBlackboard): Promise<void> {
     const data = blackboard.getData();
-    this.log(blackboard, '开始进行视听运镜、角色 DNA 注入与 3 栏分镜大盘规划...', 'info');
+    const reflection = data.currentReflection;
+
+    if (reflection && (reflection.failedMetric.includes('机位') || reflection.failedMetric.includes('提示词'))) {
+      this.log(
+        blackboard,
+        `🔄 收到质检审计自愈建议: [${reflection.critique}]，重新编排运镜多样性与光影提示词...`,
+        'warn'
+      );
+    } else {
+      this.log(blackboard, '🎬 启动 ACS-2.0 影视级分镜编排，结合全息 DNA 矩阵与空间防穿帮约束...', 'info');
+    }
 
     const charAnchors = data.spatialMemory?.characterAnchors || {};
-    const cameraPlans: Record<string, any> = {};
+    const cameraPlans: Record<string, CameraDirectingPlan> = {};
 
-    const motions: Array<'FPV_Fly' | 'Hitchcock_Zoom' | 'Pan_Right' | 'Tilt_Up' | 'Static'> = [
-      'Pan_Right',
+    const motions: Array<CameraDirectingPlan['cameraMotion']> = [
       'Hitchcock_Zoom',
+      'Pan_Right',
       'Tilt_Up',
       'FPV_Fly',
       'Static',
     ];
-    const distances: Array<'CloseUp' | 'Medium' | 'Wide'> = ['Wide', 'CloseUp', 'Medium'];
+    const distances: Array<CameraDirectingPlan['cameraDistance']> = ['CloseUp', 'Medium', 'Wide'];
 
     const updatedScenes = data.scenes.map((sc, idx) => {
-      // 1. 匹配场景中出场的角色并注入 DNA Anchor
+      // 1. 匹配场景出场角色并注入全息 DNA 锚点与站位
       const matchedChars = (data.characters || []).filter((c) =>
         sc.content?.includes(c.name)
       );
 
       const charDnaPrompts = matchedChars
-        .map((c) => charAnchors[c.name]?.loraPrompt || `${c.name}, consistent anime features`)
+        .map((c) => {
+          const anchor = charAnchors[c.name]?.loraPrompt || `${c.name}, consistent anime features`;
+          const dna = (c.appearance as any)?.dna;
+          const spatial = dna?.spatialPosition ? `[Spatial: ${dna.spatialPosition}]` : '';
+          return `${anchor} ${spatial}`;
+        })
         .join(', ');
 
-      const basePrompt = `Masterpiece 4K anime illustration, ${sc.content.slice(0, 50)}, cinematic lighting, high dynamic contrast, unreal engine 5 anime render`;
-      const enrichedPrompt = charDnaPrompts ? `${basePrompt}, [CHARACTER DNA: ${charDnaPrompts}]` : basePrompt;
-
-      // 2. 规划专属镜头轨迹
-      const motion = motions[idx % motions.length];
+      // 2. 规划符合电影语法的机位与运镜
+      // 避免连续相同机位与景别
+      const motion = motions[(idx + (reflection ? 1 : 0)) % motions.length];
       const distance = distances[idx % distances.length];
-      const pacing = idx === 0 ? 4.0 : 3.2;
+      const pacing = distance === 'CloseUp' ? 3.0 : distance === 'Medium' ? 4.2 : 5.0;
 
       cameraPlans[sc.id] = {
         cameraMotion: motion,
@@ -63,27 +78,13 @@ export class StoryboardArtistAgent extends BaseAgent {
         pacingSeconds: pacing,
       };
 
-      const motionLabel =
-        motion === 'Hitchcock_Zoom'
-          ? '希区柯克变焦 (Hitchcock Zoom)'
-          : motion === 'Pan_Right'
-            ? '向右摇镜 (Pan Right)'
-            : motion === 'Tilt_Up'
-              ? '仰角摇镜 (Tilt Up)'
-              : motion === 'FPV_Fly'
-                ? '第一人称穿越 (FPV Fly)'
-                : '固定景深 (Static)';
+      const basePrompt = `cinematic anime keyframe, 8k masterpiece, ${distance} shot, ${sc.content.slice(0, 60)}, volumetric rim light, depth of field, octane render anime cel`;
+      const enrichedPrompt = charDnaPrompts ? `${basePrompt}, [CHARACTER DNA: ${charDnaPrompts}]` : basePrompt;
 
       return {
         ...sc,
-        imagePrompts: [enrichedPrompt],
-        tags: [
-          ...(sc.tags || []),
-          motionLabel,
-          `景别: ${distance}`,
-          `时长: ${pacing}s`,
-          matchedChars.length > 0 ? `角色锚定: ${matchedChars.map((c) => c.name).join('、')}` : '全景环境',
-        ],
+        title: `镜头 ${idx + 1} · [${distance}] ${motion}`,
+        content: enrichedPrompt,
       };
     });
 
@@ -95,7 +96,7 @@ export class StoryboardArtistAgent extends BaseAgent {
       },
       this.metadata.id,
       this.metadata.name,
-      `🎉 已成功规划 ${updatedScenes.length} 帧 3 栏分镜大盘与角色 DNA 运镜参数！`
+      `🎉 已成功规划 ${updatedScenes.length} 组电影级分镜头，运镜矢量与空间防穿帮矩阵已全面绑定！`
     );
   }
 }

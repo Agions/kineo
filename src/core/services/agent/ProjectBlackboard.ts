@@ -37,6 +37,56 @@ export interface CameraDirectingPlan {
   pacingSeconds: number;
 }
 
+export interface AuditMetric {
+  name: string;
+  score: number; // 0 - 100
+  weight: number; // 0.0 - 1.0
+  passed: boolean;
+  critique?: string;
+}
+
+export interface AuditReport {
+  id: string;
+  timestamp: string;
+  phase: string;
+  overallScore: number;
+  passed: boolean;
+  metrics: AuditMetric[];
+  critiqueSummary: string;
+  recommendedAction: 'proceed' | 'reflect_retry' | 'abort';
+  targetAgentId?: string;
+}
+
+export interface ReflectionContext {
+  failedMetric: string;
+  critique: string;
+  remedySuggestions: string[];
+  retryCount: number;
+  maxRetries: number;
+}
+
+export type DAGNodeStatus = 'pending' | 'running' | 'auditing' | 'healing' | 'completed' | 'failed' | 'skipped';
+
+export interface DAGNode {
+  id: string;
+  name: string;
+  agentRole: string;
+  dependencies: string[];
+  status: DAGNodeStatus;
+  startedAt?: string;
+  completedAt?: string;
+  error?: string;
+}
+
+export interface SynchronizedSubtitle {
+  id: string;
+  startTimeMs: number;
+  endTimeMs: number;
+  characterName: string;
+  text: string;
+  emotion: string;
+}
+
 export interface BlackboardData {
   // 基础元信息
   projectId: string;
@@ -60,6 +110,12 @@ export interface BlackboardData {
   scenes: NovelScene[];
   audioConfig?: Record<string, unknown>;
   renderQueue?: Record<string, unknown>;
+  subtitles?: SynchronizedSubtitle[];
+
+  // Multi-Agent Director 2.0: DAG 与质检审计自愈中心
+  dagNodes: Record<string, DAGNode>;
+  auditReports: AuditReport[];
+  currentReflection: ReflectionContext | null;
 
   // 黑板流转状态
   stage: ProjectStage;
@@ -93,6 +149,10 @@ export class ProjectBlackboard {
       storyAnalysis: null,
       characters: [],
       scenes: [],
+      subtitles: [],
+      dagNodes: {},
+      auditReports: [],
+      currentReflection: null,
       stage: 'idle',
       activeAgentId: null,
       completedAgentIds: [],

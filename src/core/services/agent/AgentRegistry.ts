@@ -9,6 +9,7 @@
 import { BaseAgent } from './BaseAgent';
 import { CharacterDesignerAgent } from './CharacterDesignerAgent';
 import { CustomUserAgent, type CustomAgentConfig } from './CustomUserAgent';
+import { QualityAuditorAgent } from './QualityAuditorAgent';
 import { ScriptIngestionAgent } from './ScriptIngestionAgent';
 import { SoundEngineerAgent } from './SoundEngineerAgent';
 import { StoryboardArtistAgent } from './StoryboardArtistAgent';
@@ -37,6 +38,7 @@ export class AgentRegistry {
     this.register(new ScriptIngestionAgent());
     this.register(new CharacterDesignerAgent());
     this.register(new StoryboardArtistAgent());
+    this.register(new QualityAuditorAgent());
     this.register(new SoundEngineerAgent());
     this.register(new VideoEditorAgent());
   }

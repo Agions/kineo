@@ -11,6 +11,7 @@ export type AgentRoleType =
   | 'storyboard_artist'
   | 'sound_engineer'
   | 'video_editor'
+  | 'quality_auditor'
   | 'custom';
 
 export type TriggerPhase =
@@ -18,6 +19,7 @@ export type TriggerPhase =
   | 'on_script_parsed'
   | 'on_character_anchored'
   | 'on_storyboard_generated'
+  | 'on_quality_audited'
   | 'on_audio_synthesized'
   | 'on_custom_event';
 

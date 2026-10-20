@@ -1,8 +1,11 @@
 /**
- * MultiAgentStudio.tsx — 门面级 Multi-Agent 多智能体协作工作台
+ * MultiAgentStudio.tsx — Multi-Agent Director 2.0 工业级智能体协同与质检工作台
  *
- * 彻底重构为 Gemini Studio 2026 统一设计语言：
- * 采用冰川黑 (#050810) 背景、亮青色 (#00f5d4) 核心按钮与 Swarm 高感光卡片。
+ * 特性：
+ * 1. 动态 DAG 拓扑执行流进度感知与节点状态追踪 (Pending / Running / Healing / Completed)。
+ * 2. 独立质量审计总监 (Quality Auditor) 四维记分卡与批评自愈回环可视化。
+ * 3. 全息角色 DNA 与机位空间防穿帮矩阵监控。
+ * 4. 共享黑板 ProjectBlackboard 实时通信与思考流。
  */
 
 import {
@@ -13,6 +16,12 @@ import {
   Clapperboard,
   Terminal,
   Activity,
+  CheckCircle2,
+  Clock,
+  RefreshCw,
+  AlertTriangle,
+  ShieldCheck,
+  TrendingUp,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -63,10 +72,10 @@ export const MultiAgentStudio: React.FC = () => {
     return () => unsubscribe();
   }, [director]);
 
-  // 校验模型 Key
+  // 校验模型配置
   const checkModelConfigGate = (): boolean => {
     if (!hasAnyConfiguredModelProvider()) {
-      toast.error('⚠️ 未检测到有效 AI 模型 Key！无法启动 Multi-Agent 智能体协作推导。');
+      toast.error('⚠️ 未检测到有效 AI 模型配置！无法启动 Multi-Agent 智能体协作推导。');
       setIsModelGuardOpen(true);
       return false;
     }
@@ -76,16 +85,15 @@ export const MultiAgentStudio: React.FC = () => {
   // 启动多智能体协作循环 (Multi-Agent Dispatch Cycle)
   const handleStartMultiAgentPipeline = async () => {
     if (!rawInput.trim()) {
-      toast.error('⚠️ 请先在输入框中填入或上传小说文本、剧本文件或 AI 提示词！');
+      toast.error('⚠️ 请先在输入框中填入小说文本、剧本文件或 AI 提示词！');
       return;
     }
     if (!checkModelConfigGate()) return;
 
     setIsExecuting(true);
-    toast.info('🎬 正在调起 MasterDirectorAgent 主控导演智能体...');
+    toast.info('🎬 正在调起 Director 2.0 DAG 拓扑执行流...');
 
     try {
-      // 1. 初始化黑板数据
       director.getBlackboard().update(
         {
           rawInput,
@@ -95,13 +103,12 @@ export const MultiAgentStudio: React.FC = () => {
         },
         'system',
         'System',
-        '用户提交全新输入，黑板状态拉起...'
+        '用户提交全新输入，ACS-2.0 DAG 执行流已拉起...'
       );
 
-      // 2. 执行 Hub-and-Spoke 智能体协同推导
       await director.execute();
 
-      toast.success('🎉 多智能体 (Multi-Agent) 协同推导与视听分镜拆解全量完成！');
+      toast.success('🎉 ACS-2.0 多智能体 DAG 协同推导与质检审计全量通过！');
     } catch (err: any) {
       toast.error(`❌ Multi-Agent 推导异常: ${err?.message || '协作中断'}`);
     } finally {
@@ -109,11 +116,11 @@ export const MultiAgentStudio: React.FC = () => {
     }
   };
 
-  // 无缝保存并进入分镜 Studio (跳过重复上传)
+  // 无缝保存并进入分镜 Studio
   const handleEnterStudio = () => {
     const data = director.getBlackboard().getData();
     if (!data.scriptContent || data.scenes.length === 0) {
-      toast.error('⚠️ 尚未完成 Multi-Agent 智能体推导，请先点击【启动 Multi-Agent 协同推导】！');
+      toast.error('⚠️ 尚未完成多智能体推导，请先点击【启动 ACS-2.0 智能体协同推导】！');
       return;
     }
 
@@ -141,6 +148,10 @@ export const MultiAgentStudio: React.FC = () => {
     void navigate(`/project/edit/${targetProject.id}?step=1`);
   };
 
+  const latestAudit = blackboardData.auditReports && blackboardData.auditReports.length > 0
+    ? blackboardData.auditReports[blackboardData.auditReports.length - 1]
+    : null;
+
   return (
     <div className="space-y-6 font-sans text-slate-100 bg-[#050810] min-h-[calc(100vh-5rem)] p-4 rounded-3xl border border-slate-800/80 shadow-2xl">
       {/* 顶部 Header Toolbar */}
@@ -151,13 +162,13 @@ export const MultiAgentStudio: React.FC = () => {
           </div>
           <div>
             <h2 className="text-base font-extrabold text-slate-100 flex items-center gap-2">
-              Kineo Multi-Agent 智能体协作中心
+              Kineo Multi-Agent Director 2.0
               <Badge className="bg-[#00f5d4]/15 text-[#00f5d4] border-[#00f5d4]/30 font-mono text-[10px]">
-                Auto-Swarm 引擎
+                ACS-2.0 DAG Swarm
               </Badge>
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              去除线性 SOP 限制 · 由主控导演 Agent 调起专门智能体与自定义 Agent 共享 Blackboard 协作
+              动态 DAG 拓扑编排 · 四级小说语义剖析 · 独立质检审计员批评自愈闭环
             </p>
           </div>
         </div>
@@ -182,6 +193,68 @@ export const MultiAgentStudio: React.FC = () => {
         </div>
       </div>
 
+      {/* DAG 拓扑流水线全景状态条 */}
+      <div className="p-4 bg-slate-950/70 rounded-2xl border border-slate-800 shadow-lg">
+        <div className="flex items-center justify-between mb-3 text-xs">
+          <span className="font-bold flex items-center gap-1.5 text-slate-200">
+            <TrendingUp className="w-3.5 h-3.5 text-[#00f5d4]" />
+            DAG 拓扑执行流进度 (Directed Acyclic Graph Stream)
+          </span>
+          {blackboardData.currentReflection && (
+            <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/40 text-[10px] animate-pulse">
+              <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
+              质检自愈中: {blackboardData.currentReflection.failedMetric} (重试 {blackboardData.currentReflection.retryCount}/{blackboardData.currentReflection.maxRetries})
+            </Badge>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+          {[
+            { id: 'task-script', name: '1. 原著四级剖析', role: 'STORY' },
+            { id: 'task-character', name: '2. 全息 DNA 锁脸', role: 'ACTOR' },
+            { id: 'task-storyboard', name: '3. 视效分镜矩阵', role: 'FRAME' },
+            { id: 'task-auditor', name: '4. 四维质量审计', role: 'AUDIT' },
+            { id: 'task-sound', name: '5. 情感声效混音', role: 'AUDIO' },
+            { id: 'task-video', name: '6. 4K 视频压制', role: 'EDITOR' },
+          ].map((step) => {
+            const node = blackboardData.dagNodes?.[step.id];
+            const status = node?.status || 'pending';
+
+            return (
+              <div
+                key={step.id}
+                className={`p-2.5 rounded-xl border text-[11px] font-mono transition-all ${
+                  status === 'completed'
+                    ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
+                    : status === 'running'
+                      ? 'bg-[#00f5d4]/15 border-[#00f5d4] text-[#00f5d4] shadow-md shadow-[#00f5d4]/10'
+                      : status === 'healing'
+                        ? 'bg-amber-950/40 border-amber-500/60 text-amber-300 animate-pulse'
+                        : 'bg-slate-900/50 border-slate-800/80 text-slate-400'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-bold truncate">{step.name}</span>
+                  {status === 'completed' ? (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  ) : status === 'running' ? (
+                    <RefreshCw className="w-3.5 h-3.5 text-[#00f5d4] animate-spin" />
+                  ) : status === 'healing' ? (
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                  ) : (
+                    <Clock className="w-3.5 h-3.5 text-slate-500" />
+                  )}
+                </div>
+                <div className="text-[9px] text-slate-500 flex justify-between">
+                  <span>[{step.role}]</span>
+                  <span className="uppercase">{status}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* 两栏大格局：左侧输入与主控控制台，右侧 Multi-Agent Swarm 状态 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* 左栏：输入源选择与智能识别框 */}
@@ -190,7 +263,7 @@ export const MultiAgentStudio: React.FC = () => {
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <span className="font-bold text-xs text-slate-100 flex items-center gap-2">
                 <FileText className="w-4 h-4 text-[#00f5d4]" />
-                素材内容输入 (支持三类输入)
+                素材内容输入 (四级语义剖析)
               </span>
             </div>
 
@@ -204,7 +277,7 @@ export const MultiAgentStudio: React.FC = () => {
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                小说文本
+                小说长文本
               </button>
               <button
                 onClick={() => setInputType('script_file')}
@@ -224,7 +297,7 @@ export const MultiAgentStudio: React.FC = () => {
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                AI 提示词
+                AI 灵感词
               </button>
             </div>
 
@@ -234,10 +307,10 @@ export const MultiAgentStudio: React.FC = () => {
               onChange={(e) => setRawInput(e.target.value)}
               placeholder={
                 inputType === 'script_file'
-                  ? '粘贴或拖入现成剧本文件内容（包含场景格式 INT./EXT. 及角色对白）...'
+                  ? '粘贴现成剧本文件内容（包含场景格式 INT./EXT. 及角色对白）...'
                   : inputType === 'ai_prompt'
                     ? '输入 AI 创作灵感提示词（例如：“创作一部 12 集赛博修仙漫剧，主角叫李云霄...”）'
-                    : '粘贴或拖入小说原文章节段落...'
+                    : '粘贴或拖入原著小说章节，ACS-2.0 将自动运行四级深度语义切分与镜头编译...'
               }
               className="w-full p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-[#00f5d4] resize-none font-mono leading-relaxed"
             />
@@ -249,9 +322,44 @@ export const MultiAgentStudio: React.FC = () => {
               className="bg-[#00f5d4] hover:bg-[#00e0c2] text-[#050810] font-bold w-full text-xs py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#00f5d4]/20 cursor-pointer border-0"
             >
               <Zap className={`w-4 h-4 fill-current ${isExecuting ? 'animate-spin' : ''}`} />
-              {isExecuting ? '多智能体 (Multi-Agent) 协同推导中...' : '启动 Multi-Agent 协同推导'}
+              {isExecuting ? 'Director 2.0 DAG 推导中...' : '启动 ACS-2.0 智能体协同推导'}
             </Button>
           </div>
+
+          {/* 独立质检审计记分卡 (Quality Auditor Scorecard) */}
+          {latestAudit && (
+            <div className="studio-card p-4 space-y-3 border border-slate-800 bg-slate-950/80 rounded-2xl shadow-xl">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span className="font-bold text-xs text-slate-100 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#00f5d4]" />
+                  质检审计记分卡 (Auditor Report)
+                </span>
+                <Badge
+                  className={
+                    latestAudit.passed
+                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 text-[10px]'
+                      : 'bg-rose-500/20 text-rose-300 border-rose-500/40 text-[10px]'
+                  }
+                >
+                  总分: {latestAudit.overallScore} / 100 {latestAudit.passed ? '合格' : '打回自愈'}
+                </Badge>
+              </div>
+
+              <div className="space-y-2 text-[11px]">
+                {latestAudit.metrics.map((m, i) => (
+                  <div key={i} className="p-2 rounded-lg bg-slate-900/70 border border-slate-800/80 flex items-center justify-between">
+                    <div>
+                      <div className="font-semibold text-slate-200">{m.name}</div>
+                      <div className="text-[10px] text-slate-400 mt-0.5">{m.critique}</div>
+                    </div>
+                    <span className={`font-mono font-bold ${m.score >= 80 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                      {m.score}分
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* 右栏：智能体集群 (Agent Swarm Grid) 与 Blackboard 共享黑板 Live 控制台 */}
@@ -261,10 +369,10 @@ export const MultiAgentStudio: React.FC = () => {
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <span className="font-bold text-xs text-slate-100 flex items-center gap-2">
                 <Activity className="w-4 h-4 text-emerald-400" />
-                协作智能体集群 (Agent Swarm - {registeredAgents.length} 位 Agent 就绪)
+                协作智能体集群 (Agent Swarm - {registeredAgents.length} 位 Agent 待命)
               </span>
               <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-[10px] font-mono">
-                当前阶段: {blackboardData.stage}
+                阶段: {blackboardData.stage}
               </Badge>
             </div>
 
@@ -314,10 +422,10 @@ export const MultiAgentStudio: React.FC = () => {
             <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
               <span className="font-bold text-xs text-slate-100 flex items-center gap-2">
                 <Terminal className="w-4 h-4 text-purple-400" />
-                ProjectBlackboard 共享黑板通信日志 (Live Log)
+                ProjectBlackboard 共享黑板思考与通信流 (Live Thought Stream)
               </span>
               <span className="text-[10px] font-mono text-purple-400 font-bold">
-                {blackboardData.logs.length} 条通信事件
+                {blackboardData.logs.length} 条推导演化记录
               </span>
             </div>
 
@@ -326,7 +434,7 @@ export const MultiAgentStudio: React.FC = () => {
                 <div key={idx} className="flex items-start gap-2 leading-relaxed">
                   <span className="text-slate-500 text-[10px]">[{log.timestamp.slice(11, 19)}]</span>
                   <span className="text-[#00f5d4] font-bold min-w-[110px]">[{log.agentName.split(' ')[0]}]</span>
-                  <span className={log.level === 'error' ? 'text-rose-400 font-bold' : log.level === 'success' ? 'text-emerald-400 font-bold' : 'text-slate-300'}>
+                  <span className={log.level === 'error' ? 'text-rose-400 font-bold' : log.level === 'success' ? 'text-emerald-400 font-bold' : log.level === 'warn' ? 'text-amber-400 font-bold' : 'text-slate-300'}>
                     {log.action}
                   </span>
                 </div>
