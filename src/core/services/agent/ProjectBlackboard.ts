@@ -167,6 +167,67 @@ export class ProjectBlackboard {
     this.notify();
   }
 
+  /** 创建当前黑板全量状态的快照 JSON 字符串 */
+  public createSnapshot(): string {
+    return JSON.stringify({
+      schemaVersion: '1.0.0',
+      exportedAt: new Date().toISOString(),
+      blackboard: this.data,
+    });
+  }
+
+  /** 从快照中无损恢复黑板状态 */
+  public restoreFromSnapshot(snapshot: string | { blackboard: Partial<BlackboardData> }): void {
+    try {
+      const parsed = typeof snapshot === 'string' ? JSON.parse(snapshot) : snapshot;
+      const bbData = parsed.blackboard || parsed;
+      this.data = {
+        ...this.data,
+        ...bbData,
+        updatedAt: new Date().toISOString(),
+      };
+      this.data.logs.push({
+        timestamp: new Date().toISOString(),
+        agentId: 'system',
+        agentName: 'System',
+        action: '从快照导入并恢复 ProjectBlackboard 共享黑板状态',
+        level: 'info',
+      });
+      this.notify();
+    } catch (err: any) {
+      this.data.logs.push({
+        timestamp: new Date().toISOString(),
+        agentId: 'system',
+        agentName: 'System',
+        action: `快照恢复失败: ${err?.message}`,
+        level: 'error',
+      });
+      throw err;
+    }
+  }
+
+  /** 生成用于 .kineo 项目归档容器的标准包数据结构 */
+  public toKineoArchiveManifest(): {
+    project: { id: string; name: string; stage: ProjectStage; updatedAt: string };
+    blackboard: BlackboardData;
+    stats: { scenesCount: number; charactersCount: number; logsCount: number };
+  } {
+    return {
+      project: {
+        id: this.data.projectId,
+        name: this.data.projectName,
+        stage: this.data.stage,
+        updatedAt: this.data.updatedAt,
+      },
+      blackboard: this.data,
+      stats: {
+        scenesCount: this.data.scenes.length,
+        charactersCount: this.data.characters.length,
+        logsCount: this.data.logs.length,
+      },
+    };
+  }
+
   public subscribe(listener: (data: BlackboardData) => void): () => void {
     this.listeners.push(listener);
     return () => {

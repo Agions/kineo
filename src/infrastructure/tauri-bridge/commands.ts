@@ -467,6 +467,72 @@ class TauriService {
   async isGlobalShortcutRegistered(shortcut: string): Promise<boolean> {
     return invoke('is_global_shortcut_registered', { shortcut });
   }
+
+  // ========== Kineo 核心系统与硬件加速命令 ==========
+
+  /**
+   * 获取 Kineo 核心版本
+   */
+  async getKineoVersion(): Promise<string> {
+    try {
+      if (typeof window === 'undefined' || !('__TAURI_INTERNALS__' in window || '__TAURI__' in window)) {
+        return '0.0.1 (Web Mode)';
+      }
+      return await invoke<string>('get_kineo_version');
+    } catch {
+      return '0.0.1';
+    }
+  }
+
+  /**
+   * 探测系统硬件加速编解码器能力 (VideoToolbox / NVENC)
+   */
+  async detectHardwareAccel(): Promise<{
+    nvenc: boolean;
+    videotoolbox: boolean;
+    qsv: boolean;
+    active_encoder: string;
+  }> {
+    try {
+      if (typeof window === 'undefined' || !('__TAURI_INTERNALS__' in window || '__TAURI__' in window)) {
+        return {
+          nvenc: false,
+          videotoolbox: true,
+          qsv: false,
+          active_encoder: 'Web Fallback',
+        };
+      }
+      return await invoke('detect_hardware_accel');
+    } catch {
+      return {
+        nvenc: false,
+        videotoolbox: false,
+        qsv: false,
+        active_encoder: 'CPU Software Fallback',
+      };
+    }
+  }
+
+  /**
+   * 智能小说转全功能剧本 (Native Rust AI Pipeline)
+   */
+  async parseNovelToScript(text: string, stylePreset: string = 'modern_anime'): Promise<any> {
+    return invoke('parse_novel_to_script', { text, stylePreset });
+  }
+
+  /**
+   * 解析专业剧本文本 (Native Rust)
+   */
+  async parseDirectScript(text: string): Promise<any> {
+    return invoke('parse_direct_script', { text });
+  }
+
+  /**
+   * 从灵感大纲生成剧本 (Native Rust)
+   */
+  async generateScriptFromIdea(idea: string, episodes: number, stylePreset: string = 'modern_anime'): Promise<any> {
+    return invoke('generate_script_from_idea', { idea, episodes, stylePreset });
+  }
 }
 
 // 导出单例
