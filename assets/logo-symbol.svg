@@ -1,38 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="frame-fab symbol">
-  <title>frame-fab symbol</title>
-  <desc>纯图标版 (无文字): 用于 favicon / 应用图标 / 头像</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kineo symbol">
+  <title>Kineo symbol</title>
   <defs>
-    <linearGradient id="brandPrimarySy" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6366F1"/>
-      <stop offset="50%" stop-color="#A855F7"/>
+    <linearGradient id="symGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F5D4"/>
+      <stop offset="50%" stop-color="#7C3AED"/>
       <stop offset="100%" stop-color="#EC4899"/>
     </linearGradient>
-    <linearGradient id="brandAccentSy" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FB923C"/>
-      <stop offset="100%" stop-color="#F43F5E"/>
-    </linearGradient>
-    <radialGradient id="bgGlowSy" cx="50%" cy="48%" r="62%">
-      <stop offset="0%" stop-color="#1A1B3E"/>
-      <stop offset="100%" stop-color="#0B0E2C"/>
-    </radialGradient>
   </defs>
-  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bgGlowSy)"/>
-  <!-- 胶片 5 帧 (简化版, 比例适配小尺寸) -->
-  <rect x="3"  y="22" width="9"  height="20" rx="2" fill="none" stroke="url(#brandPrimarySy)" stroke-width="1.2" opacity="0.4"/>
-  <rect x="13" y="18" width="11" height="28" rx="2" fill="none" stroke="url(#brandPrimarySy)" stroke-width="1.6"/>
-  <rect x="26" y="14" width="12" height="36" rx="2" fill="none" stroke="url(#brandPrimarySy)" stroke-width="1.8"/>
-  <rect x="40" y="18" width="11" height="28" rx="2" fill="none" stroke="url(#brandPrimarySy)" stroke-width="1.6"/>
-  <rect x="52" y="22" width="9"  height="20" rx="2" fill="none" stroke="url(#brandPrimarySy)" stroke-width="1.2" opacity="0.4"/>
-  <!-- 中心 4 层圆 -->
-  <g transform="translate(32 32)">
-    <circle r="8"  fill="url(#brandAccentSy)"/>
-    <circle r="5"  fill="#FFFFFF"/>
-    <circle r="2.5" fill="url(#brandPrimarySy)"/>
-    <circle r="1"  fill="#FFFFFF"/>
+  <rect width="64" height="64" rx="16" fill="#050810"/>
+  <g transform="translate(6 6) scale(0.81)">
+    <path d="M 18 10 L 25 10 L 25 54 L 18 54 Z" fill="url(#symGrad)"/>
+    <path d="M 23 34 L 43 12 L 51 12 L 29 34 Z" fill="url(#symGrad)"/>
+    <path d="M 26 31 L 49 54 L 41 54 L 22 34 Z" fill="url(#symGrad)"/>
+    <circle cx="32" cy="32" r="4" fill="#00F5D4"/>
   </g>
-  <!-- 顶角装饰点 -->
-  <circle cx="8"  cy="8"  r="0.9" fill="#A855F7" opacity="0.7"/>
-  <circle cx="56" cy="8"  r="0.9" fill="#A855F7" opacity="0.7"/>
-  <circle cx="8"  cy="56" r="0.9" fill="#A855F7" opacity="0.7"/>
-  <circle cx="56" cy="56" r="0.9" fill="#A855F7" opacity="0.7"/>
 </svg>

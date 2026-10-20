@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Story Weaver">
+  <title>Story Weaver</title>
+  <defs>
+    <linearGradient id="f1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="50%" stop-color="#A855F7"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0B0E2C"/>
+  <!-- 三条经线 -->
+  <g stroke="url(#f1)" stroke-width="2" stroke-linecap="round" opacity="0.7">
+    <path d="M 18 8 Q 14 32 18 56" fill="none"/>
+    <path d="M 32 8 Q 32 32 32 56" fill="none"/>
+    <path d="M 46 8 Q 50 32 46 56" fill="none"/>
+  </g>
+  <!-- 节点 -->
+  <g fill="url(#f1)">
+    <rect x="14" y="14" width="8" height="8" rx="2"/>
+    <rect x="28" y="14" width="8" height="8" rx="2"/>
+    <rect x="42" y="14" width="8" height="8" rx="2"/>
+    <rect x="14" y="28" width="8" height="8" rx="2"/>
+    <rect x="28" y="28" width="8" height="8" rx="2" opacity="0.6"/>
+    <rect x="42" y="28" width="8" height="8" rx="2"/>
+  </g>
+  <!-- 中心光点 -->
+  <g transform="translate(32 44)">
+    <circle r="5" fill="url(#f1)"/>
+    <circle r="2" fill="#FFFFFF"/>
+  </g>
+</svg>

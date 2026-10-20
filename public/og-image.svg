@@ -1,83 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-label="Story Weaver">
-  <title>Story Weaver · AI 漫剧创作平台</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-label="Kineo social card">
+  <title>Kineo · AI 漫剧创作平台</title>
   <defs>
-    <linearGradient id="og1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0B0E2C"/>
-      <stop offset="100%" stop-color="#1E1B4B"/>
-    </linearGradient>
-    <linearGradient id="og2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6366F1"/>
-      <stop offset="50%" stop-color="#A855F7"/>
-      <stop offset="100%" stop-color="#EC4899"/>
-    </linearGradient>
-    <radialGradient id="og3" cx="80%" cy="30%" r="50%">
-      <stop offset="0%" stop-color="#A855F7" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#6366F1" stop-opacity="0"/>
+    <radialGradient id="ogBgGrad" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#141938"/>
+      <stop offset="60%" stop-color="#080B18"/>
+      <stop offset="100%" stop-color="#03050A"/>
     </radialGradient>
     <linearGradient id="ogText" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="100%" stop-color="#E0E7FF"/>
+      <stop offset="0%" stop-color="#00F5D4"/>
+      <stop offset="35%" stop-color="#818CF8"/>
+      <stop offset="70%" stop-color="#C084FC"/>
+      <stop offset="100%" stop-color="#F43F5E"/>
+    </linearGradient>
+    <linearGradient id="ogLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F5D4"/>
+      <stop offset="50%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#EC4899"/>
     </linearGradient>
   </defs>
 
-  <!-- 背景 -->
-  <rect width="1280" height="640" fill="url(#og1)"/>
-  <rect width="1280" height="640" fill="url(#og3)"/>
+  <rect width="1280" height="640" fill="url(#ogBgGrad)"/>
 
-  <!-- 左侧文字 -->
+  <!-- 背景科技光斑 -->
+  <circle cx="1000" cy="280" r="260" fill="#7C3AED" opacity="0.15" filter="blur(40px)"/>
+  <circle cx="300" cy="200" r="200" fill="#00F5D4" opacity="0.10" filter="blur(40px)"/>
+
+  <!-- 左侧文字信息 -->
   <g transform="translate(80 0)">
-    <text y="180" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="6" fill="#A5B4FC">v2.2.3 · OPEN SOURCE · MIT</text>
-    <text y="310" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="112" font-weight="800" letter-spacing="-4" fill="url(#ogText)">Story<tspan fill="#A5B4FC"> · </tspan>Weaver</text>
-    <text y="360" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="32" font-weight="600" letter-spacing="2" fill="#C5CAE9">AI 漫剧创作平台</text>
-    <text y="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="24" font-weight="500" letter-spacing="2" fill="#9CA3B8">Novel-to-Comic Drama · AI Pipeline</text>
+    <text y="160" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="20" font-weight="700" letter-spacing="6" fill="#00F5D4">
+      v0.0.1 · OPEN SOURCE · MIT LICENSE
+    </text>
+
+    <!-- 主标题 KINEO -->
+    <text y="285" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Montserrat', sans-serif" font-size="120" font-weight="900" letter-spacing="-3" fill="url(#ogText)">
+      KINEO
+    </text>
+
+    <!-- 中文副标 -->
+    <text y="348" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="34" font-weight="700" letter-spacing="2" fill="#F1F5F9">
+      端到端 Multi-Agent 漫剧创作平台
+    </text>
+    <!-- 英文副标 -->
+    <text y="396" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="500" letter-spacing="2" fill="#94A3B8">
+      Novel-to-4K Video AI Pipeline · Tauri v2 + React 19 + Rust
+    </text>
 
     <!-- 特性徽章 -->
-    <g transform="translate(0 440)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="600">
-      <rect width="130" height="36" rx="18" fill="#6366F1" fill-opacity="0.15" stroke="#6366F1" stroke-opacity="0.5"/>
-      <text x="65" y="23" font-size="13" fill="#C7D2FE" text-anchor="middle">TAURI · RUST</text>
-      <g transform="translate(144 0)">
-        <rect width="150" height="36" rx="18" fill="#A855F7" fill-opacity="0.15" stroke="#A855F7" stroke-opacity="0.5"/>
-        <text x="75" y="23" font-size="13" fill="#D8B4FE" text-anchor="middle">7+ AI MODELS</text>
+    <g transform="translate(0 440)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700">
+      <g>
+        <rect width="145" height="36" rx="18" fill="#00F5D4" fill-opacity="0.15" stroke="#00F5D4" stroke-opacity="0.6"/>
+        <text x="72" y="23" fill="#5EEAD4" text-anchor="middle">TAURI 2 · RUST</text>
       </g>
-      <g transform="translate(308 0)">
-        <rect width="160" height="36" rx="18" fill="#EC4899" fill-opacity="0.15" stroke="#EC4899" stroke-opacity="0.5"/>
-        <text x="80" y="23" font-size="13" fill="#F9A8D4" text-anchor="middle">QUALITY GATE</text>
+      <g transform="translate(160 0)">
+        <rect width="170" height="36" rx="18" fill="#7C3AED" fill-opacity="0.2" stroke="#7C3AED" stroke-opacity="0.6"/>
+        <text x="85" y="23" fill="#C4B5FD" text-anchor="middle">MULTI-AGENT SWARM</text>
       </g>
-      <g transform="translate(482 0)">
-        <rect width="165" height="36" rx="18" fill="#F43F5E" fill-opacity="0.15" stroke="#F43F5E" stroke-opacity="0.5"/>
-        <text x="82" y="23" font-size="13" fill="#FDA4AF" text-anchor="middle">10-STEP PIPELINE</text>
+      <g transform="translate(345 0)">
+        <rect width="170" height="36" rx="18" fill="#EC4899" fill-opacity="0.2" stroke="#EC4899" stroke-opacity="0.6"/>
+        <text x="85" y="23" fill="#F472B6" text-anchor="middle">CONSISTENCY LOCK</text>
       </g>
-    </g>
-  </g>
-
-  <!-- 右侧大图标 -->
-  <g transform="translate(820 100)">
-    <rect width="380" height="380" rx="80" fill="#0B0E2C" stroke="#A855F7" stroke-opacity="0.25" stroke-width="2"/>
-    <g transform="translate(60 60) scale(1.1)">
-      <g stroke="url(#og2)" stroke-width="4" stroke-linecap="round" opacity="0.6">
-        <path d="M 30 10 Q 20 80 30 150" fill="none"/>
-        <path d="M 80 10 Q 80 80 80 150" fill="none"/>
-        <path d="M 130 10 Q 140 80 130 150" fill="none"/>
-        <path d="M 10 30 Q 80 20 150 30" fill="none" opacity="0.4"/>
-        <path d="M 10 80 Q 80 80 150 80" fill="none" opacity="0.4"/>
-      </g>
-      <g fill="url(#og2)">
-        <rect x="22" y="22" width="16" height="16" rx="4"/>
-        <rect x="72" y="22" width="16" height="16" rx="4"/>
-        <rect x="122" y="22" width="16" height="16" rx="4"/>
-        <rect x="22" y="72" width="16" height="16" rx="4"/>
-        <rect x="72" y="72" width="16" height="16" rx="4" opacity="0.6"/>
-        <rect x="122" y="72" width="16" height="16" rx="4"/>
-      </g>
-      <g transform="translate(80 110)">
-        <circle r="22" fill="url(#og2)" opacity="0.2"/>
-        <circle r="11" fill="url(#og2)"/>
-        <circle r="4" fill="#FFFFFF"/>
+      <g transform="translate(530 0)">
+        <rect width="160" height="36" rx="18" fill="#6366F1" fill-opacity="0.2" stroke="#6366F1" stroke-opacity="0.6"/>
+        <text x="80" y="23" fill="#A5B4FC" text-anchor="middle">4K GPU ENCODE</text>
       </g>
     </g>
   </g>
 
-  <!-- 底部 -->
-  <text x="80" y="615" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B7280">github.com/Agions/kineo</text>
-  <text x="1200" y="615" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="500" fill="#6B7280" text-anchor="end">v2.2.3 · 2026</text>
+  <!-- 右侧大画幅超级符号 -->
+  <g transform="translate(840 140)">
+    <rect width="360" height="360" rx="84" fill="#080D20" stroke="#7C3AED" stroke-width="2" stroke-opacity="0.5"/>
+    <g transform="translate(20 20) scale(1.25)">
+      <path d="M 82 56 L 104 56 L 104 200 L 82 200 Z" fill="url(#ogLogoGrad)"/>
+      <path d="M 98 136 L 164 62 L 188 62 L 120 136 Z" fill="url(#ogLogoGrad)"/>
+      <path d="M 108 124 L 178 200 L 154 200 L 94 136 Z" fill="url(#ogLogoGrad)"/>
+      <circle cx="128" cy="128" r="16" fill="#00F5D4"/>
+      <circle cx="128" cy="128" r="6" fill="#FFFFFF"/>
+    </g>
+  </g>
+
+  <!-- 底部链接与版权 -->
+  <text x="80" y="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600" fill="#64748B">github.com/Agions/kineo</text>
+  <text x="1200" y="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600" fill="#64748B" text-anchor="end">© 2026 Kineo Team</text>
 </svg>

@@ -1,207 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-label="frame-fab social card">
-  <title>frame-fab · AI 漫剧创作平台</title>
-  <desc>GitHub social card / Open Graph share card 1280×640 (v2.2.3 patch版)</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-label="Kineo social card">
+  <title>Kineo · AI 漫剧创作平台</title>
   <defs>
-    <linearGradient id="ogBg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0B0E2C"/>
-      <stop offset="50%" stop-color="#14163B"/>
-      <stop offset="100%" stop-color="#1F1A45"/>
-    </linearGradient>
-    <radialGradient id="ogGlowA" cx="80%" cy="35%" r="55%">
-      <stop offset="0%" stop-color="#EC4899" stop-opacity="0.4"/>
-      <stop offset="60%" stop-color="#A855F7" stop-opacity="0.15"/>
-      <stop offset="100%" stop-color="#6366F1" stop-opacity="0"/>
+    <radialGradient id="ogBgGrad" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#141938"/>
+      <stop offset="60%" stop-color="#080B18"/>
+      <stop offset="100%" stop-color="#03050A"/>
     </radialGradient>
-    <radialGradient id="ogGlowB" cx="15%" cy="80%" r="50%">
-      <stop offset="0%" stop-color="#6366F1" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#6366F1" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="ogGlowC" cx="50%" cy="50%" r="40%">
-      <stop offset="0%" stop-color="#FB923C" stop-opacity="0.2"/>
-      <stop offset="100%" stop-color="#F43F5E" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="ogPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6366F1"/>
-      <stop offset="50%" stop-color="#A855F7"/>
-      <stop offset="100%" stop-color="#EC4899"/>
-    </linearGradient>
-    <linearGradient id="ogAccent" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FB923C"/>
+    <linearGradient id="ogText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00F5D4"/>
+      <stop offset="35%" stop-color="#818CF8"/>
+      <stop offset="70%" stop-color="#C084FC"/>
       <stop offset="100%" stop-color="#F43F5E"/>
     </linearGradient>
-    <linearGradient id="ogText" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="100%" stop-color="#E0E7FF"/>
+    <linearGradient id="ogLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F5D4"/>
+      <stop offset="50%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#EC4899"/>
     </linearGradient>
-    <radialGradient id="ogPulseGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
-      <stop offset="35%" stop-color="#A855F7" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="#6366F1" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="ogIconBg" cx="50%" cy="48%" r="62%">
-      <stop offset="0%" stop-color="#1A1B3E"/>
-      <stop offset="100%" stop-color="#0B0E2C"/>
-    </radialGradient>
   </defs>
 
-  <!-- 背景层 -->
-  <rect width="1280" height="640" fill="url(#ogBg)"/>
-  <rect width="1280" height="640" fill="url(#ogGlowA)"/>
-  <rect width="1280" height="640" fill="url(#ogGlowB)"/>
-  <!-- 中心能量光 -->
-  <rect width="1280" height="640" fill="url(#ogGlowC)"/>
+  <rect width="1280" height="640" fill="url(#ogBgGrad)"/>
 
-  <!-- 顶部 + 底部胶片条带 (满宽双线) -->
-  <g opacity="0.18">
-    <rect x="0" y="80"  width="1280" height="2" fill="url(#ogPrimary)"/>
-    <rect x="0" y="560" width="1280" height="2" fill="url(#ogPrimary)"/>
-    <!-- 胶片孔点 (顶) -->
-    <g fill="#EC4899" opacity="0.6">
-      <rect x="40"   y="68" width="10" height="10" rx="2"/>
-      <rect x="110"  y="68" width="10" height="10" rx="2"/>
-      <rect x="180"  y="68" width="10" height="10" rx="2"/>
-      <rect x="250"  y="68" width="10" height="10" rx="2"/>
-      <rect x="320"  y="68" width="10" height="10" rx="2"/>
-      <rect x="390"  y="68" width="10" height="10" rx="2"/>
-      <rect x="460"  y="68" width="10" height="10" rx="2"/>
-      <rect x="530"  y="68" width="10" height="10" rx="2"/>
-      <rect x="600"  y="68" width="10" height="10" rx="2"/>
-      <rect x="670"  y="68" width="10" height="10" rx="2"/>
-      <rect x="740"  y="68" width="10" height="10" rx="2"/>
-      <rect x="810"  y="68" width="10" height="10" rx="2"/>
-      <rect x="880"  y="68" width="10" height="10" rx="2"/>
-      <rect x="950"  y="68" width="10" height="10" rx="2"/>
-      <rect x="1020" y="68" width="10" height="10" rx="2"/>
-      <rect x="1090" y="68" width="10" height="10" rx="2"/>
-      <rect x="1160" y="68" width="10" height="10" rx="2"/>
-      <rect x="1230" y="68" width="10" height="10" rx="2"/>
-    </g>
-    <!-- 胶片孔点 (底) -->
-    <g fill="#EC4899" opacity="0.6">
-      <rect x="40"   y="562" width="10" height="10" rx="2"/>
-      <rect x="110"  y="562" width="10" height="10" rx="2"/>
-      <rect x="180"  y="562" width="10" height="10" rx="2"/>
-      <rect x="250"  y="562" width="10" height="10" rx="2"/>
-      <rect x="320"  y="562" width="10" height="10" rx="2"/>
-      <rect x="390"  y="562" width="10" height="10" rx="2"/>
-      <rect x="460"  y="562" width="10" height="10" rx="2"/>
-      <rect x="530"  y="562" width="10" height="10" rx="2"/>
-      <rect x="600"  y="562" width="10" height="10" rx="2"/>
-      <rect x="670"  y="562" width="10" height="10" rx="2"/>
-      <rect x="740"  y="562" width="10" height="10" rx="2"/>
-      <rect x="810"  y="562" width="10" height="10" rx="2"/>
-      <rect x="880"  y="562" width="10" height="10" rx="2"/>
-      <rect x="950"  y="562" width="10" height="10" rx="2"/>
-      <rect x="1020" y="562" width="10" height="10" rx="2"/>
-      <rect x="1090" y="562" width="10" height="10" rx="2"/>
-      <rect x="1160" y="562" width="10" height="10" rx="2"/>
-      <rect x="1230" y="562" width="10" height="10" rx="2"/>
-    </g>
-  </g>
+  <!-- 背景科技光斑 -->
+  <circle cx="1000" cy="280" r="260" fill="#7C3AED" opacity="0.15" filter="blur(40px)"/>
+  <circle cx="300" cy="200" r="200" fill="#00F5D4" opacity="0.10" filter="blur(40px)"/>
 
   <!-- 左侧文字信息 -->
   <g transform="translate(80 0)">
-    <text y="172" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="6" fill="#A5B4FC">v2.2.3 · OPEN SOURCE · MIT LICENSE</text>
+    <text y="160" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="20" font-weight="700" letter-spacing="6" fill="#00F5D4">
+      v0.0.1 · OPEN SOURCE · MIT LICENSE
+    </text>
 
-    <!-- 主标题 (大字号, 渐变) -->
-    <text y="296" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="108" font-weight="800" letter-spacing="-4">
-      <tspan fill="url(#ogText)">frame</tspan><tspan fill="#A5B4FC">·</tspan><tspan fill="url(#ogText)">fab</tspan>
+    <!-- 主标题 KINEO -->
+    <text y="285" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Montserrat', sans-serif" font-size="120" font-weight="900" letter-spacing="-3" fill="url(#ogText)">
+      KINEO
     </text>
 
     <!-- 中文副标 -->
-    <text y="350" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="34" font-weight="600" letter-spacing="2" fill="#C5CAE9">AI 漫剧创作平台</text>
+    <text y="348" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="34" font-weight="700" letter-spacing="2" fill="#F1F5F9">
+      端到端 Multi-Agent 漫剧创作平台
+    </text>
     <!-- 英文副标 -->
-    <text y="394" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="26" font-weight="500" letter-spacing="2" fill="#9CA3B8">Novel-to-Video AI Pipeline · v2.2.3</text>
+    <text y="396" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="500" letter-spacing="2" fill="#94A3B8">
+      Novel-to-4K Video AI Pipeline · Tauri v2 + React 19 + Rust
+    </text>
 
-    <!-- 特性徽章 (4 个 v2.2.3 关键能力) -->
-    <g transform="translate(0 432)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="600">
+    <!-- 特性徽章 -->
+    <g transform="translate(0 440)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="13" font-weight="700">
       <g>
-        <rect x="0" y="0" width="138" height="34" rx="17" fill="#6366F1" fill-opacity="0.18" stroke="#6366F1" stroke-opacity="0.6"/>
-        <text x="69" y="22" font-size="14" fill="#C7D2FE" text-anchor="middle" letter-spacing="1">TAURI 2 · RUST</text>
+        <rect width="145" height="36" rx="18" fill="#00F5D4" fill-opacity="0.15" stroke="#00F5D4" stroke-opacity="0.6"/>
+        <text x="72" y="23" fill="#5EEAD4" text-anchor="middle">TAURI 2 · RUST</text>
       </g>
-      <g transform="translate(150 0)">
-        <rect x="0" y="0" width="158" height="34" rx="17" fill="#A855F7" fill-opacity="0.18" stroke="#A855F7" stroke-opacity="0.6"/>
-        <text x="79" y="22" font-size="14" fill="#D8B4FE" text-anchor="middle" letter-spacing="1">7+ AI MODELS</text>
+      <g transform="translate(160 0)">
+        <rect width="170" height="36" rx="18" fill="#7C3AED" fill-opacity="0.2" stroke="#7C3AED" stroke-opacity="0.6"/>
+        <text x="85" y="23" fill="#C4B5FD" text-anchor="middle">MULTI-AGENT SWARM</text>
       </g>
-      <g transform="translate(322 0)">
-        <rect x="0" y="0" width="172" height="34" rx="17" fill="#EC4899" fill-opacity="0.18" stroke="#EC4899" stroke-opacity="0.6"/>
-        <text x="86" y="22" font-size="14" fill="#F9A8D4" text-anchor="middle" letter-spacing="1">QUALITY GATE</text>
+      <g transform="translate(345 0)">
+        <rect width="170" height="36" rx="18" fill="#EC4899" fill-opacity="0.2" stroke="#EC4899" stroke-opacity="0.6"/>
+        <text x="85" y="23" fill="#F472B6" text-anchor="middle">CONSISTENCY LOCK</text>
       </g>
-      <g transform="translate(508 0)">
-        <rect x="0" y="0" width="172" height="34" rx="17" fill="#F43F5E" fill-opacity="0.18" stroke="#F43F5E" stroke-opacity="0.6"/>
-        <text x="86" y="22" font-size="14" fill="#FDA4AF" text-anchor="middle" letter-spacing="1">10-STEP PIPELINE</text>
-      </g>
-    </g>
-  </g>
-
-  <!-- 右侧大图标 -->
-  <g transform="translate(820 80)">
-    <!-- 大边框 (深底 + 边框, 强化品牌色) -->
-    <rect x="0" y="0" width="380" height="380" rx="80" fill="url(#ogIconBg)" stroke="#A855F7" stroke-opacity="0.3" stroke-width="2"/>
-    <rect x="0" y="0" width="380" height="380" rx="80" fill="url(#ogPulseGlow)" opacity="0.25"/>
-
-    <!-- 按 1.3 缩放绘制 256 视框图标 -->
-    <g transform="translate(31 31) scale(1.3)">
-      <!-- 神经网络连接 -->
-      <g opacity="0.5">
-        <line x1="40" y1="40" x2="100" y2="100" stroke="url(#ogPrimary)" stroke-width="1.5"/>
-        <line x1="216" y1="40" x2="156" y2="100" stroke="url(#ogPrimary)" stroke-width="1.5"/>
-        <line x1="40" y1="216" x2="100" y2="156" stroke="url(#ogPrimary)" stroke-width="1.5"/>
-        <line x1="216" y1="216" x2="156" y2="156" stroke="url(#ogPrimary)" stroke-width="1.5"/>
-        <circle cx="40"  cy="40"  r="3" fill="#A855F7" opacity="0.8"/>
-        <circle cx="216" cy="40"  r="3" fill="#A855F7" opacity="0.8"/>
-        <circle cx="40"  cy="216" r="3" fill="#A855F7" opacity="0.8"/>
-        <circle cx="216" cy="216" r="3" fill="#A855F7" opacity="0.8"/>
-      </g>
-      <!-- 5 帧胶片 -->
-      <rect x="14"  y="84"  width="40" height="88"  rx="8" fill="none" stroke="url(#ogPrimary)" stroke-width="3.5" opacity="0.4"/>
-      <rect x="50"  y="68"  width="46" height="120" rx="9" fill="none" stroke="url(#ogPrimary)" stroke-width="4.5"/>
-      <rect x="105" y="54"  width="46" height="148" rx="9" fill="none" stroke="url(#ogPrimary)" stroke-width="5.5"/>
-      <rect x="160" y="68"  width="46" height="120" rx="9" fill="none" stroke="url(#ogPrimary)" stroke-width="4.5"/>
-      <rect x="202" y="84"  width="40" height="88"  rx="8" fill="none" stroke="url(#ogPrimary)" stroke-width="3.5" opacity="0.4"/>
-      <!-- 胶片孔 -->
-      <g fill="#EC4899" opacity="0.8">
-        <rect x="58"  y="78"  width="5" height="5" rx="1.5"/>
-        <rect x="78"  y="78"  width="5" height="5" rx="1.5"/>
-        <rect x="113" y="64"  width="5" height="5" rx="1.5"/>
-        <rect x="133" y="64"  width="5" height="5" rx="1.5"/>
-        <rect x="168" y="78"  width="5" height="5" rx="1.5"/>
-        <rect x="188" y="78"  width="5" height="5" rx="1.5"/>
-        <rect x="58"  y="173" width="5" height="5" rx="1.5"/>
-        <rect x="78"  y="173" width="5" height="5" rx="1.5"/>
-        <rect x="113" y="187" width="5" height="5" rx="1.5"/>
-        <rect x="133" y="187" width="5" height="5" rx="1.5"/>
-        <rect x="168" y="173" width="5" height="5" rx="1.5"/>
-        <rect x="188" y="173" width="5" height="5" rx="1.5"/>
-      </g>
-      <!-- 中心光圈 -->
-      <g transform="translate(128 128)">
-        <circle r="48" fill="url(#ogPulseGlow)" opacity="0.6"/>
-        <circle r="20" fill="url(#ogAccent)"/>
-        <circle r="13" fill="url(#ogPrimary)"/>
-        <circle r="5"  fill="#FFFFFF"/>
-        <circle r="2"  fill="#A855F7"/>
-        <g stroke="url(#ogPrimary)" stroke-width="3.5" stroke-linecap="round" opacity="0.9">
-          <line x1="-62" y1="0"   x2="-28" y2="0"/>
-          <line x1="28"  y1="0"   x2="62"  y2="0"/>
-          <line x1="0"   y1="-62" x2="0"  y2="-28"/>
-          <line x1="0"   y1="28"  x2="0"   y2="62"/>
-        </g>
-        <g fill="#EC4899" opacity="0.9">
-          <circle cx="-68" cy="0"   r="2.2"/>
-          <circle cx="68"  cy="0"   r="2.2"/>
-          <circle cx="0"   cy="-68" r="2.2"/>
-          <circle cx="0"   cy="68"  r="2.2"/>
-        </g>
+      <g transform="translate(530 0)">
+        <rect width="160" height="36" rx="18" fill="#6366F1" fill-opacity="0.2" stroke="#6366F1" stroke-opacity="0.6"/>
+        <text x="80" y="23" fill="#A5B4FC" text-anchor="middle">4K GPU ENCODE</text>
       </g>
     </g>
   </g>
 
-  <!-- 底部信息 -->
-  <g transform="translate(80 612)">
-    <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="20" font-weight="500" fill="#9CA3B8">github.com/Agions/frame-fab</text>
+  <!-- 右侧大画幅超级符号 -->
+  <g transform="translate(840 140)">
+    <rect width="360" height="360" rx="84" fill="#080D20" stroke="#7C3AED" stroke-width="2" stroke-opacity="0.5"/>
+    <g transform="translate(20 20) scale(1.25)">
+      <path d="M 82 56 L 104 56 L 104 200 L 82 200 Z" fill="url(#ogLogoGrad)"/>
+      <path d="M 98 136 L 164 62 L 188 62 L 120 136 Z" fill="url(#ogLogoGrad)"/>
+      <path d="M 108 124 L 178 200 L 154 200 L 94 136 Z" fill="url(#ogLogoGrad)"/>
+      <circle cx="128" cy="128" r="16" fill="#00F5D4"/>
+      <circle cx="128" cy="128" r="6" fill="#FFFFFF"/>
+    </g>
   </g>
-  <g transform="translate(1200 612)">
-    <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="20" font-weight="500" fill="#9CA3B8" text-anchor="end">v2.2.3 · 2026</text>
-  </g>
+
+  <!-- 底部链接与版权 -->
+  <text x="80" y="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600" fill="#64748B">github.com/Agions/kineo</text>
+  <text x="1200" y="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600" fill="#64748B" text-anchor="end">© 2026 Kineo Team</text>
 </svg>

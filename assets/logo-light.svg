@@ -1,45 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="frame-fab light theme">
-  <title>frame-fab (light theme)</title>
-  <desc>浅色背景版 logo: 白色底 + 紫色实心胶片帧 (用于白底文档/打印)</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Kineo light theme">
+  <title>Kineo (light)</title>
   <defs>
-    <linearGradient id="brandPrimaryL" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6366F1"/>
-      <stop offset="50%" stop-color="#A855F7"/>
-      <stop offset="100%" stop-color="#EC4899"/>
-    </linearGradient>
-    <linearGradient id="brandAccentL" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FB923C"/>
-      <stop offset="100%" stop-color="#F43F5E"/>
+    <linearGradient id="kineoLightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D9488"/>
+      <stop offset="50%" stop-color="#6D28D9"/>
+      <stop offset="100%" stop-color="#BE185D"/>
     </linearGradient>
   </defs>
-  <!-- 白色底 -->
-  <rect x="16" y="16" width="224" height="224" rx="56" fill="#FFFFFF" stroke="#F3F4F6" stroke-width="2"/>
-  <!-- 胶片 5 帧 -->
-  <rect x="14"  y="84" width="40" height="88" rx="8" fill="none" stroke="url(#brandPrimaryL)" stroke-width="3" opacity="0.45"/>
-  <rect x="50"  y="68" width="46" height="120" rx="9" fill="none" stroke="url(#brandPrimaryL)" stroke-width="4"/>
-  <rect x="105" y="54" width="46" height="148" rx="9" fill="none" stroke="url(#brandPrimaryL)" stroke-width="5"/>
-  <rect x="160" y="68" width="46" height="120" rx="9" fill="none" stroke="url(#brandPrimaryL)" stroke-width="4"/>
-  <rect x="202" y="84" width="40" height="88" rx="8" fill="none" stroke="url(#brandPrimaryL)" stroke-width="3" opacity="0.45"/>
-  <!-- 胶片孔 -->
-  <g fill="#EC4899" opacity="0.75">
-    <rect x="58"  y="78"  width="5" height="5" rx="1.5"/>
-    <rect x="78"  y="78"  width="5" height="5" rx="1.5"/>
-    <rect x="113" y="64"  width="5" height="5" rx="1.5"/>
-    <rect x="133" y="64"  width="5" height="5" rx="1.5"/>
-    <rect x="168" y="78"  width="5" height="5" rx="1.5"/>
-    <rect x="188" y="78"  width="5" height="5" rx="1.5"/>
-    <rect x="58"  y="173" width="5" height="5" rx="1.5"/>
-    <rect x="78"  y="173" width="5" height="5" rx="1.5"/>
-    <rect x="113" y="187" width="5" height="5" rx="1.5"/>
-    <rect x="133" y="187" width="5" height="5" rx="1.5"/>
-    <rect x="168" y="173" width="5" height="5" rx="1.5"/>
-    <rect x="188" y="173" width="5" height="5" rx="1.5"/>
-  </g>
-  <!-- 中心 4 层圆 -->
-  <g transform="translate(128 128)">
-    <circle r="18" fill="url(#brandAccentL)"/>
-    <circle r="12" fill="url(#brandPrimaryL)"/>
-    <circle r="5"  fill="#FFFFFF"/>
-    <circle r="2"  fill="#A855F7"/>
+  <rect x="16" y="16" width="224" height="224" rx="54" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+  <g transform="translate(0 0)">
+    <path d="M 82 56 L 102 56 L 102 200 L 82 200 Z" fill="url(#kineoLightGrad)"/>
+    <path d="M 96 136 L 160 62 L 184 62 L 118 136 Z" fill="url(#kineoLightGrad)"/>
+    <path d="M 106 124 L 174 200 L 150 200 L 92 136 Z" fill="url(#kineoLightGrad)"/>
+    <circle cx="128" cy="128" r="10" fill="#0D9488"/>
+    <circle cx="128" cy="128" r="4" fill="#FFFFFF"/>
   </g>
 </svg>
