@@ -118,8 +118,25 @@ jobs:
         id: package
         shell: pwsh
         run: |
-          $src = "src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis"
-          $exe = Get-ChildItem -Path $src -Filter "*.exe" | Select-Object -First 1
+          $candidates = @(
+            "target/x86_64-pc-windows-msvc/release/bundle/nsis",
+            "target/release/bundle/nsis",
+            "src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis",
+            "src-tauri/target/release/bundle/nsis"
+          )
+          $exe = $null
+          foreach ($dir in $candidates) {
+            if (Test-Path $dir) {
+              $exe = Get-ChildItem -Path $dir -Filter "*.exe" | Select-Object -First 1
+              if ($exe) { break }
+            }
+          }
+          if (-not $exe) {
+            $exe = Get-ChildItem -Path target -Recurse -Filter "*kineo*.exe" | Select-Object -First 1
+          }
+          if (-not $exe) {
+            $exe = Get-ChildItem -Path . -Recurse -Filter "*.exe" | Where-Object { $_.FullName -like "*release*" } | Select-Object -First 1
+          }
           $out = "kineo-${{ needs.prepare.outputs.version }}-windows-x64.exe"
           Copy-Item $exe.FullName $out
           echo "artifact_name=$out" >> $env:GITHUB_OUTPUT
@@ -172,8 +189,25 @@ jobs:
         id: package
         shell: pwsh
         run: |
-          $src = "src-tauri/target/aarch64-pc-windows-msvc/release/bundle/nsis"
-          $exe = Get-ChildItem -Path $src -Filter "*.exe" | Select-Object -First 1
+          $candidates = @(
+            "target/aarch64-pc-windows-msvc/release/bundle/nsis",
+            "target/release/bundle/nsis",
+            "src-tauri/target/aarch64-pc-windows-msvc/release/bundle/nsis",
+            "src-tauri/target/release/bundle/nsis"
+          )
+          $exe = $null
+          foreach ($dir in $candidates) {
+            if (Test-Path $dir) {
+              $exe = Get-ChildItem -Path $dir -Filter "*.exe" | Select-Object -First 1
+              if ($exe) { break }
+            }
+          }
+          if (-not $exe) {
+            $exe = Get-ChildItem -Path target -Recurse -Filter "*kineo*.exe" | Select-Object -First 1
+          }
+          if (-not $exe) {
+            $exe = Get-ChildItem -Path . -Recurse -Filter "*.exe" | Where-Object { $_.FullName -like "*release*" } | Select-Object -First 1
+          }
           $out = "kineo-${{ needs.prepare.outputs.version }}-windows-arm64.exe"
           Copy-Item $exe.FullName $out
           echo "artifact_name=$out" >> $env:GITHUB_OUTPUT
@@ -223,8 +257,13 @@ jobs:
       - name: Package as tar.gz
         id: package
         run: |
-          cd $GITHUB_WORKSPACE/src-tauri/target/release/bundle
-          tar -czf "$GITHUB_WORKSPACE/kineo-${{ needs.prepare.outputs.version }}-macos-universal.tar.gz" -C macos "Kineo.app"
+          APP_PATH=$(find target src-tauri -name "Kineo.app" -type d 2>/dev/null | head -n 1)
+          if [ -z "$APP_PATH" ]; then
+            APP_PATH=$(find . -name "Kineo.app" -type d 2>/dev/null | head -n 1)
+          fi
+          echo "Found app at: $APP_PATH"
+          APP_DIR=$(dirname "$APP_PATH")
+          tar -czf "$GITHUB_WORKSPACE/kineo-${{ needs.prepare.outputs.version }}-macos-universal.tar.gz" -C "$APP_DIR" "Kineo.app"
           echo "artifact_name=kineo-${{ needs.prepare.outputs.version }}-macos-universal.tar.gz" >> $GITHUB_OUTPUT
 
       - name: Upload macOS tar.gz
@@ -283,8 +322,13 @@ jobs:
       - name: Package as tar.gz
         id: package
         run: |
-          cd src-tauri/target/release
-          tar -czf "$GITHUB_WORKSPACE/kineo-${{ needs.prepare.outputs.version }}-linux-x64.tar.gz" kineo*
+          BIN_PATH=$(find target src-tauri -name "kineo-desktop" -type f 2>/dev/null | head -n 1)
+          if [ -z "$BIN_PATH" ]; then
+            BIN_PATH=$(find . -name "kineo-desktop" -type f 2>/dev/null | head -n 1)
+          fi
+          echo "Found binary at: $BIN_PATH"
+          BIN_DIR=$(dirname "$BIN_PATH")
+          tar -czf "$GITHUB_WORKSPACE/kineo-${{ needs.prepare.outputs.version }}-linux-x64.tar.gz" -C "$BIN_DIR" kineo-desktop
           echo "artifact_name=kineo-${{ needs.prepare.outputs.version }}-linux-x64.tar.gz" >> $GITHUB_OUTPUT
 
       - name: Upload Linux tar.gz
