@@ -33,6 +33,10 @@ export interface ProjectLoadResult {
   script?: string;
   exportPreset?: '9:16' | '16:9' | '1:1';
   exportSettings?: Record<string, unknown>;
+  cameraDirectingPlans?: Record<string, unknown>;
+  spatialMemory?: Record<string, unknown>;
+  auditReports?: unknown[];
+  subtitles?: unknown[];
   /** 根据 URL 参数或项目数据推断的初始 step */
   initialStep: number;
   /** URL 中的 frameId 参数（如有） */
@@ -99,6 +103,10 @@ export function useProjectLoader(projectId: string | undefined): {
             script: fallbackProject.script || legacyFallback.novelText,
             exportPreset: (fallbackProject.exportPreset as '9:16' | '16:9' | '1:1') || '16:9',
             exportSettings: fallbackProject.exportSettings,
+            cameraDirectingPlans: (fallbackProject as any).cameraDirectingPlans,
+            spatialMemory: (fallbackProject as any).spatialMemory,
+            auditReports: (fallbackProject as any).auditReports,
+            subtitles: (fallbackProject as any).subtitles,
             initialStep,
             frameId: frameId ?? undefined,
           });
@@ -147,6 +155,10 @@ export function useProjectLoader(projectId: string | undefined): {
             script: project.script,
             exportPreset: project.exportPreset,
             exportSettings: project.exportSettings,
+            cameraDirectingPlans: (project as any).cameraDirectingPlans,
+            spatialMemory: (project as any).spatialMemory,
+            auditReports: (project as any).auditReports,
+            subtitles: (project as any).subtitles,
             initialStep,
             frameId: frameId ?? undefined,
           });

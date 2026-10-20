@@ -1,4 +1,4 @@
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, ShieldCheck } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
@@ -21,6 +21,8 @@ const ProjectEdit = () => {
 
   const { currentStep, setCurrentStep } = useProject();
   const { data: loaderData } = useProjectLoader(projectId);
+
+  const latestAudit = (loaderData?.auditReports as any[])?.slice(-1)[0];
 
   // 响应 URL 参数中的 ?step= 自动同步至对应分镜大盘与步骤
   useEffect(() => {
@@ -56,6 +58,18 @@ const ProjectEdit = () => {
           <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 font-mono font-bold">
             Multi-Agent 联通中
           </span>
+          {latestAudit && (
+            <span
+              className={`text-[10px] px-2.5 py-0.5 rounded-full border font-mono font-bold flex items-center gap-1 ${
+                latestAudit.passed
+                  ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                  : 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+              }`}
+            >
+              <ShieldCheck className="w-3 h-3" />
+              AUDIT: {latestAudit.overallScore}分 ({latestAudit.passed ? '达标' : '优化中'})
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-2">

@@ -3,8 +3,9 @@
  * Cyber Midnight 多音轨混音、EdgeTTS / CosyVoice 语音对齐与波形时间轴
  */
 
-import { Volume2, Music, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Volume2, Music, ArrowRight, ArrowLeft, Subtitles, Sparkles } from 'lucide-react';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Badge } from '@/common/components/ui/badge';
 import { Button } from '@/common/components/ui/button';
@@ -13,8 +14,14 @@ import { toast } from '@/common/components/ui/toast';
 import { useProject } from '@/core/hooks/useProject';
 import { AudioStudio, AudioTimeline } from '@kineo/audio-studio';
 
+import { useProjectLoader } from '../hooks/useProjectLoader';
+
 function StepAudio() {
+  const { projectId } = useParams();
   const { setCurrentStep } = useProject();
+  const { data: loaderData } = useProjectLoader(projectId);
+
+  const subtitles = (loaderData?.subtitles as any[]) || [];
 
   return (
     <div className="space-y-6">
@@ -50,6 +57,42 @@ function StepAudio() {
             totalDuration={30}
             currentTime={8.5}
           />
+
+          {/* ACS-2.0 毫秒级字音字幕时间轴 */}
+          {subtitles.length > 0 && (
+            <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-800 space-y-2">
+              <div className="flex items-center justify-between text-xs text-slate-300 font-bold">
+                <span className="flex items-center gap-1.5 text-indigo-400">
+                  <Subtitles className="w-3.5 h-3.5" />
+                  ACS-2.0 毫秒级字音同轴字幕轴 ({subtitles.length} 条已对齐)
+                </span>
+                <span className="text-[10px] text-slate-500 font-mono">
+                  SRT / ASS 动态渲染就绪
+                </span>
+              </div>
+              <div className="max-h-36 overflow-y-auto space-y-1.5 pr-1 font-mono text-[11px]">
+                {subtitles.map((sub, idx) => (
+                  <div
+                    key={sub.id || idx}
+                    className="p-2 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between gap-2"
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-slate-500 text-[10px]">
+                        {(sub.startTimeMs / 1000).toFixed(2)}s - {(sub.endTimeMs / 1000).toFixed(2)}s
+                      </span>
+                      <span className="text-indigo-400 font-bold">{sub.characterName}:</span>
+                      <span className="text-slate-200 truncate">{sub.text}</span>
+                    </div>
+                    {sub.emotion && (
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 uppercase">
+                        {sub.emotion}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </Card>
 
