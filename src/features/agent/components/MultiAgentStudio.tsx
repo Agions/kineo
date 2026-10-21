@@ -28,11 +28,11 @@ import { useNavigate } from 'react-router-dom';
 
 import AgentConfigModal from '@/common/components/business/AgentConfigModal';
 import ModelConfigGuardModal from '@/common/components/model/ModelConfigGuardModal';
-import { Badge } from '@/common/components/ui/badge';
-import { Button } from '@/common/components/ui/button';
-import { Textarea } from '@/common/components/ui/textarea';
-import { toast } from '@/common/components/ui/toast';
-import { useProjectStore } from '@/common/stores/project-store';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/components/ui/toast';
+import { useProjectStore } from '@/stores';
 import { hasAnyConfiguredModelProvider } from '@/core/config/model-providers';
 import { agentRegistry } from '@/core/services/agent/AgentRegistry';
 import type { BaseAgent } from '@/core/services/agent/BaseAgent';

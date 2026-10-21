@@ -23,8 +23,8 @@
 
 import React from 'react';
 
-import { Button } from '@/common/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/common/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/common/utils/class-names';
 
 export interface StepLayoutProps {

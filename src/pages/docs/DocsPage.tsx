@@ -28,9 +28,9 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useTheme } from '@/app/providers/ThemeContext';
-import { Button } from '@/common/components/ui/button';
-import { Card } from '@/common/components/ui/card';
-import { Input } from '@/common/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 
 interface DocArticle {
   id: string;

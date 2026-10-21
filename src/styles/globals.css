@@ -1,6 +1,20 @@
 @import 'tailwindcss';
 @import '../common/styles/cyberpunk-theme.css';
 
+@theme {
+  --color-kineo-cyan: #00f5d4;
+  --color-kineo-cyan-dim: rgba(0, 245, 212, 0.6);
+  --color-kineo-purple: #b44fff;
+  --color-kineo-purple-dim: rgba(180, 79, 255, 0.6);
+  --color-kineo-pink: #ff2d78;
+  --color-kineo-pink-dim: rgba(255, 45, 120, 0.6);
+  --color-kineo-green: #00ff88;
+  --color-kineo-bg: #09090b;
+  --color-kineo-card: #121215;
+  --color-kineo-surface: #18181b;
+  --color-kineo-surface-2: #27272a;
+}
+
 /* ============================================
    Cyberpunk Neon Dark — Design Token System
    Primary: Cyan #00f5d4 / Electric #00e5ff

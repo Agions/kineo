@@ -4,12 +4,12 @@
 
 import { Folder, PlayCircle, PauseCircle, Trash2 } from 'lucide-react';
 
-import { Button } from '@/common/components/ui/button';
-import { Card } from '@/common/components/ui/card';
-import { message } from '@/common/components/ui/message';
-import { Popconfirm } from '@/common/components/ui/popconfirm';
-import { Slider } from '@/common/components/ui/slider';
-import { Tag } from '@/common/components/ui/tag';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { message } from '@/components/ui/message';
+import { Popconfirm } from '@/components/ui/popconfirm';
+import { Slider } from '@/components/ui/slider';
+import { Tag } from '@/components/ui/tag';
 import { PRESET_BGM_LIST } from '@/common/constants/media-presets';
 import { formatTime } from '@/common/utils';
 

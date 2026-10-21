@@ -12,9 +12,10 @@ import {
   Activity,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 
-import { Button } from '@/common/components/ui/button';
-import { toast } from '@/common/components/ui/toast';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/toast';
 import type { StoryboardFrame } from '@/common/types/storyboard';
 
 export type { StoryboardFrame } from '@/common/types/storyboard';
@@ -175,44 +176,51 @@ export const StoryboardEditor: React.FC<StoryboardEditorProps> = ({
               </span>
             </div>
 
-            <div className="space-y-2.5 max-h-[480px] overflow-y-auto pr-1">
-              {frames.map((frame, idx) => {
-                const isSelected = frame.id === selectedFrameId;
-                return (
-                  <div
-                    key={frame.id}
-                    onClick={() => {
-                      setSelectedFrameId(frame.id);
-                      onFrameSelect?.(frame);
-                    }}
-                    className={`p-2.5 rounded-xl cursor-pointer transition-all duration-200 border space-y-2 ${
-                      isSelected
-                        ? 'bg-[#00f5d4]/10 border-2 border-[#00f5d4] shadow-lg shadow-[#00f5d4]/15'
-                        : 'bg-slate-900/40 border-slate-800/80 hover:border-[#00f5d4]/40'
-                    }`}
-                  >
-                    <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-black/60 border border-white/10">
-                      <img
-                        src={frame.imageUrl || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80'}
-                        alt={frame.title}
-                        className="w-full h-full object-cover"
-                      />
-                      <span className="absolute bottom-1 right-1 text-[9px] px-1.5 py-0.2 rounded bg-black/80 text-[#00f5d4] font-mono font-bold">
-                        0:23:41
-                      </span>
-                    </div>
+            <div className="h-[480px] pr-1">
+              <Virtuoso
+                style={{ height: '100%' }}
+                totalCount={frames.length}
+                itemContent={(idx) => {
+                  const frame = frames[idx];
+                  const isSelected = frame.id === selectedFrameId;
+                  return (
+                    <div className="pb-2.5">
+                      <div
+                        onClick={() => {
+                          setSelectedFrameId(frame.id);
+                          onFrameSelect?.(frame);
+                        }}
+                        className={`p-2.5 rounded-xl cursor-pointer transition-all duration-200 border space-y-2 ${
+                          isSelected
+                            ? 'bg-[#00f5d4]/10 border-2 border-[#00f5d4] shadow-lg shadow-[#00f5d4]/15'
+                            : 'bg-slate-900/40 border-slate-800/80 hover:border-[#00f5d4]/40'
+                        }`}
+                      >
+                        <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-black/60 border border-white/10">
+                          <img
+                            src={frame.imageUrl || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80'}
+                            alt={frame.title}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                          <span className="absolute bottom-1 right-1 text-[9px] px-1.5 py-0.2 rounded bg-black/80 text-[#00f5d4] font-mono font-bold">
+                            {frame.duration ? `0:0${frame.duration}:00` : '0:03:00'}
+                          </span>
+                        </div>
 
-                    <div>
-                      <span className="text-xs font-bold text-slate-100 block truncate">
-                        Scene 0{idx + 1}
-                      </span>
-                      <span className="text-[10px] text-slate-400 block truncate font-mono">
-                        {frame.title}
-                      </span>
+                        <div>
+                          <span className="text-xs font-bold text-slate-100 block truncate">
+                            Scene {String(idx + 1).padStart(2, '0')}
+                          </span>
+                          <span className="text-[10px] text-slate-400 block truncate font-mono">
+                            {frame.title}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                }}
+              />
             </div>
           </div>
         </div>

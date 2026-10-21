@@ -8,13 +8,13 @@ import {
 } from 'lucide-react';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 
-import { EmptyState } from '@/common/components/ui';
-import { Button } from '@/common/components/ui/button';
-import { Dropdown } from '@/common/components/ui/dropdown';
-import { Input } from '@/common/components/ui/input';
-import { Tabs, TabsList, TabsTrigger } from '@/common/components/ui/tabs';
-import { toast } from '@/common/components/ui/toast';
-import { Upload } from '@/common/components/ui/upload';
+import { EmptyState } from '@/components/ui';
+import { Button } from '@/components/ui/button';
+import { Dropdown } from '@/components/ui/dropdown';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toast } from '@/components/ui/toast';
+import { Upload } from '@/components/ui/upload';
 import { formatDuration, formatSizeMB } from '@/common/utils';
 import { handleAsyncError } from '@/common/utils/async';
 import { assetService, Asset } from '@/core/services/project/asset-service';

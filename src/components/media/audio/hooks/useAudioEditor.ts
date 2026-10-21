@@ -16,7 +16,7 @@
 import { open } from '@tauri-apps/plugin-dialog';
 import { useReducer, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { message } from '@/common/components/ui/message';
+import { message } from '@/components/ui/message';
 import { generateId } from '@/common/utils';
 import { logger } from '@/core/utils/logger';
 

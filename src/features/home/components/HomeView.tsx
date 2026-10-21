@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useProjectStore } from '@/common/stores/project-store';
+import { useProjectStore } from '@/stores';
 
 import HeroSection from './HeroSection';
 import styles from './Home.module.less';

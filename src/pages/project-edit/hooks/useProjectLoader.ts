@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useProjectStore } from '@/common/stores/project-store';
+import { useProjectStore } from '@/stores';
 import type { AudioTrackConfig } from '@/core/audio/types/audio';
 import type { CompositionProject } from '@/core/audio/types/composition';
 import type { ProjectData } from '@/core/project/types/project';

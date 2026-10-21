@@ -1,13 +1,13 @@
 import { Plus, Edit, Copy, Trash2 } from 'lucide-react';
 import React, { useCallback, memo } from 'react';
 
-import { Button } from '@/common/components/ui/button';
-import Empty from '@/common/components/ui/empty';
-import { List } from '@/common/components/ui/list';
-import { Popconfirm } from '@/common/components/ui/popconfirm';
-import { Tag } from '@/common/components/ui/tag';
-import { Tooltip } from '@/common/components/ui/tooltip';
-import { Text, Title } from '@/common/components/ui/typography';
+import { Button } from '@/components/ui/button';
+import Empty from '@/components/ui/empty';
+import { List } from '@/components/ui/list';
+import { Popconfirm } from '@/components/ui/popconfirm';
+import { Tag } from '@/components/ui/tag';
+import { Tooltip } from '@/components/ui/tooltip';
+import { Text, Title } from '@/components/ui/typography';
 
 import { ATMOSPHERE_OPTIONS } from '../constants';
 import styles from '../SceneRenderer.module.less';

@@ -2,8 +2,8 @@ import { ArrowLeft, Save, ShieldCheck } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
-import { Button } from '@/common/components/ui/button';
-import { toast } from '@/common/components/ui/toast';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/toast';
 import { useProject } from '@/core/hooks/useProject';
 import type { RoleType } from '@kineo/core';
 

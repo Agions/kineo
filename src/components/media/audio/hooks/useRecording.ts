@@ -5,7 +5,7 @@
 
 import { useCallback, useRef } from 'react';
 
-import { message } from '@/common/components/ui/message';
+import { message } from '@/components/ui/message';
 import type { VoiceTrack } from '@/common/types/audio';
 import { formatTime } from '@/common/utils';
 

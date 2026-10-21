@@ -4,8 +4,8 @@
 import { AlertCircle, Play, Film, ShieldCheck, Check } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { Button } from '@/common/components/ui/button';
-import { toast } from '@/common/components/ui/toast';
+import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/toast';
 
 export interface ExportPanelProps {
   projectId: string;

@@ -11,7 +11,7 @@ import ErrorBoundary from '@/app/components/ErrorBoundary';
 import AppProvider from '@/app/providers/AppProvider';
 import { getPageImporters, preloadPage } from '@/app/router/page-preload';
 import { AppLayout } from '@/common/components/layout';
-import { notify } from '@/common/components/ui/toast';
+import { notify } from '@/components/ui/toast';
 import { runWhenIdle } from '@/core/utils/idle';
 import { logger } from '@/core/utils/logger';
 import { tauriService } from '@/infrastructure/tauri-bridge/commands';

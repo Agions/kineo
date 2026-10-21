@@ -1,11 +1,11 @@
 import { FileDown, Copy, FileText, Clock, ListOrdered, Calendar } from 'lucide-react';
 import { useState } from 'react';
 
-import { Badge } from '@/common/components/ui/badge';
-import { Button } from '@/common/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/common/components/ui/card';
-import { toast } from '@/common/components/ui/toast';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/common/components/ui/tooltip';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { toast } from '@/components/ui/toast';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { Script } from '@/common/types';
 import { formatTime } from '@/common/utils';
 import { logger } from '@/core/utils/logger';

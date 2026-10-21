@@ -4,7 +4,7 @@
  */
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import { useSettingsStore } from '@/common/stores/settings-store';
+import { useSettingsStore } from '@/stores';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 

@@ -17,7 +17,7 @@ import React, { PropsWithChildren, useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import CreateProjectModal from '@/common/components/project/CreateProjectModal';
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { AutoUpdaterModal } from '@/common/components/updater/AutoUpdaterModal';
 import { useTheme } from '@/common/context/ThemeContext';
 

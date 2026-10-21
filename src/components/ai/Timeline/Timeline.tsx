@@ -1,13 +1,13 @@
 import { Plus, Trash2, ZoomIn, ZoomOut, Columns, ChevronsRight } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
   TooltipProvider,
-} from '@/common/components/ui/tooltip';
+} from '@/components/ui/tooltip';
 import { formatTime } from '@/common/utils';
 
 import styles from './Timeline.module.less';

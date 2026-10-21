@@ -1,19 +1,19 @@
 import { Plus, Trash2 } from 'lucide-react';
 import React from 'react';
 
-import { Button } from '@/common/components/ui/button';
-import { Collapse } from '@/common/components/ui/collapse';
-import { Divider } from '@/common/components/ui/divider';
-import Empty from '@/common/components/ui/empty';
-import { Row, Col } from '@/common/components/ui/grid';
-import { Input } from '@/common/components/ui/input';
-import { Popconfirm } from '@/common/components/ui/popconfirm';
-import { AntDSelect } from '@/common/components/ui/select';
-import { Slider } from '@/common/components/ui/slider';
-import { Space } from '@/common/components/ui/space';
-import { Tag } from '@/common/components/ui/tag';
-import { TextArea } from '@/common/components/ui/textarea';
-import { Text, Title } from '@/common/components/ui/typography';
+import { Button } from '@/components/ui/button';
+import { Collapse } from '@/components/ui/collapse';
+import { Divider } from '@/components/ui/divider';
+import Empty from '@/components/ui/empty';
+import { Row, Col } from '@/components/ui/grid';
+import { Input } from '@/components/ui/input';
+import { Popconfirm } from '@/components/ui/popconfirm';
+import { AntDSelect } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
+import { Space } from '@/components/ui/space';
+import { Tag } from '@/components/ui/tag';
+import { TextArea } from '@/components/ui/textarea';
+import { Text, Title } from '@/components/ui/typography';
 
 import {
   SCENE_TYPE_OPTIONS,

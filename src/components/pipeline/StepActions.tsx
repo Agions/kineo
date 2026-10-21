@@ -4,7 +4,7 @@
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/common/utils/class-names';
 
 interface StepActionsProps {

@@ -19,14 +19,14 @@ import {
 } from 'lucide-react';
 import { useState, useMemo, useDeferredValue } from 'react';
 
-import { Alert, AlertDescription } from '@/common/components/ui/alert';
-import { Avatar, AvatarFallback, AvatarImage } from '@/common/components/ui/avatar';
-import { Badge } from '@/common/components/ui/badge';
-import { Button } from '@/common/components/ui/button';
-import { Card } from '@/common/components/ui/card';
-import { Input } from '@/common/components/ui/input';
-import { Separator } from '@/common/components/ui/separator';
-import { Tooltip } from '@/common/components/ui/tooltip';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { Tooltip } from '@/components/ui/tooltip';
 import type { ModelCategory, ModelProvider } from '@/common/types';
 import { MODEL_PROVIDERS } from '@/core/config/models-config';
 import { LLM_MODELS, type LLMModelConfig } from '@/core/constants';

@@ -2,7 +2,7 @@
  * Project Store 测试
  */
 
-import { useProjectStore } from '@/common/stores';
+import { useProjectStore } from '@/stores';
 
 // 模拟 storage service
 jest.mock('@/core/services/project/secure-storage-service', () => ({

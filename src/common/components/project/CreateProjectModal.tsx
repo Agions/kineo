@@ -2,17 +2,17 @@ import { Sparkles, Video, Film, Check, Plus, Wand2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/common/components/ui/dialog';
-import { Input } from '@/common/components/ui/input';
-import { Textarea } from '@/common/components/ui/textarea';
-import { useProjectStore } from '@/common/stores/project-store';
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { useProjectStore } from '@/stores';
 import type { ProjectData } from '@/common/types';
 
 interface CreateProjectModalProps {

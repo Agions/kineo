@@ -13,14 +13,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import CreateProjectModal from '@/common/components/project/CreateProjectModal';
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/common/components/ui/dialog';
+} from '@/components/ui/dialog';
 
 const SAMPLE_SCRIPTS = [
   {

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { Alert } from '@/common/components/ui/alert';
-import { Card } from '@/common/components/ui/card';
-import { Space } from '@/common/components/ui/space';
+import { Alert } from '@/components/ui/alert';
+import { Card } from '@/components/ui/card';
+import { Space } from '@/components/ui/space';
 import NovelImporter from '@/features/storyboard/components/NovelImporter';
 import type { ScriptImportMetadata } from '@/features/storyboard/components/NovelImporter';
 

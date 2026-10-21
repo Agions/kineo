@@ -10,9 +10,9 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { Button } from '@/common/components/ui/button';
-import { Input } from '@/common/components/ui/input';
-import { toast } from '@/common/components/ui/toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/toast';
 import { verifyModelApiKey } from '@/core/config/model-providers';
 import { tauriService } from '@/infrastructure/tauri-bridge/commands';
 

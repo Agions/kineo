@@ -1,22 +1,22 @@
 import { Download, Video, Settings, CheckCircle } from 'lucide-react';
 import { useState, useCallback } from 'react';
 
-import { Alert, AlertDescription } from '@/common/components/ui/alert';
-import { Button } from '@/common/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/common/components/ui/card';
-import { Input } from '@/common/components/ui/input';
-import { Label } from '@/common/components/ui/label';
-import { Progress } from '@/common/components/ui/progress';
-import { RadioGroup, RadioGroupItem } from '@/common/components/ui/radio-group';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/common/components/ui/select';
-import { Separator } from '@/common/components/ui/separator';
-import { toast } from '@/common/components/ui/toast';
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { toast } from '@/components/ui/toast';
 import {
   EXPORT_FORMATS,
   RESOLUTIONS,

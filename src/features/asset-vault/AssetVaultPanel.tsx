@@ -7,10 +7,10 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { Badge } from '@/common/components/ui/badge';
-import { Button } from '@/common/components/ui/button';
-import { Card } from '@/common/components/ui/card';
-import { toast } from '@/common/components/ui/toast';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { toast } from '@/components/ui/toast';
 
 export interface CharacterAsset {
   id: string;

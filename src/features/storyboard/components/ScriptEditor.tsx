@@ -9,24 +9,24 @@ import { convertFileSrc } from '@tauri-apps/api/core';
 import { Sparkles } from 'lucide-react';
 import { useState, useMemo } from 'react';
 
-import { Button } from '@/common/components/ui/button';
-import { Card } from '@/common/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/common/components/ui/dialog';
-import { Input } from '@/common/components/ui/input';
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/common/components/ui/select';
-import { toast } from '@/common/components/ui/toast';
+} from '@/components/ui/select';
+import { toast } from '@/components/ui/toast';
 import type { VideoSegment } from '@/common/types/script';
 import { formatDurationShort } from '@/common/utils';
 import { ExportMenu } from '@/components/ai/ExportMenu';

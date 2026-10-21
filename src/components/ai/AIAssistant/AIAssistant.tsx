@@ -22,26 +22,26 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
-import { Avatar } from '@/common/components/ui/avatar';
-import { Button } from '@/common/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/common/components/ui/card';
+import { Avatar } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/common/components/ui/select';
-import { Switch } from '@/common/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/common/components/ui/tabs';
-import { Textarea } from '@/common/components/ui/textarea';
+} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/common/components/ui/tooltip';
-import { Text, Title, Paragraph } from '@/common/components/ui/typography';
+} from '@/components/ui/tooltip';
+import { Text, Title, Paragraph } from '@/components/ui/typography';
 
 import { ProgressStatus } from '../ProgressStatus/ProgressStatus';
 

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { toast } from '@/common/components/ui/toast';
+import { toast } from '@/components/ui/toast';
 
 // ============================================================
 // message API (wraps sonner toast)

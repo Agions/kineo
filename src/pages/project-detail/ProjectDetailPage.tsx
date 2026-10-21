@@ -10,10 +10,10 @@ import {
 import React, { Suspense, lazy, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { Button } from '@/common/components/ui/button';
-import Empty from '@/common/components/ui/empty';
-import { Spin } from '@/common/components/ui/spin';
-import { Tabs, TabPane } from '@/common/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import Empty from '@/components/ui/empty';
+import { Spin } from '@/components/ui/spin';
+import { Tabs, TabPane } from '@/components/ui/tabs';
 import type { VideoSegment } from '@/common/types/script';
 import { AudioEditorPanel } from '@/components/media/audio/AudioEditorPanel';
 import { ExportPanel } from '@/components/project/ExportPanel';

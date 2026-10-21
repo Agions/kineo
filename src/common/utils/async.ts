@@ -2,7 +2,7 @@
  * Kineo Shared Utils - Async Error Handling Utilities
  */
 
-import { toast } from '@/common/components/ui/toast';
+import { toast } from '@/components/ui/toast';
 
 import { logger } from './logger';
 

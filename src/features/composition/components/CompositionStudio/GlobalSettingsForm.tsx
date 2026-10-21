@@ -8,11 +8,11 @@
 
 import React, { useState } from 'react';
 
-import { Divider } from '@/common/components/ui/divider';
-import { Row, Col } from '@/common/components/ui/grid';
-import { InputNumber } from '@/common/components/ui/input-number';
-import { SelectItem, AntDSelect as Select } from '@/common/components/ui/select';
-import { Slider } from '@/common/components/ui/slider';
+import { Divider } from '@/components/ui/divider';
+import { Row, Col } from '@/components/ui/grid';
+import { InputNumber } from '@/components/ui/input-number';
+import { SelectItem, AntDSelect as Select } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 import type { TransitionConfig, TransitionEffect } from '@/common/types';
 
 interface GlobalSettingsFormProps {

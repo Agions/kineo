@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { Alert } from '@/common/components/ui/alert';
-import { Badge } from '@/common/components/ui/badge';
-import { Button } from '@/common/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/common/components/ui/card';
-import { Progress } from '@/common/components/ui/progress';
+import { Alert } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import {
   Table,
   TableBody,
@@ -12,8 +12,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/common/components/ui/table';
-import { toast } from '@/common/components/ui/toast';
+} from '@/components/ui/table';
+import { toast } from '@/components/ui/toast';
 import {
   costService,
   reviewExportService,

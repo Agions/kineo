@@ -12,16 +12,16 @@ import {
 } from 'lucide-react';
 import React, { memo, useMemo } from 'react';
 
-import { Button } from '@/common/components/ui/button';
-import { Card } from '@/common/components/ui/card';
-import { Divider } from '@/common/components/ui/divider';
-import Empty from '@/common/components/ui/empty';
-import { Flex } from '@/common/components/ui/flex';
-import { Row, Col } from '@/common/components/ui/grid';
-import { InputNumber } from '@/common/components/ui/input-number';
-import { Modal } from '@/common/components/ui/modal';
-import { SelectItem, AntDSelect as Select } from '@/common/components/ui/select';
-import { Space } from '@/common/components/ui/space';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Divider } from '@/components/ui/divider';
+import Empty from '@/components/ui/empty';
+import { Flex } from '@/components/ui/flex';
+import { Row, Col } from '@/components/ui/grid';
+import { InputNumber } from '@/components/ui/input-number';
+import { Modal } from '@/components/ui/modal';
+import { SelectItem, AntDSelect as Select } from '@/components/ui/select';
+import { Space } from '@/components/ui/space';
 import {
   Table,
   TableHeader,
@@ -29,16 +29,16 @@ import {
   TableHead,
   TableRow,
   TableCell,
-} from '@/common/components/ui/table';
-import { Tag } from '@/common/components/ui/tag';
-import { Timeline, TimelineItem } from '@/common/components/ui/timeline';
+} from '@/components/ui/table';
+import { Tag } from '@/components/ui/tag';
+import { Timeline, TimelineItem } from '@/components/ui/timeline';
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
   TooltipProvider,
-} from '@/common/components/ui/tooltip';
-import { Text } from '@/common/components/ui/typography';
+} from '@/components/ui/tooltip';
+import { Text } from '@/components/ui/typography';
 import type {
   StoryboardFrame,
   CompositionProject,

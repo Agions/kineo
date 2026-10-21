@@ -3,11 +3,11 @@ import { Video } from 'lucide-react';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Alert } from '@/common/components/ui/alert';
-import { Button } from '@/common/components/ui/button';
-import { Card } from '@/common/components/ui/card';
-import { Progress } from '@/common/components/ui/progress';
-import { toast } from '@/common/components/ui/toast';
+import { Alert } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { toast } from '@/components/ui/toast';
 import type { VideoAnalysis, KeyMoment, EmotionAnalysis, VideoMetadata } from '@/common/types';
 import { logger } from '@/core/utils/logger';
 

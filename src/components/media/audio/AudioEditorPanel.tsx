@@ -5,8 +5,8 @@
 
 import React, { Suspense } from 'react';
 
-import { Spin } from '@/common/components/ui/spin';
-import { toast } from '@/common/components/ui/toast';
+import { Spin } from '@/components/ui/spin';
+import { toast } from '@/components/ui/toast';
 import type { ProjectData } from '@/common/types';
 import { tauriService } from '@/core/services';
 import { logger } from '@/core/utils/logger';

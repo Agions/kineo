@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 
 export interface UpdateInfo {
   available: boolean;

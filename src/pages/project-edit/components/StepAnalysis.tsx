@@ -7,10 +7,10 @@ import { User, Sparkles, Wand2, ArrowRight, ArrowLeft, Layers } from 'lucide-rea
 import React, { useState } from 'react';
 
 import ModelConfigGuardModal from '@/common/components/model/ModelConfigGuardModal';
-import { Badge } from '@/common/components/ui/badge';
-import { Button } from '@/common/components/ui/button';
-import { Card } from '@/common/components/ui/card';
-import { toast } from '@/common/components/ui/toast';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { toast } from '@/components/ui/toast';
 import { hasAnyConfiguredModelProvider } from '@/core/config/model-providers';
 import { useProject } from '@/core/hooks/useProject';
 

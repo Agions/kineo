@@ -2,7 +2,7 @@
  * clean-empty-state.test.ts — 项目纯净空状态与无 Mock 填充数据单元测试套件
  */
 
-import { useProjectStore } from '@/common/stores/project-store';
+import { useProjectStore } from '@/stores';
 
 describe('Clean Empty State & Mock Data Exclusion Verification Suite', () => {
   beforeEach(() => {

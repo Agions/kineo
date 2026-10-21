@@ -5,7 +5,7 @@
 import { FolderOpen, File, Plus } from 'lucide-react';
 import React from 'react';
 
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 
 export interface EmptyStateProps {
   title?: string;

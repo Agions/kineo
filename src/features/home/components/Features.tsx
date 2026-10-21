@@ -1,7 +1,7 @@
 import { Brain, Sparkles, Users, Mic2, Download, Shield } from 'lucide-react';
 import React from 'react';
 
-import { Card, CardContent } from '@/common/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { useTheme } from '@/common/context/ThemeContext';
 import { theme } from '@/styles/theme';
 

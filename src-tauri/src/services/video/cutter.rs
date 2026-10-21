@@ -124,17 +124,40 @@ pub fn cut(params: &CutVideoParams) -> Result<String, String> {
     Ok(params.output_path.clone())
 }
 
+fn detect_best_video_encoder() -> (String, &'static str) {
+    use std::process::Command;
+    if let Ok(output) = Command::new("ffmpeg").arg("-encoders").output() {
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        if stdout.contains("h264_videotoolbox") {
+            return ("h264_videotoolbox".to_string(), "videotoolbox");
+        }
+        if stdout.contains("h264_nvenc") {
+            return ("h264_nvenc".to_string(), "nvenc");
+        }
+    }
+    ("libx264".to_string(), "software")
+}
+
 fn codec_params(format: &str, quality: &str) -> (String, String) {
+    let (encoder, hw_type) = detect_best_video_encoder();
     match format {
         "mp4" | "mov" => {
-            let params = match quality {
-                "low" => "-vf scale=1280:720 -b:v 1.5M -preset fast",
-                "medium" => "-vf scale=1920:1080 -b:v 4M -preset fast",
-                "high" => "-b:v 8M -preset slow",
-                "ultra" => "-b:v 15M -preset slow",
+            let params = match (hw_type, quality) {
+                ("videotoolbox", "low") => "-vf scale=1280:720 -b:v 2M",
+                ("videotoolbox", "medium") => "-vf scale=1920:1080 -b:v 5M",
+                ("videotoolbox", "high") => "-b:v 10M",
+                ("videotoolbox", "ultra") => "-b:v 20M",
+                ("nvenc", "low") => "-vf scale=1280:720 -b:v 2M -preset p4",
+                ("nvenc", "medium") => "-vf scale=1920:1080 -b:v 5M -preset p5",
+                ("nvenc", "high") => "-b:v 10M -preset p6",
+                ("nvenc", "ultra") => "-b:v 20M -preset p7",
+                (_, "low") => "-vf scale=1280:720 -b:v 1.5M -preset fast",
+                (_, "medium") => "-vf scale=1920:1080 -b:v 4M -preset fast",
+                (_, "high") => "-b:v 8M -preset slow",
+                (_, "ultra") => "-b:v 15M -preset slow",
                 _ => "-vf scale=1920:1080 -b:v 4M -preset fast",
             };
-            ("libx264".to_string(), params.to_string())
+            (encoder, params.to_string())
         }
         "webm" => {
             let params = match quality {
@@ -154,7 +177,7 @@ fn codec_params(format: &str, quality: &str) -> (String, String) {
                 "ultra" => "-b:v 15M",
                 _ => "-vf scale=1920:1080 -b:v 4M",
             };
-            ("libx264".to_string(), params.to_string())
+            (encoder, params.to_string())
         }
     }
 }

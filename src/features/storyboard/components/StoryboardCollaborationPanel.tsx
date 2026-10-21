@@ -6,21 +6,21 @@
 import { AlertCircle, CheckCircle2, GitCompare, RotateCcw, Save } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { Alert, AlertDescription, AlertTitle } from '@/common/components/ui/alert';
-import { Button } from '@/common/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/common/components/ui/card';
-import { Input } from '@/common/components/ui/input';
-import { Label } from '@/common/components/ui/label';
-import { ScrollArea } from '@/common/components/ui/scroll-area';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/common/components/ui/select';
-import { Separator } from '@/common/components/ui/separator';
-import { toast } from '@/common/components/ui/toast';
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { toast } from '@/components/ui/toast';
 import type { StoryboardFrame } from '@/common/types/storyboard';
 import { collaborationService } from '@/core/services';
 import type { FrameComment, StoryboardVersion, VersionDiffSummary } from '@/core/services';

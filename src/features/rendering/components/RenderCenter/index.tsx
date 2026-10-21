@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Badge } from '@/common/components/ui/badge';
-import { Button } from '@/common/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/common/components/ui/card';
-import { Progress } from '@/common/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/common/components/ui/select';
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -18,7 +18,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/common/components/ui/table';
+} from '@/components/ui/table';
 import type { StoryboardFrame } from '@/common/types/storyboard';
 import {
   renderQueueService,

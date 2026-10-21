@@ -7,17 +7,17 @@
 import { Bot, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/common/components/ui/dialog';
-import { Input } from '@/common/components/ui/input';
-import { Textarea } from '@/common/components/ui/textarea';
-import { toast } from '@/common/components/ui/toast';
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/components/ui/toast';
 import { agentRegistry } from '@/core/services/agent/AgentRegistry';
 import type { TriggerPhase } from '@/core/services/agent/BaseAgent';
 

@@ -6,9 +6,9 @@
 import { Sparkles, ArrowRight, ArrowLeft } from 'lucide-react';
 import React, { Suspense, lazy } from 'react';
 
-import { Button } from '@/common/components/ui/button';
-import { Card } from '@/common/components/ui/card';
-import { toast } from '@/common/components/ui/toast';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { toast } from '@/components/ui/toast';
 import { useProject } from '@/core/hooks/useProject';
 
 import { useProjectEdit } from '../context/ProjectEditContext';

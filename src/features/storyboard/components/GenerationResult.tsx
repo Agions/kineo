@@ -10,7 +10,7 @@
 
 import type { LucideIcon } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/common/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/common/utils/class-names';
 
 export type GenerationResultStatus = 'idle' | 'generating' | 'done' | 'error';

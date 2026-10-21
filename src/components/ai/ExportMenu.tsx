@@ -6,7 +6,7 @@
 
 import { Download, ChevronDown } from 'lucide-react';
 
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { theme } from '@/styles/theme';
 
 const EXPORT_OPTIONS = [

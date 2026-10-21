@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
 
-import { Button } from '@/common/components/ui/button';
-import { Input } from '@/common/components/ui/input';
-import { Label } from '@/common/components/ui/label';
-import { Textarea } from '@/common/components/ui/textarea';
-import { toast } from '@/common/components/ui/toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/components/ui/toast';
 import type { ProjectData } from '@/common/types';
 import { cn } from '@/common/utils/class-names';
 

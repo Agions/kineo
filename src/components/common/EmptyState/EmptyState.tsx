@@ -21,7 +21,7 @@
 import { Plus } from 'lucide-react';
 import React from 'react';
 
-import { Button } from '@/common/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/common/utils/class-names';
 
 export interface EmptyStateProps {
