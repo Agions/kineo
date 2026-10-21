@@ -125,4 +125,4 @@ bash scripts/build-desktop.sh
 
 ## 📄 许可证 (License)
 
-[MIT License](LICENSE) © 2026 **Kineo Team**
+[MIT License](LICENSE) © 2026 **Agions**

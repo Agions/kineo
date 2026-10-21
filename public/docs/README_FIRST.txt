@@ -56,5 +56,5 @@
 - 社区反馈与 Issue: https://github.com/Agions/kineo/issues
 
 祝您创作愉快！
-Kineo Core Engineering Team
+Agions
 ================================================================================

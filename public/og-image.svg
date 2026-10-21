@@ -80,5 +80,5 @@
 
   <!-- 底部链接与版权 -->
   <text x="80" y="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600" fill="#64748B">github.com/Agions/kineo</text>
-  <text x="1200" y="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600" fill="#64748B" text-anchor="end">© 2026 Kineo Team</text>
+  <text x="1200" y="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" font-weight="600" fill="#64748B" text-anchor="end">© 2026 Agions</text>
 </svg>

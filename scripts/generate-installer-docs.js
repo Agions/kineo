@@ -273,7 +273,7 @@ const manualHtml = `<!DOCTYPE html>
       </div>
     </div>
     <div class="cover-footer">
-      <span>Kineo Core Engineering Team 编撰</span>
+      <span>Agions 编撰</span>
       <span>适用于 macOS / Windows / Linux 桌面全平台</span>
     </div>
   </div>

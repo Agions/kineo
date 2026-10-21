@@ -79,7 +79,7 @@ class NumberedCanvas(canvas.Canvas):
         # 页脚
         page_str = f"第 {self._pageNumber} 页 / 共 {page_count} 页"
         self.drawRightString(PAGE_WIDTH - 40, 24, page_str)
-        self.drawString(40, 24, "Kineo Core Engineering Team · https://github.com/Agions/kineo")
+        self.drawString(40, 24, "Agions · https://github.com/Agions/kineo")
         self.line(40, 36, PAGE_WIDTH - 40, 36)
 
         self.restoreState()
@@ -188,7 +188,7 @@ def build_pdf():
         [Paragraph("⚡ Tauri v2 原生引擎  |  🎬 9 步标准管线  |  🤖 Multi-Agent 导演工坊  |  🖥️ 4K 压制加速", subtitle_style)],
         [Spacer(1, 80)],
         [Paragraph("适用平台：macOS (Apple Silicon / Intel) · Windows 10/11 · Linux", ParagraphStyle('CoverSub', fontName=CHINESE_FONT, fontSize=10, leading=14, textColor=colors.HexColor("#64748b"), alignment=1))],
-        [Paragraph("Kineo Core Engineering Team 编撰 · 版本：v0.0.1 Release", ParagraphStyle('CoverVer', fontName=CHINESE_FONT, fontSize=9.5, leading=14, textColor=colors.HexColor("#64748b"), alignment=1))],
+        [Paragraph("Agions 编撰 · 版本：v0.0.1 Release", ParagraphStyle('CoverVer', fontName=CHINESE_FONT, fontSize=9.5, leading=14, textColor=colors.HexColor("#64748b"), alignment=1))],
     ]
     cover_table = Table(cover_card_data, colWidths=[PAGE_WIDTH - 80])
     cover_table.setStyle(TableStyle([
