@@ -136,6 +136,7 @@ const ProjectDetail = () => {
                 frames={storyboardFrames}
                 projectId={id}
                 onApplyRenderedFrame={handleApplyRenderedFrame}
+                onNavigateToExport={() => setActiveTab('export')}
               />
             </Suspense>
           </TabPane>
@@ -153,6 +154,7 @@ const ProjectDetail = () => {
           <TabPane tab="4K 完工导出" key="export">
             <ExportPanel
               projectId={id ?? ''}
+              project={project}
               qualityGate={exportQualityGate}
               onNavigateToEdit={handleEditClick}
             />

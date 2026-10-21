@@ -19,6 +19,28 @@ import { tauriService } from '@/infrastructure/tauri-bridge';
 import { logger } from '@/core/utils/logger';
 import { useProjectStore } from '@/stores';
 
+export interface PlayablePipelineOptions {
+  resolution?: '720p' | '1080p' | '4k';
+  aspectRatio?: '16:9' | '9:16' | '1:1';
+  quality?: 'low' | 'medium' | 'high' | 'ultra';
+  subtitleMode?: 'embedded' | 'external_srt' | 'none';
+  subtitleStyle?: {
+    fontSize?: number;
+    fontFamily?: string;
+    primaryColor?: string;
+    outlineColor?: string;
+    outlineWidth?: number;
+    shadow?: number;
+    bottomMargin?: number;
+    externalSrt?: boolean;
+  };
+  cameraMotionMode?: 'adaptive' | 'zoom_in' | 'zoom_out' | 'pan_right' | 'pan_left' | 'static';
+  motionIntensity?: number;
+  bgmVolume?: number;
+  voiceVolume?: number;
+  outputPath?: string;
+}
+
 export interface PlayablePipelineProgress {
   stage: 'script' | 'images' | 'audio' | 'render' | 'completed' | 'error';
   percent: number; // 0 - 100
@@ -38,8 +60,19 @@ export class PlayableMangaPipelineService {
    */
   public static async execute(
     project: ProjectData,
-    onProgress?: ProgressCallback
+    optionsOrProgress?: PlayablePipelineOptions | ProgressCallback,
+    maybeProgress?: ProgressCallback
   ): Promise<{ videoPath: string; videoUri: string; duration: number; fileSize: number }> {
+    let options: PlayablePipelineOptions = {};
+    let onProgress: ProgressCallback | undefined;
+
+    if (typeof optionsOrProgress === 'function') {
+      onProgress = optionsOrProgress;
+    } else if (optionsOrProgress) {
+      options = optionsOrProgress;
+      onProgress = maybeProgress;
+    }
+
     const projectId = project.id || `proj_${Date.now()}`;
     logger.info(`[PlayableMangaPipeline] 启动端到端漫剧压制, 工程: ${project.name} (${projectId})`);
 
@@ -145,29 +178,49 @@ export class PlayableMangaPipelineService {
       });
 
       // 确定成片文件目标路径
-      let targetOutputPath = '';
-      if (assetPersistenceBridge.isTauriEnv()) {
-        try {
-          const { appDataDir, join } = await import('@tauri-apps/api/path');
-          const baseDir = await appDataDir();
-          targetOutputPath = await join(baseDir, 'kineo-projects', projectId, 'renders', `manga_${projectId}.mp4`);
-        } catch {
+      let targetOutputPath = options.outputPath || '';
+      if (!targetOutputPath) {
+        if (assetPersistenceBridge.isTauriEnv()) {
+          try {
+            const { appDataDir, join } = await import('@tauri-apps/api/path');
+            const baseDir = await appDataDir();
+            targetOutputPath = await join(baseDir, 'kineo-projects', projectId, 'renders', `manga_${projectId}.mp4`);
+          } catch {
+            targetOutputPath = `/tmp/kineo_manga_${projectId}.mp4`;
+          }
+        } else {
           targetOutputPath = `/tmp/kineo_manga_${projectId}.mp4`;
         }
-      } else {
-        targetOutputPath = `/tmp/kineo_manga_${projectId}.mp4`;
       }
 
       // 提交到 Rust 后端
+      const subMode = options.subtitleMode ?? 'embedded';
+      const isSubEnabled = subMode === 'embedded';
+      const isExternalSrt = subMode === 'external_srt' || Boolean(options.subtitleStyle?.externalSrt);
+
       const renderResult = await tauriService.renderFullMangaVideo({
         project_id: projectId,
         output_path: targetOutputPath,
         scenes: renderedScenes,
         bgm_path: bgmPath,
-        bgm_volume: 0.2,
-        resolution: '1080p',
-        quality: 'high',
-        subtitle_enabled: true,
+        bgm_volume: options.bgmVolume ?? 0.25,
+        voice_volume: options.voiceVolume ?? 1.0,
+        resolution: options.resolution ?? '1080p',
+        aspect_ratio: options.aspectRatio ?? '16:9',
+        quality: options.quality ?? 'high',
+        subtitle_enabled: isSubEnabled,
+        subtitle_style: {
+          font_size: options.subtitleStyle?.fontSize,
+          font_family: options.subtitleStyle?.fontFamily,
+          primary_color: options.subtitleStyle?.primaryColor,
+          outline_color: options.subtitleStyle?.outlineColor,
+          outline_width: options.subtitleStyle?.outlineWidth,
+          shadow: options.subtitleStyle?.shadow,
+          bottom_margin: options.subtitleStyle?.bottomMargin,
+          external_srt: isExternalSrt,
+        },
+        camera_motion_mode: options.cameraMotionMode ?? 'adaptive',
+        motion_intensity: options.motionIntensity ?? 1.0,
       });
 
       // 5. 换算可播放 URI

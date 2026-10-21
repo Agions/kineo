@@ -1,6 +1,6 @@
 [package]
 name = "kineo-desktop"
-version = "0.0.1"
+version = "0.0.2"
 description = "Kineo - AI 漫剧创作平台 (Tauri v2 + Rust)"
 authors = ["Agions"]
 license = "MIT"

@@ -34,9 +34,15 @@ interface RenderCenterProps {
   frames: StoryboardFrame[];
   projectId?: string;
   onApplyRenderedFrame?: (frameId: string, imageUrl: string) => void;
+  onNavigateToExport?: () => void;
 }
 
-function RenderCenter({ frames, projectId, onApplyRenderedFrame }: RenderCenterProps) {
+function RenderCenter({
+  frames,
+  projectId,
+  onApplyRenderedFrame,
+  onNavigateToExport,
+}: RenderCenterProps) {
   const [jobs, setJobs] = useState<FrameRenderJob[]>([]);
   const [logs, setLogs] = useState<RenderLog[]>([]);
   const [isRunning, setIsRunning] = useState(false);
@@ -165,6 +171,15 @@ function RenderCenter({ frames, projectId, onApplyRenderedFrame }: RenderCenterP
             <Button onClick={() => renderQueueService.clearFinal()} size="sm" variant="outline">
               清理已完成
             </Button>
+            {onNavigateToExport && (
+              <Button
+                onClick={onNavigateToExport}
+                size="sm"
+                className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium ml-auto"
+              >
+                🎬 前往 4K 完工导出
+              </Button>
+            )}
           </div>
 
           <Table>

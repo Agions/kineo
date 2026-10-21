@@ -108,4 +108,55 @@ describe('PlayableMangaPipelineService End-to-End Playable Video Pipeline', () =
     expect(updated?.status).toBe('completed');
     expect(updated?.videoPath).toBe('/tmp/test_manga_rendered.mp4');
   });
+
+  it('PlayableMangaPipelineService should execute with customized visual and subtitle styles', async () => {
+    const project: ProjectData = {
+      id: testProjectId,
+      name: '定制样式测试项目',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      status: 'draft',
+      parsedScenes: [
+        {
+          id: 'scene-custom-1',
+          chapterId: 'chap-1',
+          sceneNumber: 1,
+          title: '天台对决',
+          content: '双刃相交，火星四溅。',
+          location: '天台',
+          startPosition: 0,
+          endPosition: 20,
+          characters: ['夜刃'],
+          dialogues: [{ id: 'd-2', sceneId: 'scene-custom-1', character: '夜刃', content: '拔剑吧！', position: 5 }],
+          emotions: [],
+        },
+      ],
+    };
+
+    const result = await PlayableMangaPipelineService.execute(
+      project,
+      {
+        resolution: '4k',
+        aspectRatio: '9:16',
+        quality: 'ultra',
+        subtitleMode: 'external_srt',
+        subtitleStyle: {
+          fontSize: 36,
+          fontFamily: 'Noto Sans SC',
+          primaryColor: '#FFD700',
+          outlineColor: '#000000',
+          outlineWidth: 3,
+          bottomMargin: 50,
+          externalSrt: true,
+        },
+        cameraMotionMode: 'zoom_in',
+        motionIntensity: 1.2,
+        bgmVolume: 0.3,
+        voiceVolume: 1.1,
+      },
+      () => {}
+    );
+
+    expect(result.videoPath).toBe('/tmp/test_manga_rendered.mp4');
+  });
 });

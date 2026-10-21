@@ -309,7 +309,7 @@ class TauriService {
   }
 
   /**
-   * 端到端渲染完整漫剧视频（带 Ken Burns 运镜、TTS 配音与 BGM）
+   * 端到端渲染完整漫剧视频（带 Ken Burns 运镜、TTS 配音、BGM、硬字幕/外挂字幕烧录）
    */
   async renderFullMangaVideo(params: {
     project_id: string;
@@ -325,9 +325,23 @@ class TauriService {
     }>;
     bgm_path?: string;
     bgm_volume?: number;
+    voice_volume?: number;
     resolution?: string;
+    aspect_ratio?: string;
     quality?: string;
     subtitle_enabled?: boolean;
+    subtitle_style?: {
+      font_size?: number;
+      font_family?: string;
+      primary_color?: string;
+      outline_color?: string;
+      outline_width?: number;
+      shadow?: number;
+      bottom_margin?: number;
+      external_srt?: boolean;
+    };
+    camera_motion_mode?: string;
+    motion_intensity?: number;
   }): Promise<{
     output_path: string;
     duration: number;

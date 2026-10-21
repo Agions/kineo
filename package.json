@@ -1,7 +1,7 @@
 {
   "name": "kineo",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Kineo (Kineo AI) - AI 漫剧创作平台。采用 Tauri v2 + React 19 + Rust + Packages Monorepo 模块化架构，将小说一键转化为专业级漫剧视频。",
   "author": "Agions",
   "license": "MIT",

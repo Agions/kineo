@@ -9,8 +9,36 @@ use std::path::{Path, PathBuf};
 use log::info;
 
 use crate::constants::allowed_dirs::temp_subdir;
-use crate::models::video_metadata::{MangaSceneParams, RenderFullVideoParams, RenderResult};
+use crate::models::video_metadata::{MangaSceneParams, RenderFullVideoParams, RenderResult, SubtitleStyleParams};
 use crate::services::ffmpeg::{is_ffmpeg_installed, run_ffmpeg};
+
+/// Convert Hex color (#RRGGBB) or ASS color (&H00BBGGRR) to ASS color format
+fn to_ass_color(hex_or_ass: &str, default: &str) -> String {
+    let s = hex_or_ass.trim();
+    if s.starts_with("&H") || s.starts_with("&h") {
+        return s.to_string();
+    }
+    let hex = s.trim_start_matches('#');
+    if hex.len() == 6 {
+        let r = &hex[0..2];
+        let g = &hex[2..4];
+        let b = &hex[4..6];
+        return format!("&H00{}{}{}", b, g, r);
+    }
+    default.to_string()
+}
+
+/// Format seconds into SRT timestamp HH:MM:SS,mmm
+fn format_srt_time(seconds: f64) -> String {
+    let total_ms = (seconds.max(0.0) * 1000.0).round() as u64;
+    let ms = total_ms % 1000;
+    let total_secs = total_ms / 1000;
+    let s = total_secs % 60;
+    let total_mins = total_secs / 60;
+    let m = total_mins % 60;
+    let h = total_mins / 60;
+    format!("{:02}:{:02}:{:02},{:03}", h, m, s, ms)
+}
 
 /// Detect available video encoder on the host platform
 pub fn detect_best_video_encoder() -> (String, &'static str) {
@@ -39,10 +67,18 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
         return Err("渲染队列为空，未提供任何漫剧分镜场景".into());
     }
 
-    // 确定目标分辨率
-    let (width, height) = match params.resolution.as_deref() {
-        Some("4k") | Some("4K") => (3840, 2160),
-        Some("720p") => (1280, 720),
+    // 确定目标画幅与分辨率
+    let aspect = params.aspect_ratio.as_deref().unwrap_or("16:9");
+    let res = params.resolution.as_deref().unwrap_or("1080p").to_lowercase();
+    let (width, height) = match (aspect, res.as_str()) {
+        ("9:16", "4k") => (2160, 3840),
+        ("9:16", "720p") => (720, 1280),
+        ("9:16", _) => (1080, 1920),
+        ("1:1", "4k") => (2160, 2160),
+        ("1:1", "720p") => (720, 720),
+        ("1:1", _) => (1080, 1080),
+        (_, "4k") => (3840, 2160),
+        (_, "720p") => (1280, 720),
         _ => (1920, 1080),
     };
 
@@ -50,18 +86,44 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
     fs::create_dir_all(&temp_dir).map_err(|e| format!("创建渲染临时目录失败: {}", e))?;
 
     let (encoder, _hw_type) = detect_best_video_encoder();
-    info!("🎬 采用视频硬件编码器: {}", encoder);
+    info!("🎬 采用视频硬件编码器: {} | 分辨率: {}x{} ({})", encoder, width, height, aspect);
 
     let mut segment_paths: Vec<PathBuf> = Vec::new();
     let mut total_duration = 0.0;
+    let mut full_subtitles_entries: Vec<(f64, f64, String)> = Vec::new();
+
+    let motion_mode = params.camera_motion_mode.as_deref().unwrap_or("adaptive");
+    let motion_intensity = params.motion_intensity.unwrap_or(1.0);
+    let sub_enabled = params.subtitle_enabled.unwrap_or(true);
 
     // 1. 逐幕生成场景片段
     for (idx, scene) in params.scenes.iter().enumerate() {
         let duration = if scene.duration > 0.5 { scene.duration } else { 3.5 };
-        total_duration += duration;
+        let start_time = total_duration;
+        let end_time = total_duration + duration;
+        total_duration = end_time;
+
+        if let Some(ref text) = scene.dialogue {
+            if !text.trim().is_empty() {
+                full_subtitles_entries.push((start_time, end_time, text.clone()));
+            }
+        }
 
         let seg_path = temp_dir.join(format!("scene_{:03}.mp4", idx));
-        render_single_scene(scene, idx, duration, width, height, &encoder, params.subtitle_enabled.unwrap_or(true), &seg_path, &temp_dir)?;
+        render_single_scene(
+            scene,
+            idx,
+            duration,
+            width,
+            height,
+            &encoder,
+            sub_enabled,
+            params.subtitle_style.as_ref(),
+            motion_mode,
+            motion_intensity,
+            &seg_path,
+            &temp_dir,
+        )?;
         segment_paths.push(seg_path);
     }
 
@@ -91,11 +153,13 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
         let _ = fs::create_dir_all(parent);
     }
 
+    let voice_vol = params.voice_volume.unwrap_or(1.0);
+    let bgm_vol = params.bgm_volume.unwrap_or(0.25);
+
     if let Some(ref bgm_path) = params.bgm_path {
         if Path::new(bgm_path).exists() {
-            info!("🎵 正在混音背景音乐: {}", bgm_path);
-            let bgm_vol = params.bgm_volume.unwrap_or(0.25);
-            let filter = format!("[0:a]volume=1.0[a1];[1:a]volume={}[a2];[a1][a2]amix=inputs=2:duration=first[aout]", bgm_vol);
+            info!("🎵 正在混音背景音乐 (BGM: {:.2}, 人声: {:.2}): {}", bgm_vol, voice_vol, bgm_path);
+            let filter = format!("[0:a]volume={:.2}[a1];[1:a]volume={:.2}[a2];[a1][a2]amix=inputs=2:duration=first[aout]", voice_vol, bgm_vol);
 
             run_ffmpeg(&[
                 "-y",
@@ -118,7 +182,19 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
         fs::copy(&joined_video_path, target_output).map_err(|e| format!("保存成片视频失败: {}", e))?;
     }
 
-    // 4. 清理临时渲染切片
+    // 4. 若开启外挂 SRT 伴随文件导出，生成完整项目的 .srt 文件
+    let should_export_srt = params.subtitle_style.as_ref().and_then(|s| s.external_srt).unwrap_or(false);
+    if should_export_srt && !full_subtitles_entries.is_empty() {
+        let srt_output = target_output.with_extension("srt");
+        if let Ok(mut sf) = File::create(&srt_output) {
+            for (i, (start, end, dialogue)) in full_subtitles_entries.iter().enumerate() {
+                let _ = writeln!(sf, "{}\n{} --> {}\n{}\n", i + 1, format_srt_time(*start), format_srt_time(*end), dialogue);
+            }
+            info!("📝 已导出外挂伴随字幕: {}", srt_output.display());
+        }
+    }
+
+    // 5. 清理临时渲染切片
     let _ = fs::remove_dir_all(&temp_dir);
 
     let file_size = fs::metadata(target_output).map(|m| m.len()).unwrap_or(0);
@@ -141,6 +217,9 @@ fn render_single_scene(
     height: u32,
     encoder: &str,
     subtitle_enabled: bool,
+    subtitle_style: Option<&SubtitleStyleParams>,
+    motion_mode: &str,
+    motion_intensity: f64,
     output_path: &Path,
     temp_dir: &Path,
 ) -> Result<(), String> {
@@ -151,24 +230,38 @@ fn render_single_scene(
 
     let frames = (duration * 30.0).round() as u32;
 
-    // 运镜滤镜表达式构建 (Ken Burns)
-    let motion = scene.camera_motion.as_deref().unwrap_or("zoom_in");
-    let zoompan_filter = match motion {
+    // 确定运镜模式
+    let effective_motion = if motion_mode == "adaptive" {
+        scene.camera_motion.as_deref().unwrap_or(match idx % 4 {
+            0 => "zoom_in",
+            1 => "zoom_out",
+            2 => "pan_right",
+            _ => "pan_left",
+        })
+    } else {
+        motion_mode
+    };
+
+    let step = 0.0012 * motion_intensity;
+    let max_zoom = 1.0 + (0.20 * motion_intensity);
+
+    let zoompan_filter = match effective_motion {
+        "static" => format!("scale=w={}:h={}:force_original_aspect_ratio=increase,crop={}:{}", width, height, width, height),
         "zoom_out" => format!(
-            "scale=8000:-1,zoompan=z='max(1.20-0.001*on,1.0)':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
-            frames, width, height
+            "scale=8000:-1,zoompan=z='max({:.3}-{:.5}*on,1.0)':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
+            max_zoom, step, frames, width, height
         ),
         "pan_right" => format!(
-            "scale=8000:-1,zoompan=z='1.15':d={}:x='min((on/{})*iw*0.1,iw-iw/zoom)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
-            frames, frames, width, height
+            "scale=8000:-1,zoompan=z='{:.2}':d={}:x='min((on/{})*iw*{:.2},iw-iw/zoom)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
+            max_zoom.min(1.15), frames, frames, 0.10 * motion_intensity, width, height
         ),
         "pan_left" => format!(
-            "scale=8000:-1,zoompan=z='1.15':d={}:x='max(iw*0.1-(on/{})*iw*0.1,0)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
-            frames, frames, width, height
+            "scale=8000:-1,zoompan=z='{:.2}':d={}:x='max(iw*{:.2}-(on/{})*iw*{:.2},0)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
+            max_zoom.min(1.15), frames, 0.10 * motion_intensity, frames, 0.10 * motion_intensity, width, height
         ),
         _ => format!(
-            "scale=8000:-1,zoompan=z='min(zoom+0.0012,1.20)':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
-            frames, width, height
+            "scale=8000:-1,zoompan=z='min(zoom+{:.5},{:.3})':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
+            step, max_zoom, frames, width, height
         ),
     };
 
@@ -179,8 +272,27 @@ fn render_single_scene(
         let srt_path = temp_dir.join(format!("sub_{:03}.srt", idx));
         if let Ok(mut sf) = File::create(&srt_path) {
             let dialogue_text = scene.dialogue.as_deref().unwrap();
-            let _ = writeln!(sf, "1\n00:00:00,000 --> 00:{:02}:{:02},000\n{}\n", (duration as u32) / 60, (duration as u32) % 60, dialogue_text);
-            full_filter.push_str(&format!(",subtitles='{}':force_style='FontSize=22,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=3,Outline=2,Shadow=1,Alignment=2,MarginV=35'", srt_path.to_string_lossy()));
+            let _ = writeln!(sf, "1\n00:00:00,000 --> {}\n{}\n", format_srt_time(duration), dialogue_text);
+
+            let font_size = subtitle_style.and_then(|s| s.font_size).unwrap_or(if width >= 3840 { 44 } else { 22 });
+            let font_family = subtitle_style.and_then(|s| s.font_family.as_deref()).unwrap_or("Arial");
+            let primary_color = to_ass_color(subtitle_style.and_then(|s| s.primary_color.as_deref()).unwrap_or("#FFFFFF"), "&H00FFFFFF");
+            let outline_color = to_ass_color(subtitle_style.and_then(|s| s.outline_color.as_deref()).unwrap_or("#000000"), "&H00000000");
+            let outline_width = subtitle_style.and_then(|s| s.outline_width).unwrap_or(2);
+            let shadow = subtitle_style.and_then(|s| s.shadow).unwrap_or(1);
+            let margin_v = subtitle_style.and_then(|s| s.bottom_margin).unwrap_or(if height >= 2160 { 55 } else { 35 });
+
+            full_filter.push_str(&format!(
+                ",subtitles='{}':force_style='FontName={},FontSize={},PrimaryColour={},OutlineColour={},BorderStyle=1,Outline={},Shadow={},Alignment=2,MarginV={}'",
+                srt_path.to_string_lossy(),
+                font_family,
+                font_size,
+                primary_color,
+                outline_color,
+                outline_width,
+                shadow,
+                margin_v
+            ));
         }
     }
 
