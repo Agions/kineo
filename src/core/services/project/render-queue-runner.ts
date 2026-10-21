@@ -6,7 +6,7 @@
  * 集中"取出 pending 任务 → 跑进度点 → 调图生服务 → 成功 / 重试 / 兜底"主流程。
  */
 
-import { delay } from '@/common/utils/timing';
+import { delay } from '@/core/utils/timing';
 import { imageGenerationService } from '@/core/services/ai/image/image-generation-service';
 import { costService } from '@/core/services/project/cost-service';
 

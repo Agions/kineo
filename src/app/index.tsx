@@ -10,7 +10,7 @@ import { Toaster } from 'sonner';
 import ErrorBoundary from '@/app/components/ErrorBoundary';
 import AppProvider from '@/app/providers/AppProvider';
 import { getPageImporters, preloadPage } from '@/app/router/page-preload';
-import { AppLayout } from '@/common/components/layout';
+import { AppLayout } from '@/components/layout';
 import { notify } from '@/components/ui/toast';
 import { runWhenIdle } from '@/core/utils/idle';
 import { logger } from '@/core/utils/logger';

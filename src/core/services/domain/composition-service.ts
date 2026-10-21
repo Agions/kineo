@@ -21,7 +21,7 @@ import type {
   FrameAnimation,
   StoryboardFrame,
   TransitionConfig,
-} from '@/common/types';
+} from '@/core/types';
 import { logger } from '@/core/utils/logger';
 
 import {

@@ -13,7 +13,7 @@
  *           └── seedance  → SeedanceAdapter
  */
 
-import { retryRequest } from '@/common/utils';
+import { retryRequest } from '@/core/utils';
 import { logger } from '@/core/utils/logger';
 
 import { isNetworkError } from '../image-generation-service';

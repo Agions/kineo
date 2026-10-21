@@ -2,7 +2,7 @@
  * 2026 年最新 13 大 AI 官方平台全景目录（截止 2026 年 8 月最新发布，官方真实校准版）
  * 包含：腾讯 Hunyuan Hy3 / Hunyuan-T1，百度 ERNIE 5.1 / 5.0， DeepSeek-V4 等最新旗舰
  */
-import type { AIModel } from '@/common/types';
+import type { AIModel } from '@/core/types';
 
 export const AI_MODELS: AIModel[] = [
   // ==========================================

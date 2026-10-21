@@ -3,7 +3,7 @@
  * 负责将协同评审与成本信息组装为 Markdown 文本
  */
 
-import { getErrorMessage } from '@/common/utils';
+import { getErrorMessage } from '@/core/utils';
 import { STORAGE_KEYS } from '@/core/constants/app-config';
 import type { FrameComment, StoryboardVersion } from '@/core/services/domain/collaboration-service';
 import type { CostRecord, CostStats } from '@/core/services/project/cost-service';

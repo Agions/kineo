@@ -59,7 +59,7 @@ export interface StoryboardData {
   totalDuration: number;
 }
 
-import { RESOLUTION_1080P } from '@/common/constants/media-presets';
+import { RESOLUTION_1080P } from '@/core/constants/media-presets';
 
 /** 质量 → 缩放比例映射 */
 export const QUALITY_SCALE: Record<ExportQuality, number> = {

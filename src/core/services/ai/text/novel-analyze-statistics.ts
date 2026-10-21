@@ -16,7 +16,7 @@ import type {
   NovelMetadata,
   NovelScene,
   NovelStatistics,
-} from '@/common/types';
+} from '@/core/types';
 
 /**
  * 统计每个 emotion 出现的次数。

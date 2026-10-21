@@ -2,7 +2,7 @@
  * Project import/export types — extracted from project-import-export-service.ts
  */
 
-import type { ProjectData } from '@/common/types';
+import type { ProjectData } from '@/core/types';
 
 /** 导出格式 */
 export type ExportFormat = 'json' | 'zip';

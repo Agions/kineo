@@ -65,4 +65,4 @@ export function resolveProjectKey(projectId?: string): string {
 }
 
 /** 重导出 StoryboardFrame，避免外部导入散落 */
-export type { StoryboardFrame } from '@/common/types/storyboard';
+export type { StoryboardFrame } from '@/core/storyboard/types/storyboard';

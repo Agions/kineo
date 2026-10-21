@@ -10,7 +10,7 @@ import type {
   CameraMotion,
   CompositionProject,
   TransitionConfig,
-} from '@/common/types';
+} from '@/core/types';
 import { STORAGE_KEYS } from '@/core/constants/app-config';
 
 /** Composition 服务构造选项 */
@@ -113,4 +113,4 @@ export type {
   CompositionProject,
   FrameAnimation,
   TransitionConfig,
-} from '@/common/types';
+} from '@/core/types';

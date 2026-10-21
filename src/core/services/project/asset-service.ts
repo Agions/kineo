@@ -4,6 +4,7 @@
  */
 
 import { STORAGE_KEYS } from '@/core/constants/app-config';
+import { assetPersistenceBridge } from '@/core/services/data-bus/AssetPersistenceBridge';
 import { logger } from '@/core/utils/logger';
 
 export interface Asset {
@@ -46,7 +47,18 @@ class AssetService {
     try {
       localStorage.setItem(ASSET_STORAGE_KEY, JSON.stringify(assets));
     } catch (e) {
-      logger.error('Failed to save assets to storage', e);
+      logger.warn('Failed to save assets to storage, checking storage quota...', e);
+      try {
+        const lightweight = assets.map((a) => {
+          if (a.src && a.src.startsWith('data:') && a.src.length > 1024) {
+            return { ...a, src: `idb://${a.id}` };
+          }
+          return a;
+        });
+        localStorage.setItem(ASSET_STORAGE_KEY, JSON.stringify(lightweight));
+      } catch (inner) {
+        logger.error('Failed to save lightweight assets to storage', inner);
+      }
     }
   }
 
@@ -68,6 +80,28 @@ class AssetService {
 
   add(asset: Omit<Asset, 'id' | 'createdAt'>): Asset {
     const newAsset = createAssetRecord(asset);
+
+    if (newAsset.src && newAsset.src.startsWith('data:') && newAsset.src.length > 1024) {
+      const pid = newAsset.projectId || 'global';
+      void assetPersistenceBridge
+        .persistAsset(pid, newAsset.id, newAsset.src, {
+          fileName: newAsset.name,
+        })
+        .then((meta) => {
+          newAsset.src = meta.uri;
+          this.cache.set(newAsset.id, newAsset);
+          const current = this.loadFromStorage();
+          const idx = current.findIndex((a) => a.id === newAsset.id);
+          if (idx >= 0) {
+            current[idx].src = meta.uri;
+            this.saveToStorage(current);
+          }
+        })
+        .catch((err) => {
+          logger.warn('[AssetService] 异步卸载资产失败:', err);
+        });
+    }
+
     const assets = this.loadFromStorage();
     assets.push(newAsset);
     this.saveToStorage(assets);

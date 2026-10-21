@@ -10,7 +10,7 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import ModelConfigGuardModal from '@/common/components/model/ModelConfigGuardModal';
+import ModelConfigGuardModal from '@/features/model-selector/components/ModelConfigGuardModal';
 import { toast } from '@/components/ui/toast';
 import { hasAnyConfiguredModelProvider } from '@/core/config/model-providers';
 import { secureStorage } from '@/core/services/project/secure-storage-service';

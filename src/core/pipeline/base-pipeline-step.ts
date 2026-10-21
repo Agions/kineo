@@ -1,4 +1,4 @@
-import { getErrorMessage } from '@/common/utils';
+import { getErrorMessage } from '@/core/utils';
 import { logger } from '@/core/utils/logger';
 
 import type {

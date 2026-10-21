@@ -8,7 +8,7 @@
  * 静态方法从类中剥离到独立模块，使主类瘦身为纯状态管理。
  */
 
-import type { Character, CharacterAppearance } from '@/common/types';
+import type { Character, CharacterAppearance } from '@/core/types';
 import {
   CHARACTER_TEMPLATES,
   getTemplateById,

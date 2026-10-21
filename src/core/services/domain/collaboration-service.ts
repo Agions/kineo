@@ -8,9 +8,9 @@
  *   - asset: 素材库资源
  */
 
-import type { FrameComment, StoryboardVersion, ScriptVersionPayload, CharacterVersionPayload } from '@/common/types/project';
+import type { FrameComment, StoryboardVersion, ScriptVersionPayload, CharacterVersionPayload } from '@/core/project/types/project';
 
-/** @deprecated Use @/common/types/project. Re-exported for backward compat. */
+/** @deprecated Use @/core/project/types/project. Re-exported for backward compat. */
 export type { FrameComment, StoryboardVersion };
 
 /** 内容类型 */

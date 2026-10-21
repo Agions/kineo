@@ -1,7 +1,7 @@
 /**
  * AI 模型提供商配置（包含官方 API Key 快捷申请入口、真实格式校验与门禁）
  */
-import type { ModelProvider } from '@/common/types';
+import type { ModelProvider } from '@/core/types';
 
 export interface ModelProviderInfo {
   name: string;

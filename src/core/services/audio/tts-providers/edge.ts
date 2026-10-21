@@ -10,7 +10,7 @@
  *   - synthesizeStream()  伪流式（按 500 字符分段多次同步合成）
  */
 
-import type { TTSConfig, TTSResponse, TTSStreamChunk } from '@/common/types';
+import type { TTSConfig, TTSResponse, TTSStreamChunk } from '@/core/types';
 
 import { estimateDuration, escapeSSML, splitText } from '../tts-utils';
 

@@ -16,7 +16,7 @@
  * 19 个调用方无需修改。
  */
 
-import type { Script } from '@/common/types';
+import type { Script } from '@/core/types';
 import { mockStrategy } from '@/core/ai/providers';
 import { getModelById } from '@/core/config/models-config';
 import { LLM_MODELS, DEFAULT_LLM_MODEL, MODEL_RECOMMENDATIONS } from '@/core/constants';

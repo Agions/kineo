@@ -5,7 +5,7 @@
  * 仅 endpoint URL 和 provider 名称不同。提取共享的 fetch + 错误处理 + 响应解析。
  */
 
-import type { AIRequestConfig, AIResponse } from '@/common/types/ai-core';
+import type { AIRequestConfig, AIResponse } from '@/core/ai/types/ai-core';
 
 import { BaseAIProviderStrategy } from './base';
 

@@ -12,7 +12,7 @@
 
  */
 
-import { formatChineseDuration } from '@/common/utils/format';
+import { formatChineseDuration } from '@/core/utils/format';
 
 import type { ScriptScene, Storyboard } from './novel-types';
 

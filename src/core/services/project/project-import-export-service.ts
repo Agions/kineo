@@ -12,7 +12,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 
-import type { ProjectData } from '@/common/types';
+import type { ProjectData } from '@/core/types';
 import { STORAGE_KEYS } from '@/core/constants/app-config';
 
 import {

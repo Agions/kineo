@@ -7,7 +7,7 @@
 
 import { fetchFile } from '@ffmpeg/util';
 
-import { RESOLUTION_1080P } from '@/common/constants/media-presets';
+import { RESOLUTION_1080P } from '@/core/constants/media-presets';
 import { logger } from '@/core/utils/logger';
 
 import { getFFmpegInstance, setActiveProgressCallback } from './ffmpeg-instance';

@@ -2,7 +2,7 @@
  * 评测基线与回归服务（D2）
  */
 
-import type { EvaluationScores } from '@/common/types/project';
+import type { EvaluationScores } from '@/core/project/types/project';
 import benchmarkStories from '@/core/data/benchmark-stories.zh-CN.json';
 
 export interface BenchmarkSample {
@@ -24,7 +24,7 @@ export interface EvaluationCaseResult {
   pacing: number; // 0-100
 }
 
-/** @deprecated Use @/common/types/project. Re-exported for backward compat. */
+/** @deprecated Use @/core/project/types/project. Re-exported for backward compat. */
 export type { EvaluationScores };
 
 export interface EvaluationItemReport {

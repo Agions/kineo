@@ -12,7 +12,7 @@ import {
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import CreateProjectModal from '@/common/components/project/CreateProjectModal';
+import CreateProjectModal from '@/components/project/CreateProjectModal';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

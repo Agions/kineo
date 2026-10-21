@@ -13,7 +13,7 @@
  */
 
 import { toast } from '@/components/ui/toast';
-import type { TTSConfig, TTSResponse } from '@/common/types';
+import type { TTSConfig, TTSResponse } from '@/core/types';
 
 import { synthesizeEdge } from './edge';
 

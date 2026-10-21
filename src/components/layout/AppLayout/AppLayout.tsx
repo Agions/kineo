@@ -16,9 +16,9 @@ import {
 import React, { PropsWithChildren, useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import CreateProjectModal from '@/common/components/project/CreateProjectModal';
+import CreateProjectModal from '@/components/project/CreateProjectModal';
 import { Button } from '@/components/ui/button';
-import { AutoUpdaterModal } from '@/common/components/updater/AutoUpdaterModal';
+import { AutoUpdaterModal } from '@/components/common/AutoUpdaterModal';
 import { useTheme } from '@/common/context/ThemeContext';
 
 import { AppLayoutProps } from './types';

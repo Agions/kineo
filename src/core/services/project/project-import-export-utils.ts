@@ -2,7 +2,7 @@
  * Project import/export pure utility functions — extracted
  */
 
-import type { ProjectData } from '@/common/types';
+import type { ProjectData } from '@/core/types';
 
 import type {
   BackupRecord,

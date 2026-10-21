@@ -6,7 +6,7 @@
 import { User, Sparkles, Wand2, ArrowRight, ArrowLeft, Layers } from 'lucide-react';
 import React, { useState } from 'react';
 
-import ModelConfigGuardModal from '@/common/components/model/ModelConfigGuardModal';
+import ModelConfigGuardModal from '@/features/model-selector/components/ModelConfigGuardModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';

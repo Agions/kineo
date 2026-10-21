@@ -14,7 +14,7 @@
  * 5. 类主流程只剩"编排"——读 / 写 / 通知三件事
  */
 
-import type { Character, CharacterAppearance, CharacterConsistency } from '@/common/types';
+import type { Character, CharacterAppearance, CharacterConsistency } from '@/core/types';
 
 import { createCharacter, duplicateCharacter } from './character-factory';
 import { loadCharactersFromStorage, saveCharactersToStorage } from './character-persistence';

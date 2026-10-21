@@ -3,7 +3,7 @@
  * @module core/services/domain/manga-pipeline-types
  */
 
-import type { TTSConfig } from '@/common/types';
+import type { TTSConfig } from '@/core/types';
 import type {
   ImageGenerationOptions,
   VideoGenerationOptions,

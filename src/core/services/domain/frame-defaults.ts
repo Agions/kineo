@@ -10,7 +10,7 @@
  * 单一职责：构造 FrameAnimation 默认值。
  */
 
-import type { FrameAnimation } from '@/common/types';
+import type { FrameAnimation } from '@/core/types';
 
 /** 默认 zoom（无缩放） */
 export const DEFAULT_ZOOM = 1;

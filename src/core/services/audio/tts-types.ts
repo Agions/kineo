@@ -6,7 +6,7 @@
  *   - 类型别名重新导出（保持外部导入路径稳定）
  */
 
-import type { TTSConfig } from '@/common/types';
+import type { TTSConfig } from '@/core/types';
 
 /** TTS 默认配置（用于 provider=edge + 标准中文晓晓音色） */
 export const DEFAULT_TTS_CONFIG: TTSConfig = {

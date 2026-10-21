@@ -13,7 +13,7 @@
  * 单一职责：把原始文本切成 Chapter[]。
  */
 
-import type { Chapter } from '@/common/types';
+import type { Chapter } from '@/core/types';
 import {
   extractCharacterNames,
   extractLocations,

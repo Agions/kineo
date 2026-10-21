@@ -7,7 +7,7 @@
  * 3. 资产卸载驱动：协同 AssetPersistenceBridge，在 Agent 生成图像/音频时自动将 Base64 卸载至本地/IndexedDB，保持项目对象体积精简。
  */
 
-import type { ProjectData } from '@/common/types/project';
+import type { ProjectData } from '@/core/project/types/project';
 import type { NovelScene } from '@/core/script/types/novel';
 import { ProjectBlackboard, BlackboardData } from '@/core/services/agent/ProjectBlackboard';
 import type { StoryboardFrame } from '@/core/storyboard/types/storyboard';

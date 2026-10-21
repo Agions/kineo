@@ -108,6 +108,11 @@ export interface ProjectData {
   parsedScenes?: any[];
   sopStep?: number;
   stage?: string;
+  // Multi-Agent Director 2.0 metadata extensions
+  cameraDirectingPlans?: Record<string, unknown>;
+  spatialMemory?: Record<string, unknown>;
+  auditReports?: unknown[];
+  subtitles?: unknown[];
   // Pipeline progress tracking
   currentStep?: PipelineStep;
 }

@@ -6,7 +6,7 @@
 import { Download } from 'lucide-react';
 import React, { Suspense } from 'react';
 
-import CostDashboard from '@/common/components/business/CostDashboard';
+import CostDashboard from '@/features/cost/components/CostDashboard';
 import { Button } from '@/components/ui/button';
 import { Spin } from '@/components/ui/spin';
 

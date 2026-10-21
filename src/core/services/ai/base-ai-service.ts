@@ -25,7 +25,7 @@
  * ```
  */
 
-import { getErrorMessage, retryRequest } from '@/common/utils';
+import { getErrorMessage, retryRequest } from '@/core/utils';
 import { logger } from '@/core/utils/logger';
 
 
@@ -289,4 +289,4 @@ export abstract class BaseAIService<TParams, TResult> {
 }
 
 
-export type { RetryOptions } from '@/common/utils';
+export type { RetryOptions } from '@/core/utils';

@@ -10,7 +10,7 @@
 import { fetchFile } from '@ffmpeg/util';
 import { saveAs } from 'file-saver';
 
-import { isTauri } from '@/common/utils/environment';
+import { isTauri } from '@/core/utils/environment';
 import { loadFFmpeg, ffmpegWasmService, type ProgressCallback } from '@/core/services/video/ffmpeg-wasm-service';
 import { logger } from '@/core/utils/logger';
 

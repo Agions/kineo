@@ -14,8 +14,8 @@ import type {
   VideoAnalysis,
   VideoInfo,
   VideoScene,
-} from '@/common/types';
-import { formatTime } from '@/common/utils';
+} from '@/core/types';
+import { formatTime } from '@/core/utils';
 
 import {
   COMMON_OBJECTS,

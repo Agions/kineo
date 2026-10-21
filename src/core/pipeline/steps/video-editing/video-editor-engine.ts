@@ -6,7 +6,7 @@
  * 设计为纯内存状态机，不涉及 Pipeline Step 接口。
  */
 
-import { RESOLUTION_1080P } from '@/common/constants/media-presets';
+import { RESOLUTION_1080P } from '@/core/constants/media-presets';
 
 import type {
   VideoClip,

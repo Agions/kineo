@@ -26,8 +26,8 @@ import {
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import AgentConfigModal from '@/common/components/business/AgentConfigModal';
-import ModelConfigGuardModal from '@/common/components/model/ModelConfigGuardModal';
+import AgentConfigModal from './AgentConfigModal';
+import ModelConfigGuardModal from '@/features/model-selector/components/ModelConfigGuardModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';

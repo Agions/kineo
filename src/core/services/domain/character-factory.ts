@@ -14,7 +14,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 
-import type { Character, CharacterAppearance, CharacterConsistency } from '@/common/types';
+import type { Character, CharacterAppearance, CharacterConsistency } from '@/core/types';
 
 import {
   DEFAULT_CHARACTER_FIELDS,

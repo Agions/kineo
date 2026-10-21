@@ -5,7 +5,7 @@
  * 不依赖 FFmpeg 实例。
  */
 
-import { formatTime } from '@/common/utils';
+import { formatTime } from '@/core/utils';
 
 import type { Subtitle } from './types';
 

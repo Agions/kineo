@@ -3,7 +3,7 @@
  * 所有 AI Provider 实现必须实现此接口
  */
 
-import type { AIRequestConfig, AIResponse } from '@/common/types/ai-core';
+import type { AIRequestConfig, AIResponse } from '@/core/ai/types/ai-core';
 
 export interface AIProviderStrategy {
   /**

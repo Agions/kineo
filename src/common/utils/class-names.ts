@@ -1,6 +1,2 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+/** Transitional shim -> canonical location is @/core/utils/class-names */
+export * from "@/core/utils/class-names";

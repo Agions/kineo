@@ -4,7 +4,7 @@
  * 所有与视频剪辑合成相关的类型、接口、配置常量。
  */
 
-import type { SubtitleRenderStyle } from '@/common/types/video-composition-types';
+import type { SubtitleRenderStyle } from '@/core/video/types/composition';
 
 // ========== 核心类型 ==========
 

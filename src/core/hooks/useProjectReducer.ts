@@ -9,8 +9,8 @@
  * 对外 API 不变: 所有 setter 名 + signature 保持兼容, 调用方 0 改动.
  */
 
-import type { ProjectData, TaskStatus } from '@/common/types';
-import { createFieldUpdater, type FieldUpdater } from '@/common/utils/reducer-helpers';
+import type { ProjectData, TaskStatus } from '@/core/types';
+import { createFieldUpdater, type FieldUpdater } from '@/core/utils/reducer-helpers';
 
 // ─── 状态类型 ──────────────────────────────────────────────────────────────
 

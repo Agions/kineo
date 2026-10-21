@@ -2,7 +2,7 @@
  * Google Gemini Provider Strategy
  */
 
-import type { AIRequestConfig, AIResponse } from '@/common/types/ai-core';
+import type { AIRequestConfig, AIResponse } from '@/core/ai/types/ai-core';
 
 import { BaseAIProviderStrategy } from './base';
 

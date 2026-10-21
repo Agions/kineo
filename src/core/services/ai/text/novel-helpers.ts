@@ -3,7 +3,7 @@
  * 从 novel-analyze-service.ts 中提取的纯函数，不依赖实例状态
  */
 
-import type { NovelScene } from '@/common/types';
+import type { NovelScene } from '@/core/types';
 
 // ========== 文本提取工具 ==========
 

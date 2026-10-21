@@ -6,7 +6,7 @@
  * 抽出为纯函数（接收 projectId / characters / autoSave），不再耦合于类成员。
  */
 
-import type { Character } from '@/common/types';
+import type { Character } from '@/core/types';
 import { logger } from '@/core/utils/logger';
 
 import { buildCharacterStorageKey } from './character-types';

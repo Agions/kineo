@@ -5,7 +5,7 @@
  * 缓存键构造 + 读/写都在这里，调用方只关心"我要不要缓存"。
  */
 
-import { requestCache } from '@/common/utils/request';
+import { requestCache } from '@/core/utils/request';
 
 import type { AIResponse } from './ai-service-types';
 

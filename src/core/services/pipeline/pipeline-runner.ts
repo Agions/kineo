@@ -19,7 +19,7 @@
  * - 步骤通过 input[CONTEXT_KEY] 访问上下文
  */
 
-import { getErrorMessage } from '@/common/utils';
+import { getErrorMessage } from '@/core/utils';
 import { CONTEXT_KEY } from '@/core/pipeline/pipeline-types';
 import { logger } from '@/core/utils/logger';
 

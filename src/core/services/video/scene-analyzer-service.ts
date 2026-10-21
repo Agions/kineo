@@ -7,7 +7,7 @@
  * @module core/services/video/scene-analyzer-service
  */
 
-import type { Character, NovelScene, SceneDescription } from '@/common/types';
+import type { Character, NovelScene, SceneDescription } from '@/core/types';
 import { aiService } from '@/core/services/ai/text/ai-service';
 import { DIALOGUE_PATTERNS , generateDefaultPrompt } from '@/core/services/ai/text/novel-helpers';
 import { concurrentLimit } from '@/core/utils/concurrency';

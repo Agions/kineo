@@ -3,7 +3,7 @@
  * 负责将分析结果导出为剧本格式
  */
 
-import type { AnalyzeResult } from '@/common/types';
+import type { AnalyzeResult } from '@/core/types';
 
 /**
  * 剧本生成器

@@ -13,7 +13,7 @@ export * from './subtitle-service';
 // ffmpeg-wasm subdirectory: re-export common types only (avoid Scene/etc collision with composition.types)
 
 // video-composition-types: re-export only distinct type names to avoid collision
-// Source of truth: @/common/types/video-composition-types (single canonical location)
+// Source of truth: @/core/video/types/composition (single canonical location)
 export type {
   BackgroundMusic,
   CompositionOptions,
@@ -26,7 +26,7 @@ export type {
   SubtitleTrack,
   SubtitleItem,
   SubtitleFormat,
-} from '@/common/types/video-composition-types';
+} from '@/core/video/types/composition';
 
 // Backward compat alias — 老代码 import SubtitleStyle 仍能用
-export type { SubtitleRenderStyle as SubtitleStyle } from '@/common/types/video-composition-types';
+export type { SubtitleRenderStyle as SubtitleStyle } from '@/core/video/types/composition';

@@ -4,7 +4,7 @@
  * Pure data: scene types, emotion labels, object categories, descriptions.
  */
 
-import type { VideoAnalysis } from '@/common/types';
+import type { VideoAnalysis } from '@/core/types';
 
 export interface VideoAnalysisConfig {
   enableSceneDetection: boolean;

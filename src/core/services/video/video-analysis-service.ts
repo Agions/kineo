@@ -9,7 +9,7 @@
  *   - 本文件                       服务类 + 编排
  */
 
-import type { VideoAnalysis, VideoInfo } from '@/common/types';
+import type { VideoAnalysis, VideoInfo } from '@/core/types';
 import { aiService } from '@/core/services/ai/text/ai-service';
 
 import {

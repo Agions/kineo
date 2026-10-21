@@ -17,7 +17,7 @@ import {
 import { useState, useCallback, useEffect, lazy } from 'react';
 
 
-const ModelSelector = lazy(() => import('@/common/components/business/ModelSelector'));
+const ModelSelector = lazy(() => import('@/features/model-selector/components/ModelSelector'));
 
 import { Alert } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';

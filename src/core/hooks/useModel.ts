@@ -5,8 +5,8 @@
 
 import { useState, useCallback, useMemo } from 'react';
 
-import type { AIModel, ModelProvider, ModelCategory, AIModelSettings } from '@/common/types';
-import { delay } from '@/common/utils/timing';
+import type { AIModel, ModelProvider, ModelCategory, AIModelSettings } from '@/core/types';
+import { delay } from '@/core/utils/timing';
 import { hasAnyConfiguredModelProvider } from '@/core/config/model-providers';
 import {
   AI_MODELS,

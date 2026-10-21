@@ -25,7 +25,7 @@ import type {
   TTSRequest,
   TTSResponse,
   TTSStreamChunk,
-} from '@/common/types';
+} from '@/core/types';
 
 import { SYNTHESIZE_REGISTRY, ensureNonEmptyText } from './tts-provider-registry';
 import { synthesizeEdgeStream } from './tts-providers/edge';

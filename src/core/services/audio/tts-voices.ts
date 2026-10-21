@@ -8,7 +8,7 @@
  *   3. UI 层按需 import 减小 bundle 体积
  */
 
-import type { TTSProvider, TTSVoice } from '@/common/types';
+import type { TTSProvider, TTSVoice } from '@/core/types';
 
 /** 全部 provider 的音色映射表 */
 export const TTS_VOICES: Record<TTSProvider, TTSVoice[]> = {
