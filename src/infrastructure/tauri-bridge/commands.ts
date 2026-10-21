@@ -211,6 +211,13 @@ class TauriService {
   }
 
   /**
+   * 在操作系统的资源管理器/Finder 中打开文件所在目录
+   */
+  async openFileLocation(path: string): Promise<void> {
+    await invoke('open_file_location', { path });
+  }
+
+  /**
    * 获取应用配置目录
    */
   async getAppConfigDir(): Promise<string> {
@@ -299,6 +306,35 @@ class TauriService {
    */
   async clipVideo(options: VideoClipOptions): Promise<void> {
     await invoke('cut_video', options);
+  }
+
+  /**
+   * 端到端渲染完整漫剧视频（带 Ken Burns 运镜、TTS 配音与 BGM）
+   */
+  async renderFullMangaVideo(params: {
+    project_id: string;
+    output_path: string;
+    scenes: Array<{
+      id: string;
+      image_path: string;
+      audio_path?: string;
+      duration: number;
+      camera_motion?: string;
+      transition?: string;
+      dialogue?: string;
+    }>;
+    bgm_path?: string;
+    bgm_volume?: number;
+    resolution?: string;
+    quality?: string;
+    subtitle_enabled?: boolean;
+  }): Promise<{
+    output_path: string;
+    duration: number;
+    file_size: number;
+    encoder_used: string;
+  }> {
+    return invoke('render_full_video', { params });
   }
 
   /**

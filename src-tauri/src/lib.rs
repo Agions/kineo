@@ -108,6 +108,7 @@ pub fn run() {
             commands::video::extract_key_frames,
             commands::video::generate_thumbnail,
             commands::video::cut_video,
+            commands::video::render_full_video,
             commands::video::generate_preview,
             commands::video::clean_temp_file,
             commands::video::check_ffmpeg,

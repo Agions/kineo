@@ -5,5 +5,6 @@
 
 pub mod analyzer;
 pub mod cutter;
+pub mod manga_renderer;
 pub mod preview;
 pub mod transitions;

@@ -73,6 +73,13 @@ pub fn check_ffmpeg() -> Result<std::collections::HashMap<String, serde_json::Va
     Ok(result)
 }
 
+/// Render full manga video from structured scene assets.
+#[tauri::command]
+pub async fn render_full_video(params: crate::models::video_metadata::RenderFullVideoParams) -> Result<crate::models::video_metadata::RenderResult, String> {
+    info!("接收到端到端漫剧视频渲染请求: {:?}", params.project_id);
+    crate::services::video::manga_renderer::render_full_manga_video(&params).await
+}
+
 /// Delete a file in one of the allowed temp directories.
 #[tauri::command]
 pub fn clean_temp_file(params: CleanFileParams) -> Result<(), String> {

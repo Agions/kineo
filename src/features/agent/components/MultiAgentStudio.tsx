@@ -22,6 +22,9 @@ import {
   AlertTriangle,
   ShieldCheck,
   TrendingUp,
+  Film,
+  FolderOpen,
+  Loader2,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -30,6 +33,13 @@ import AgentConfigModal from './AgentConfigModal';
 import ModelConfigGuardModal from '@/features/model-selector/components/ModelConfigGuardModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/toast';
 import { useProjectStore } from '@/stores';
@@ -38,6 +48,11 @@ import { agentRegistry } from '@/core/services/agent/AgentRegistry';
 import type { BaseAgent } from '@/core/services/agent/BaseAgent';
 import { MasterDirectorAgent } from '@/core/services/agent/MasterDirectorAgent';
 import type { BlackboardData, InputContentType } from '@/core/services/agent/ProjectBlackboard';
+import {
+  PlayableMangaPipelineService,
+  type PlayablePipelineProgress,
+} from '@/core/services/pipeline/PlayableMangaPipelineService';
+import { tauriService } from '@/infrastructure/tauri-bridge';
 
 export const MultiAgentStudio: React.FC = () => {
   const navigate = useNavigate();
@@ -48,6 +63,16 @@ export const MultiAgentStudio: React.FC = () => {
   const [isExecuting, setIsExecuting] = useState(false);
   const [isModelGuardOpen, setIsModelGuardOpen] = useState(false);
   const [isAgentConfigModalOpen, setIsAgentConfigModalOpen] = useState(false);
+  const [isRenderingVideo, setIsRenderingVideo] = useState(false);
+  const [renderProgress, setRenderProgress] = useState<PlayablePipelineProgress | null>(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [renderedVideoMeta, setRenderedVideoMeta] = useState<{
+    videoPath: string;
+    videoUri: string;
+    duration: number;
+    fileSize: number;
+    encoderUsed?: string;
+  } | null>(null);
 
   // 实例化 MasterDirectorAgent 调度中心
   const [director] = useState(() => new MasterDirectorAgent());
@@ -148,6 +173,73 @@ export const MultiAgentStudio: React.FC = () => {
     void navigate(`/project/edit/${targetProject.id}?step=1`);
   };
 
+  // 一键生成并压制完整 1080P 漫剧视频
+  const handleOneClickRenderPlayableVideo = async () => {
+    if (!rawInput.trim()) {
+      toast.error('⚠️ 请先在输入框中填入小说文本、剧本文件或 AI 提示词！');
+      return;
+    }
+
+    setIsRenderingVideo(true);
+    toast.info('🚀 启动全自动漫剧工业化压制流水线 (声画合成 + Ken Burns 运镜 + FFmpeg 硬件加速)...');
+
+    try {
+      // 1. 如果黑板尚无数据，先触发一次 DAG 快速拆解
+      let data = director.getBlackboard().getData();
+      if (!data.scriptContent || data.scenes.length === 0) {
+        director.getBlackboard().update(
+          {
+            rawInput,
+            scriptContent: rawInput,
+            inputType,
+            stage: 'planning',
+          },
+          'system',
+          'System',
+          '全自动成片流水线：启动剧本与场景自适应解析...'
+        );
+        await director.execute();
+        data = director.getBlackboard().getData();
+      }
+
+      // 2. 构造或查找目标 ProjectData
+      let targetProject = store.currentProject;
+      if (!targetProject) {
+        const payload = {
+          name: data.projectName || `漫剧成片_${new Date().toLocaleDateString()}`,
+          description: data.scriptContent.slice(0, 80),
+          status: 'processing' as const,
+          stage: 'In_Progress',
+          content: data.scriptContent,
+          script: data.scriptContent,
+          parsedScenes: data.scenes,
+          characters: data.characters,
+        };
+        targetProject = store.createProject(payload);
+        store.setCurrentProject(targetProject);
+      } else {
+        store.updateProject(targetProject.id, {
+          parsedScenes: data.scenes.length > 0 ? data.scenes : targetProject.parsedScenes,
+          characters: data.characters.length > 0 ? data.characters : targetProject.characters,
+        });
+      }
+
+      // 3. 执行端到端真实视频压制
+      const result = await PlayableMangaPipelineService.execute(targetProject, (progress) => {
+        setRenderProgress(progress);
+      });
+
+      setRenderedVideoMeta(result);
+      setIsVideoModalOpen(true);
+      toast.success('🎉 1080P 漫剧成片已成功压制出片！');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`❌ 漫剧压制失败: ${msg}`);
+    } finally {
+      setIsRenderingVideo(false);
+    }
+  };
+
   const latestAudit = blackboardData.auditReports && blackboardData.auditReports.length > 0
     ? blackboardData.auditReports[blackboardData.auditReports.length - 1]
     : null;
@@ -173,7 +265,25 @@ export const MultiAgentStudio: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            size="sm"
+            onClick={handleOneClickRenderPlayableVideo}
+            disabled={isExecuting || isRenderingVideo}
+            className="bg-gradient-to-r from-[#00f5d4] via-[#00e5ff] to-[#b44fff] text-black font-extrabold text-xs px-4 py-2 rounded-xl border-0 shadow-lg shadow-[#00f5d4]/20 flex items-center gap-1.5 cursor-pointer hover:opacity-95 transition-all"
+          >
+            {isRenderingVideo ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-black" />
+                <span>{renderProgress?.message || '漫剧压制中...'}</span>
+              </>
+            ) : (
+              <>
+                <Film className="w-3.5 h-3.5 text-black" />
+                <span>🎬 一键生成完整漫剧视频 (1080P MP4)</span>
+              </>
+            )}
+          </Button>
           <Button
             size="sm"
             onClick={() => setIsAgentConfigModalOpen(true)}
@@ -185,13 +295,34 @@ export const MultiAgentStudio: React.FC = () => {
           <Button
             size="sm"
             onClick={handleEnterStudio}
-            className="bg-[#00f5d4] hover:bg-[#00e0c2] text-[#050810] text-xs px-4 py-2 rounded-xl border-0 shadow-lg shadow-[#00f5d4]/20 flex items-center gap-1.5 cursor-pointer font-bold"
+            className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs px-4 py-2 rounded-xl border border-slate-700 flex items-center gap-1.5 cursor-pointer font-bold"
           >
-            <Clapperboard className="w-3.5 h-3.5" />
+            <Clapperboard className="w-3.5 h-3.5 text-[#00f5d4]" />
             进入分镜 Studio
           </Button>
         </div>
       </div>
+
+      {/* 实时视频压制渲染进度条 */}
+      {isRenderingVideo && renderProgress && (
+        <div className="p-4 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 rounded-2xl border border-[#00f5d4]/40 shadow-xl space-y-2 animate-fadeIn">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-bold text-[#00f5d4] flex items-center gap-2">
+              <Loader2 className="w-4 h-4 animate-spin text-[#00f5d4]" />
+              {renderProgress.message}
+            </span>
+            <span className="font-mono font-bold text-slate-300">
+              {renderProgress.percent}%
+            </span>
+          </div>
+          <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
+            <div
+              className="bg-gradient-to-r from-[#00f5d4] to-[#b44fff] h-full transition-all duration-300 rounded-full"
+              style={{ width: `${renderProgress.percent}%` }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* DAG 拓扑流水线全景状态条 */}
       <div className="p-4 bg-slate-950/70 rounded-2xl border border-slate-800 shadow-lg">
@@ -454,6 +585,76 @@ export const MultiAgentStudio: React.FC = () => {
         onOpenChange={setIsAgentConfigModalOpen}
         onAgentAdded={refreshAgents}
       />
+
+      {/* 🎬 1080P/4K 成片交付弹窗 */}
+      <Dialog open={isVideoModalOpen} onOpenChange={setIsVideoModalOpen}>
+        <DialogContent className="max-w-4xl bg-[#090d18] border border-slate-800 text-slate-100 p-6 rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-bold flex items-center gap-2 text-[#00f5d4]">
+              <Film className="w-5 h-5 text-[#00f5d4]" />
+              🎉 漫剧成片已成功压制交付 (1080P Full HD)
+            </DialogTitle>
+            <DialogDescription className="text-xs text-slate-400">
+              原生 FFmpeg 硬件加速压制 · Ken Burns 动态运镜 · Edge-TTS 多角色配音 · 动漫硬字幕
+            </DialogDescription>
+          </DialogHeader>
+
+          {renderedVideoMeta && (
+            <div className="space-y-4 my-2">
+              <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-slate-800 shadow-2xl flex items-center justify-center">
+                <video
+                  src={renderedVideoMeta.videoUri}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain"
+                />
+              </div>
+
+              <div className="flex items-center justify-between text-xs text-slate-300 bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800 flex-wrap gap-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono text-[11px]">
+                    ⏱️ 时长: {Math.round(renderedVideoMeta.duration)} 秒
+                  </Badge>
+                  <Badge className="bg-purple-500/10 text-purple-400 border border-purple-500/30 font-mono text-[11px]">
+                    📦 体积: {(renderedVideoMeta.fileSize / 1024 / 1024).toFixed(2)} MB
+                  </Badge>
+                  <Badge className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono text-[11px]">
+                    ⚡ 硬件加速: {renderedVideoMeta.encoderUsed || 'VideoToolbox/NVENC'}
+                  </Badge>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      if (renderedVideoMeta.videoPath) {
+                        void tauriService.openFileLocation(renderedVideoMeta.videoPath);
+                      }
+                    }}
+                    className="border-slate-700 bg-slate-900 hover:bg-slate-800 text-xs flex items-center gap-1.5 cursor-pointer text-slate-200"
+                  >
+                    <FolderOpen className="w-3.5 h-3.5 text-[#00f5d4]" />
+                    在文件夹中打开
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setIsVideoModalOpen(false);
+                      if (store.currentProject?.id) {
+                        void navigate(`/project/edit/${store.currentProject.id}?step=1`);
+                      }
+                    }}
+                    className="bg-[#00f5d4] hover:bg-[#00e0c2] text-black font-extrabold text-xs px-4 cursor-pointer"
+                  >
+                    进入分镜精调
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

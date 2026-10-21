@@ -44,3 +44,34 @@ pub struct PreviewParams {
 pub struct CleanFileParams {
     pub path: String,
 }
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct MangaSceneParams {
+    pub id: String,
+    pub image_path: String,
+    pub audio_path: Option<String>,
+    pub duration: f64,
+    pub camera_motion: Option<String>,
+    pub transition: Option<String>,
+    pub dialogue: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct RenderFullVideoParams {
+    pub project_id: String,
+    pub output_path: String,
+    pub scenes: Vec<MangaSceneParams>,
+    pub bgm_path: Option<String>,
+    pub bgm_volume: Option<f64>,
+    pub resolution: Option<String>,
+    pub quality: Option<String>,
+    pub subtitle_enabled: Option<bool>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct RenderResult {
+    pub output_path: String,
+    pub duration: f64,
+    pub file_size: u64,
+    pub encoder_used: String,
+}
