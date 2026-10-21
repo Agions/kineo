@@ -8,7 +8,7 @@
  * Pass 4: 镜头视效与运镜矢量编译 (Visual Shot List & Prompt Vector Compilation)
  */
 
-import type { Character, NovelScene, StoryAnalysis } from '@/core/script/types/novel';
+import { EmotionType, type Character, type NovelScene, type StoryAnalysis } from '@/core/script/types/novel';
 
 export interface ShotPromptVector {
   shotNumber: number;
@@ -180,7 +180,10 @@ export class HierarchicalScriptParser {
           endPosition: currentChunk.length,
           characters: [],
           dialogues: [],
-          emotions: ['tension', 'anticipation'],
+          emotions: [
+            { type: EmotionType.TENSE, intensity: 0.8, dominant: true },
+            { type: EmotionType.DRAMATIC, intensity: 0.7, dominant: false },
+          ],
         });
         currentChunk = '';
         sceneIndex++;
@@ -201,7 +204,7 @@ export class HierarchicalScriptParser {
             endPosition: text.length,
             characters: [],
             dialogues: [],
-            emotions: ['focus'],
+            emotions: [{ type: EmotionType.ACTION, intensity: 0.8, dominant: true }],
           },
         ];
   }

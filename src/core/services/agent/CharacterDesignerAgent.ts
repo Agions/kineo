@@ -93,14 +93,14 @@ export class CharacterDesignerAgent extends BaseAgent {
       return {
         id: ac.id || `char-holographic-${Date.now()}-${idx}`,
         name: charName,
-        role: isProtagonist ? 'protagonist' : 'supporting',
+        role: isProtagonist ? ('protagonist' as const) : ('supporting' as const),
         personality: ac.personality || (isProtagonist ? '坚毅果敢、心怀天下' : '深思熟虑、机变敏锐'),
         appearance: {
           description: `全息 DNA: ${holographicDNA.colorPalette.primaryCostume}, 发色 ${holographicDNA.colorPalette.hairHex}, 瞳色 ${holographicDNA.colorPalette.eyeHex}`,
           dna: holographicDNA,
         } as any,
         voice: {
-          provider: 'edge',
+          provider: 'edge' as const,
           voiceId: isProtagonist ? 'zh-CN-YunxiNeural' : 'zh-CN-XiaoxiaoNeural',
           pitch: isProtagonist ? 0 : 4,
           speed: 1,
