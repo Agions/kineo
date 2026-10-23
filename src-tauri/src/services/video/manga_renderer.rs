@@ -1,7 +1,8 @@
 //! Manga video rendering engine.
 //!
 //! Synthesizes novel scenes (images, Ken Burns motion, dialogues, audio and BGM)
-//! into full 1080P/4K MP4 playable videos via native FFmpeg and hardware offload.
+//! into full 1080P/4K MP4 playable videos via native FFmpeg, hardware offload,
+//! and parallel scene rendering pools.
 
 use std::fs::{self, File};
 use std::io::Write;
@@ -86,7 +87,7 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
     fs::create_dir_all(&temp_dir).map_err(|e| format!("创建渲染临时目录失败: {}", e))?;
 
     let (encoder, _hw_type) = detect_best_video_encoder();
-    info!("🎬 采用视频硬件编码器: {} | 分辨率: {}x{} ({})", encoder, width, height, aspect);
+    info!("🎬 采用视频硬件编码器: {} | 分辨率: {}x{} ({}) | 并行渲染池已就绪", encoder, width, height, aspect);
 
     let mut segment_paths: Vec<PathBuf> = Vec::new();
     let mut total_duration = 0.0;
@@ -96,7 +97,7 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
     let motion_intensity = params.motion_intensity.unwrap_or(1.0);
     let sub_enabled = params.subtitle_enabled.unwrap_or(true);
 
-    // 1. 逐幕生成场景片段
+    // 1. 预计算分镜时间线与成片字幕
     for (idx, scene) in params.scenes.iter().enumerate() {
         let duration = if scene.duration > 0.5 { scene.duration } else { 3.5 };
         let start_time = total_duration;
@@ -108,26 +109,48 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
                 full_subtitles_entries.push((start_time, end_time, text.clone()));
             }
         }
-
-        let seg_path = temp_dir.join(format!("scene_{:03}.mp4", idx));
-        render_single_scene(
-            scene,
-            idx,
-            duration,
-            width,
-            height,
-            &encoder,
-            sub_enabled,
-            params.subtitle_style.as_ref(),
-            motion_mode,
-            motion_intensity,
-            &seg_path,
-            &temp_dir,
-        )?;
-        segment_paths.push(seg_path);
+        segment_paths.push(temp_dir.join(format!("scene_{:03}.mp4", idx)));
     }
 
-    // 2. 拼接所有分镜片段
+    // 2. 并行分批渲染场景片段 (Parallel Scene Worker Pool: 4 workers per batch)
+    let chunk_size = 4;
+    for (chunk_idx, scene_chunk) in params.scenes.chunks(chunk_size).enumerate() {
+        std::thread::scope(|s| {
+            let mut handles = Vec::new();
+            for (sub_idx, scene) in scene_chunk.iter().enumerate() {
+                let idx = chunk_idx * chunk_size + sub_idx;
+                let duration = if scene.duration > 0.5 { scene.duration } else { 3.5 };
+                let seg_path = temp_dir.join(format!("scene_{:03}.mp4", idx));
+                let enc = encoder.clone();
+                let sub_style = params.subtitle_style.as_ref();
+                let t_dir = &temp_dir;
+
+                handles.push(s.spawn(move || {
+                    render_single_scene(
+                        scene,
+                        idx,
+                        duration,
+                        width,
+                        height,
+                        &enc,
+                        sub_enabled,
+                        sub_style,
+                        motion_mode,
+                        motion_intensity,
+                        &seg_path,
+                        t_dir,
+                    )
+                }));
+            }
+
+            for handle in handles {
+                handle.join().map_err(|_| "并发渲染工作线程异常中止".to_string())??;
+            }
+            Ok::<(), String>(())
+        })?;
+    }
+
+    // 3. 拼接所有分镜片段
     let concat_list_path = temp_dir.join("concat_list.txt");
     {
         let mut f = File::create(&concat_list_path).map_err(|e| format!("创建合并清单失败: {}", e))?;
@@ -147,7 +170,7 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
         &joined_video_path.to_string_lossy(),
     ])?;
 
-    // 3. 混合 BGM 背景音乐（若提供）并导出至目标路径
+    // 4. 混合 BGM 背景音乐（若提供）并导出至目标路径
     let target_output = Path::new(&params.output_path);
     if let Some(parent) = target_output.parent() {
         let _ = fs::create_dir_all(parent);
@@ -182,7 +205,7 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
         fs::copy(&joined_video_path, target_output).map_err(|e| format!("保存成片视频失败: {}", e))?;
     }
 
-    // 4. 若开启外挂 SRT 伴随文件导出，生成完整项目的 .srt 文件
+    // 5. 若开启外挂 SRT 伴随文件导出，生成完整项目的 .srt 文件
     let should_export_srt = params.subtitle_style.as_ref().and_then(|s| s.external_srt).unwrap_or(false);
     if should_export_srt && !full_subtitles_entries.is_empty() {
         let srt_output = target_output.with_extension("srt");
@@ -194,7 +217,7 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
         }
     }
 
-    // 5. 清理临时渲染切片
+    // 6. 清理临时渲染切片
     let _ = fs::remove_dir_all(&temp_dir);
 
     let file_size = fs::metadata(target_output).map(|m| m.len()).unwrap_or(0);
@@ -230,16 +253,18 @@ fn render_single_scene(
 
     let frames = (duration * 30.0).round() as u32;
 
-    // 确定运镜模式
+    // 确定运镜模式 (含动作震屏 shake 与冲击推进 punch_zoom)
     let effective_motion = if motion_mode == "adaptive" {
-        scene.camera_motion.as_deref().unwrap_or(match idx % 4 {
+        scene.camera_motion.as_deref().unwrap_or(match idx % 6 {
             0 => "zoom_in",
             1 => "zoom_out",
-            2 => "pan_right",
+            2 => "punch_zoom",
+            3 => "pan_right",
+            4 => "shake",
             _ => "pan_left",
         })
     } else {
-        motion_mode
+        scene.camera_motion.as_deref().unwrap_or(motion_mode)
     };
 
     let step = 0.0012 * motion_intensity;
@@ -247,6 +272,14 @@ fn render_single_scene(
 
     let zoompan_filter = match effective_motion {
         "static" => format!("scale=w={}:h={}:force_original_aspect_ratio=increase,crop={}:{}", width, height, width, height),
+        "shake" => format!(
+            "scale={}:{},crop=w={}-24:h={}-24:x='(iw-ow)/2+10*sin(50*t)':y='(ih-oh)/2+10*cos(50*t)',scale={}:{}",
+            width + 32, height + 32, width + 32, height + 32, width, height
+        ),
+        "punch_zoom" => format!(
+            "scale=8000:-1,zoompan=z='if(lte(on,15),1.0+0.25*(on/15),1.25+0.0006*on)':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
+            frames, width, height
+        ),
         "zoom_out" => format!(
             "scale=8000:-1,zoompan=z='max({:.3}-{:.5}*on,1.0)':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
             max_zoom, step, frames, width, height

@@ -52,6 +52,15 @@ describe('PlayableMangaPipelineService End-to-End Playable Video Pipeline', () =
 
     const bgmPath = await AutoVoiceSynthesizer.generateAmbientBgm(testProjectId);
     expect(bgmPath).toBeDefined();
+
+    // SFX 动作线索探测测试
+    expect(AutoVoiceSynthesizer.detectSfxCue('拔剑！绝不退让！')).toBe('sword_clash');
+    expect(AutoVoiceSynthesizer.detectSfxCue('九天玄刹，引天雷入体！')).toBe('thunder_strike');
+    expect(AutoVoiceSynthesizer.detectSfxCue('一拳重击，合金大门轰然倒塌！')).toBe('impact_hit');
+    expect(AutoVoiceSynthesizer.detectSfxCue('启动金丹算力芯片，开始扫描数据流')).toBe('cyber_chime');
+
+    const sfxPath = await AutoVoiceSynthesizer.generateDramaticSfx(testProjectId, 'scene_action', 'sword_clash');
+    expect(sfxPath).toBeDefined();
   });
 
   it('UnifiedImageGenerator should generate dual-track fallback scene frame', async () => {

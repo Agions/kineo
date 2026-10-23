@@ -34,7 +34,15 @@ export interface PlayablePipelineOptions {
     bottomMargin?: number;
     externalSrt?: boolean;
   };
-  cameraMotionMode?: 'adaptive' | 'zoom_in' | 'zoom_out' | 'pan_right' | 'pan_left' | 'static';
+  cameraMotionMode?:
+    | 'adaptive'
+    | 'zoom_in'
+    | 'zoom_out'
+    | 'pan_right'
+    | 'pan_left'
+    | 'punch_zoom'
+    | 'shake'
+    | 'static';
   motionIntensity?: number;
   bgmVolume?: number;
   voiceVolume?: number;
@@ -153,15 +161,26 @@ export class PlayableMangaPipelineService {
           }
         );
 
-        // 运镜机位规划 (从工程元数据或自适应)
-        const cameraMotions = ['zoom_in', 'zoom_out', 'pan_right', 'pan_left'];
-        const cameraMotion = cameraMotions[i % cameraMotions.length];
+        // 运镜机位自适应规划 (战斗张力 -> punch_zoom / shake, 叙事推进 -> zoom_in, 全景环境 -> zoom_out / pan)
+        let cameraMotion: string;
+        const isActionScene =
+          /拔剑|斩|死|杀|爆|战|冲|逃|撞|击|雷|破/.test(dialogueText) ||
+          /战斗|追捕|对决|天台|决战/.test(title);
+        if (isActionScene) {
+          cameraMotion = i % 2 === 0 ? 'punch_zoom' : 'shake';
+        } else {
+          const ambientMotions = ['zoom_in', 'zoom_out', 'pan_right', 'pan_left'];
+          cameraMotion = ambientMotions[i % ambientMotions.length];
+        }
+
+        // 自然语音呼吸留白 (+0.5s 确保尾音饱满自然)
+        const sceneDuration = Math.max(3.0, voiceRes.duration + 0.5);
 
         renderedScenes.push({
           id: sceneId,
           image_path: imageRes.localDiskPath,
           audio_path: voiceRes.audioDiskPath,
-          duration: Math.max(3.0, voiceRes.duration),
+          duration: sceneDuration,
           camera_motion: cameraMotion,
           transition: 'dissolve',
           dialogue: dialogueText ? `【${speaker}】${dialogueText}` : undefined,
