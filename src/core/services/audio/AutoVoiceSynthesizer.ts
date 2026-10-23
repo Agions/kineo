@@ -25,8 +25,8 @@ export class AutoVoiceSynthesizer {
   // TTS 并发限流队列与缓存
   private static activeRequests = 0;
   private static readonly MAX_CONCURRENT_REQUESTS = 3;
-  private static readonly requestQueue: Array<() => void> = [];
-  private static readonly memoryCache = new Map<string, VoiceSynthesisResult>();
+  private static readonly REQUEST_QUEUE: Array<() => void> = [];
+  private static readonly MEMORY_CACHE = new Map<string, VoiceSynthesisResult>();
 
   private static async acquireSlot(): Promise<void> {
     if (this.activeRequests < this.MAX_CONCURRENT_REQUESTS) {
@@ -34,7 +34,7 @@ export class AutoVoiceSynthesizer {
       return;
     }
     return new Promise<void>((resolve) => {
-      this.requestQueue.push(() => {
+      this.REQUEST_QUEUE.push(() => {
         this.activeRequests++;
         resolve();
       });
@@ -43,8 +43,8 @@ export class AutoVoiceSynthesizer {
 
   private static releaseSlot(): void {
     this.activeRequests = Math.max(0, this.activeRequests - 1);
-    if (this.requestQueue.length > 0) {
-      const next = this.requestQueue.shift();
+    if (this.REQUEST_QUEUE.length > 0) {
+      const next = this.REQUEST_QUEUE.shift();
       next?.();
     }
   }
@@ -102,8 +102,8 @@ export class AutoVoiceSynthesizer {
     }
 
     const cacheKey = this.getCacheKey(trimmed, voice, speed, pitch);
-    if (this.memoryCache.has(cacheKey)) {
-      const cached = this.memoryCache.get(cacheKey)!;
+    if (this.MEMORY_CACHE.has(cacheKey)) {
+      const cached = this.MEMORY_CACHE.get(cacheKey)!;
       logger.info(`[AutoVoiceSynthesizer] 命中文本配音缓存 [${speaker}]: "${trimmed.slice(0, 16)}..."`);
       return {
         ...cached,
@@ -161,7 +161,7 @@ export class AutoVoiceSynthesizer {
         sfxPath,
       };
 
-      this.memoryCache.set(cacheKey, res);
+      this.MEMORY_CACHE.set(cacheKey, res);
       return res;
     } catch (err) {
       logger.warn(`[AutoVoiceSynthesizer] 在线 TTS 合成异常，回退生成保底音频:`, err);
