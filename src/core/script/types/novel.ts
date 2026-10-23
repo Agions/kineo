@@ -115,6 +115,9 @@ export interface Character {
     pitch?: number;
     speed?: number;
   };
+  voiceId?: string;
+  voicePitch?: number;
+  voiceSpeed?: number;
   tags?: string[];
   createdAt?: string;
   updatedAt?: string;

@@ -17,6 +17,7 @@ import { Tabs, TabPane } from '@/components/ui/tabs';
 import type { VideoSegment } from '@/common/types/script';
 import { AudioEditorPanel } from '@/components/media/audio/AudioEditorPanel';
 import { ExportPanel } from '@/components/project/ExportPanel';
+import { EpisodeBatchStudio } from '@/features/episode/components/EpisodeBatchStudio';
 
 import { useProjectDetail } from './hooks/useProjectDetail';
 
@@ -108,6 +109,13 @@ const ProjectDetail = () => {
       {/* 选项卡面板大厅 */}
       <div className="p-6 rounded-3xl bg-[var(--card)] border border-[var(--border)] backdrop-blur-2xl shadow-xl">
         <Tabs activeKey={activeTab} onChange={setActiveTab}>
+          <TabPane tab="短剧多集连载" key="episodes">
+            <EpisodeBatchStudio
+              project={project}
+              onUpdateProject={persistProjectPatch}
+            />
+          </TabPane>
+
           <TabPane tab="剧本拆解与分镜" key="novel">
             <Suspense fallback={<Spin tip="正在载入剧本编辑器..." />}>
               <ScriptEditor

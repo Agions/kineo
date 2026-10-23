@@ -19,6 +19,33 @@ export interface VoiceSynthesisResult {
   sfxPath?: string;      // 伴随动作音效物理路径（若触发）
 }
 
+export interface MangaVoiceProfile {
+  id: string;
+  name: string;
+  gender: 'male' | 'female';
+  style: string;
+  previewSample: string;
+}
+
+export const MANGA_VOICE_CATALOG: MangaVoiceProfile[] = [
+  // 男声库
+  { id: 'zh-CN-YunxiNeural', name: '云希', gender: 'male', style: '热血少年 / 青年主角', previewSample: '只要还有一口气在，我就绝不会放弃！' },
+  { id: 'zh-CN-YunyangNeural', name: '云扬', gender: 'male', style: '沉稳剑客 / 冷静智囊', previewSample: '局势已定，接下来看我的动作。' },
+  { id: 'zh-CN-YunjianNeural', name: '云健', gender: 'male', style: '苍劲老者 / 反派首脑 / 旁白', previewSample: '宿命的轮盘一旦启动，谁也无法逃脱。' },
+  { id: 'zh-CN-YunxiaNeural', name: '云夏', gender: 'male', style: '元气正太 / 少年师弟', previewSample: '师兄！等等我，我也要去！' },
+  { id: 'zh-CN-liaoning-XiaobeiNeural', name: '东北小北', gender: 'male', style: '幽默豪爽 / 义气兄弟', previewSample: '哎呀妈呀，兄弟你这招也太狠了吧！' },
+  { id: 'zh-TW-YunJheNeural', name: '云哲', gender: 'male', style: '温润儒雅 / 深情男二', previewSample: '无论前路如何，我都愿意陪你走下去。' },
+  { id: 'zh-HK-WanLungNeural', name: '云龙 (粤语)', gender: 'male', style: '港风枭雄 / 狠厉决绝', previewSample: '出得嚟行，预咗要还！' },
+
+  // 女声库
+  { id: 'zh-CN-XiaoxiaoNeural', name: '晓晓', gender: 'female', style: '清丽活泼 / 甜美女主', previewSample: '快看！天边的晨光已经亮起来了！' },
+  { id: 'zh-CN-XiaoyiNeural', name: '晓伊', gender: 'female', style: '清冷出尘 / 冷酷女刺客', previewSample: '退后，不要妨碍我拔剑。' },
+  { id: 'zh-CN-YunjieNeural', name: '云洁', gender: 'female', style: '成熟干练 / 霸气御姐', previewSample: '在本宫面前，还轮不到你来指手画脚。' },
+  { id: 'zh-CN-XiaomengNeural', name: '晓梦', gender: 'female', style: '软萌可爱 / 元气萝莉', previewSample: '哇！这个真的好神奇呀，教教我嘛！' },
+  { id: 'zh-TW-HsiaoChenNeural', name: '晓臻', gender: 'female', style: '温柔体贴 / 邻家师姐', previewSample: '累了吧，先喝杯热茶休息一下吧。' },
+  { id: 'zh-HK-HiuGaaiNeural', name: '晓佳 (粤语)', gender: 'female', style: '傲娇飒爽 / 现代女强', previewSample: '讲多无谓，手底下见真章啦！' },
+];
+
 export type SfxType = 'sword_clash' | 'thunder_strike' | 'impact_hit' | 'cyber_chime';
 
 export class AutoVoiceSynthesizer {
@@ -69,27 +96,34 @@ export class AutoVoiceSynthesizer {
   }
 
   /**
-   * 合成单条对白音频并落盘 (含情绪感应与动作音效联动)
+   * 合成单条对白音频并落盘 (含情绪感应与动作音效联动，支持角色指定专属音色)
    */
   public static async synthesizeDialogue(
     projectId: string,
     sceneId: string,
     speaker: string,
     text: string,
-    gender?: 'male' | 'female' | 'unknown'
+    genderOrVoiceId?: 'male' | 'female' | 'unknown' | string,
+    customTuning?: { pitch?: number; speed?: number }
   ): Promise<VoiceSynthesisResult> {
     const trimmed = text.trim();
     if (!trimmed) {
       return this.generateSilentAudio(projectId, sceneId, 2.0);
     }
 
-    const voice = this.selectVoiceForCharacter(speaker, gender);
+    // 若传入具体音色 ID 则直接使用，否则根据角色名字和性别智能推荐
+    let voice = 'zh-CN-YunxiNeural';
+    if (genderOrVoiceId && genderOrVoiceId.includes('Neural')) {
+      voice = genderOrVoiceId;
+    } else {
+      voice = this.selectVoiceForCharacter(speaker, genderOrVoiceId as any);
+    }
 
     // 情绪感知与语调自适应
     const hasExclamation = trimmed.includes('!') || trimmed.includes('！');
     const isActionCue = /拔剑|斩|死|杀|爆|战|冲|逃|混蛋|绝不/.test(trimmed);
-    const speed = hasExclamation || isActionCue ? 1.08 : 1.0;
-    const pitch = isActionCue ? 1.05 : 1.0;
+    const speed = customTuning?.speed ?? (hasExclamation || isActionCue ? 1.08 : 1.0);
+    const pitch = customTuning?.pitch ?? (isActionCue ? 1.05 : 1.0);
 
     let sfxPath: string | undefined;
     const detectedSfx = this.detectSfxCue(trimmed);
@@ -167,6 +201,70 @@ export class AutoVoiceSynthesizer {
       logger.warn(`[AutoVoiceSynthesizer] 在线 TTS 合成异常，回退生成保底音频:`, err);
       const estimatedDuration = Math.max(2.0, trimmed.length * 0.28);
       return this.generateSilentAudio(projectId, sceneId, estimatedDuration);
+    } finally {
+      this.releaseSlot();
+    }
+  }
+
+  /**
+   * 角色音色实时试听合成 (Audition Preview)
+   */
+  public static async auditionVoice(
+    voiceId: string,
+    sampleText?: string,
+    speed: number = 1.0,
+    pitch: number = 1.0
+  ): Promise<{ audioUri: string; duration: number }> {
+    const textToSpeak = sampleText || '这就是我的漫剧配音，听起来怎么样？';
+    const cacheKey = `audition_${voiceId}_s${speed}_p${pitch}_${textToSpeak}`;
+
+    if (this.MEMORY_CACHE.has(cacheKey)) {
+      const cached = this.MEMORY_CACHE.get(cacheKey)!;
+      return { audioUri: cached.audioUri, duration: cached.duration };
+    }
+
+    await this.acquireSlot();
+    try {
+      const response = await ttsService.synthesize({
+        text: textToSpeak,
+        config: {
+          provider: 'edge',
+          voice: voiceId,
+          speed,
+          pitch,
+          volume: 1.0,
+          format: 'audio-24khz-48kbitrate-mono-mp3',
+        },
+      });
+
+      const audioBuffer = new Uint8Array(response.audio);
+      const assetMeta = await assetPersistenceBridge.persistAsset(
+        'temp_audition',
+        `audition_${voiceId}_${Date.now()}`,
+        audioBuffer,
+        {
+          fileName: `audition_${voiceId}.mp3`,
+          mimeType: 'audio/mpeg',
+        }
+      );
+
+      const res = {
+        audioUri: assetMeta.uri,
+        duration: Math.max(1.0, response.duration),
+      };
+
+      this.MEMORY_CACHE.set(cacheKey, {
+        audioDiskPath: assetMeta.localDiskPath || assetMeta.uri,
+        audioUri: assetMeta.uri,
+        duration: res.duration,
+      });
+
+      return res;
+    } catch (err) {
+      logger.warn('[AutoVoiceSynthesizer] 试听语音合成失败:', err);
+      // Fallback: 构造简短的提示音
+      const silentRes = await this.generateSilentAudio('temp_audition', `audition_${Date.now()}`, 1.5);
+      return { audioUri: silentRes.audioUri, duration: 1.5 };
     } finally {
       this.releaseSlot();
     }

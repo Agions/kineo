@@ -130,18 +130,23 @@ export class PlayableMangaPipelineService {
           dialogueText = scene.content.slice(0, 80);
         }
 
-        // A. 听觉流：生成配音音频
+        // A. 听觉流：生成配音音频 (优先使用角色绑定的专属音色)
         onProgress?.({
           stage: 'audio',
           percent: 15 + Math.round((i / totalScenes) * 35),
           message: `正在合成第 ${i + 1}/${totalScenes} 幕角色语音 [${speaker}]: "${dialogueText.slice(0, 16)}..."`,
         });
 
+        const projectCharacters = project.characters || [];
+        const matchedChar = projectCharacters.find((c) => c.name === speaker);
+        const charVoice = matchedChar?.voiceId || matchedChar?.voice?.voiceId;
+
         const voiceRes = await AutoVoiceSynthesizer.synthesizeDialogue(
           projectId,
           sceneId,
           speaker,
-          dialogueText
+          dialogueText,
+          charVoice
         );
 
         // B. 视觉流：生成分镜画面（自动注入角色 Visual DNA 与主参考图）
@@ -152,7 +157,6 @@ export class PlayableMangaPipelineService {
         });
 
         const prompt = scene.imagePrompts?.[0] || scene.content || '赛博朋克漫剧电影级质感镜头';
-        const projectCharacters = project.characters || [];
 
         const imageRes = await UnifiedImageGenerator.generateSceneImage(
           projectId,

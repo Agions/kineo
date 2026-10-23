@@ -45,7 +45,7 @@ import type { CharacterAppearance, ClothingItem } from '@/common/types/compositi
 import type { Character } from '@/common/types/novel';
 import { generateCharId } from '@/common/utils';
 import { CharacterPortraitService } from '@/core/services/ai/character/CharacterPortraitService';
-import { AutoVoiceSynthesizer } from '@/core/services/audio/AutoVoiceSynthesizer';
+import { AutoVoiceSynthesizer, MANGA_VOICE_CATALOG } from '@/core/services/audio/AutoVoiceSynthesizer';
 import { logger } from '@/core/utils/logger';
 
 import styles from './CharacterDesigner.module.less';
@@ -174,6 +174,12 @@ export function CharacterDesigner({
     activeCharacter?.visualDna ?? CharacterPortraitService.deriveVisualDna(activeCharacter || {})
   );
   const [isLocked, setIsLocked] = useState<boolean>(activeCharacter?.isLocked ?? false);
+  const [voiceId, setVoiceId] = useState<string>(
+    activeCharacter?.voiceId ?? activeCharacter?.voice?.voiceId ?? 'zh-CN-YunxiNeural'
+  );
+  const [voicePitch, setVoicePitch] = useState<number>(activeCharacter?.voicePitch ?? 1.0);
+  const [voiceSpeed, setVoiceSpeed] = useState<number>(activeCharacter?.voiceSpeed ?? 1.0);
+  const [isAuditioning, setIsAuditioning] = useState<boolean>(false);
 
   const [newTagInput, setNewTagInput] = useState('');
   const [isGeneratingPortrait, setIsGeneratingPortrait] = useState(false);
@@ -204,7 +210,34 @@ export function CharacterDesigner({
         : CharacterPortraitService.deriveVisualDna(activeCharacter)
     );
     setIsLocked(activeCharacter.isLocked ?? false);
+    setVoiceId(
+      activeCharacter.voiceId ??
+        activeCharacter.voice?.voiceId ??
+        (activeCharacter.gender === 'female' ? 'zh-CN-XiaoxiaoNeural' : 'zh-CN-YunxiNeural')
+    );
+    setVoicePitch(activeCharacter.voicePitch ?? activeCharacter.voice?.pitch ?? 1.0);
+    setVoiceSpeed(activeCharacter.voiceSpeed ?? activeCharacter.voice?.speed ?? 1.0);
   }, [selectedIndex, activeCharacter]);
+
+  // 角色音色试听
+  const handleAuditionVoice = async (targetVoiceId: string, sampleText: string) => {
+    setIsAuditioning(true);
+    try {
+      toast.info(`正在合成 [${name || '角色'}] 的试听音频...`);
+      const res = await AutoVoiceSynthesizer.auditionVoice(
+        targetVoiceId,
+        `我是${name || '主角'}，${sampleText}`,
+        voiceSpeed,
+        voicePitch
+      );
+      const audio = new Audio(res.audioUri);
+      audio.play().catch((e) => logger.warn('试听播放失败:', e));
+    } catch (err: any) {
+      toast.error(`试听失败: ${err?.message || '未知错误'}`);
+    } finally {
+      setIsAuditioning(false);
+    }
+  };
 
   // 更新外观属性
   const updateAppearance = useCallback(
@@ -374,6 +407,15 @@ export function CharacterDesigner({
       avatarUrl: referenceImageUrl,
       visualDna,
       isLocked,
+      voiceId,
+      voicePitch,
+      voiceSpeed,
+      voice: {
+        provider: 'edge',
+        voiceId,
+        pitch: voicePitch,
+        speed: voiceSpeed,
+      },
       updatedAt: new Date().toISOString(),
     };
 
@@ -381,7 +423,7 @@ export function CharacterDesigner({
     setCharacterList(nextList);
     onChange?.(nextList);
     onSave?.(updatedCharacter);
-    toast.success(`角色 [${updatedCharacter.name}] 人设已保存`);
+    toast.success(`角色 [${updatedCharacter.name}] 人设与配音音色已保存`);
   }, [
     name,
     description,
@@ -394,6 +436,9 @@ export function CharacterDesigner({
     referenceImageUrl,
     visualDna,
     isLocked,
+    voiceId,
+    voicePitch,
+    voiceSpeed,
     activeCharacter,
     characterList,
     selectedIndex,
@@ -812,24 +857,99 @@ export function CharacterDesigner({
                   </ScrollArea>
                 </TabsContent>
 
-                {/* 4. 配音音色 */}
+                {/* 4. 配音音色与实时试听 */}
                 <TabsContent value="voice" className="space-y-4 pt-3">
-                  <div className="p-4 rounded-2xl bg-indigo-950/30 border border-indigo-500/20 space-y-3">
+                  <div className="p-4 rounded-2xl bg-indigo-950/30 border border-indigo-500/20 space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Volume2 className="w-4 h-4 text-indigo-400" />
-                        <span className="text-xs font-bold text-zinc-100">自动智能分角色音色分配</span>
+                        <span className="text-xs font-bold text-zinc-100">角色专属 Edge-TTS 神经网络音色库</span>
                       </div>
                       <Badge variant="outline" className="text-[10px] text-indigo-300 border-indigo-500/30">
-                        Edge-TTS 神经网络
+                        {gender === 'female' ? '推荐女性音色' : '推荐男性音色'}
                       </Badge>
                     </div>
-                    <p className="text-xs text-zinc-300 font-mono">
-                      当前自动匹配发音人: <strong className="text-cyan-400">{recommendedVoice}</strong>
-                    </p>
-                    <p className="text-[11px] text-zinc-400">
-                      系统将根据角色名字与性别（男声: 云希 Yunxi / 云扬 Yunyang；女声: 晓晓 Xiaoxiao / 晓伊 Xiaoyi）在压制视频时自动合成专属台词对白。
-                    </p>
+
+                    {/* 音色卡片网格选择 */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[280px] overflow-y-auto pr-1">
+                      {MANGA_VOICE_CATALOG.map((vc) => {
+                        const isSelected = voiceId === vc.id;
+                        const isGenderMatch = (gender === 'female' && vc.gender === 'female') || (gender !== 'female' && vc.gender === 'male');
+                        return (
+                          <div
+                            key={vc.id}
+                            onClick={() => setVoiceId(vc.id)}
+                            className={`p-3 rounded-xl border cursor-pointer transition-all ${
+                              isSelected
+                                ? 'bg-indigo-600/25 border-indigo-500 text-white shadow-lg shadow-indigo-500/20 ring-1 ring-indigo-400'
+                                : 'bg-white/5 border-white/10 text-zinc-300 hover:bg-white/10'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-xs font-bold text-zinc-100">{vc.name}</span>
+                                {isGenderMatch && (
+                                  <span className="text-[9px] px-1 py-0.2 rounded bg-indigo-500/20 text-indigo-300">
+                                    推荐
+                                  </span>
+                                )}
+                              </div>
+                              {isSelected && (
+                                <Badge className="text-[9px] h-4 bg-indigo-500 text-white border-0">已绑定</Badge>
+                              )}
+                            </div>
+                            <p className="text-[11px] text-zinc-400 mb-2 line-clamp-1">{vc.style}</p>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              disabled={isAuditioning}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAuditionVoice(vc.id, vc.previewSample);
+                              }}
+                              className="text-[10px] h-7 px-2 text-indigo-300 hover:text-white hover:bg-indigo-500/30 w-full flex items-center justify-center gap-1.5 border border-indigo-500/20"
+                            >
+                              <Volume2 className="w-3 h-3" />
+                              {isAuditioning ? '合成中...' : '试听此音色'}
+                            </Button>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* 语速与音调精调 */}
+                    <div className="grid grid-cols-2 gap-4 pt-3 border-t border-white/10">
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between text-[11px] text-zinc-400">
+                          <span>发音语速 (Speed)</span>
+                          <span className="font-mono text-cyan-400">{voiceSpeed.toFixed(2)}x</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0.8"
+                          max="1.3"
+                          step="0.05"
+                          value={voiceSpeed}
+                          onChange={(e) => setVoiceSpeed(parseFloat(e.target.value))}
+                          className="w-full accent-indigo-500 cursor-pointer h-1.5 bg-white/10 rounded-lg"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between text-[11px] text-zinc-400">
+                          <span>发音音调 (Pitch)</span>
+                          <span className="font-mono text-cyan-400">{voicePitch.toFixed(2)}x</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0.8"
+                          max="1.2"
+                          step="0.05"
+                          value={voicePitch}
+                          onChange={(e) => setVoicePitch(parseFloat(e.target.value))}
+                          className="w-full accent-indigo-500 cursor-pointer h-1.5 bg-white/10 rounded-lg"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </TabsContent>
               </Tabs>
