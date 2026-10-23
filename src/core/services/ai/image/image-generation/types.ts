@@ -19,6 +19,8 @@ export interface ImageGenerationOptions {
   style?: 'anime' | 'realistic' | 'cartoon' | '3d';
   /** 图像质量 */
   quality?: 'standard' | 'high' | 'premium';
+  /** 角色一致性参考图 */
+  characterReferences?: CharacterVideoRef[];
   /** AbortSignal for cancellation */
   signal?: AbortSignal;
   /** 最大重试次数（仅对统一入口有效） */

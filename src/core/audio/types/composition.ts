@@ -15,6 +15,7 @@ export interface CharacterAppearance {
   bodyType?: string;
   height?: string | number;
   weight?: string | number;
+  clothing?: string;
   features?: string[];
 }
 

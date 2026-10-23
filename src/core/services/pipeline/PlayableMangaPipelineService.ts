@@ -131,20 +131,26 @@ export class PlayableMangaPipelineService {
           dialogueText
         );
 
-        // B. 视觉流：生成分镜画面
+        // B. 视觉流：生成分镜画面（自动注入角色 Visual DNA 与主参考图）
         onProgress?.({
           stage: 'images',
           percent: 50 + Math.round((i / totalScenes) * 30),
-          message: `正在渲染第 ${i + 1}/${totalScenes} 幕分镜画面: ${title}`,
+          message: `正在渲染第 ${i + 1}/${totalScenes} 幕分镜画面: ${title} (角色: ${speaker})`,
         });
 
         const prompt = scene.imagePrompts?.[0] || scene.content || '赛博朋克漫剧电影级质感镜头';
+        const projectCharacters = project.characters || [];
+
         const imageRes = await UnifiedImageGenerator.generateSceneImage(
           projectId,
           sceneId,
           prompt,
-          title,
-          location
+          {
+            sceneTitle: title,
+            location,
+            speaker,
+            characters: projectCharacters,
+          }
         );
 
         // 运镜机位规划 (从工程元数据或自适应)

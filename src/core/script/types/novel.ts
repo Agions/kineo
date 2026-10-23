@@ -128,6 +128,11 @@ export interface Character {
   height?: string;
   weight?: string;
   features?: string[];
+  // Visual Consistency & Reference Assets (2026 AI Manga Spec)
+  avatarUrl?: string;
+  referenceImageUrl?: string;
+  visualDna?: string[];
+  isLocked?: boolean;
 }
 
 export interface CharacterRelationship {
