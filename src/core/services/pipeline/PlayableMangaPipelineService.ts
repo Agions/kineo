@@ -42,6 +42,9 @@ export interface PlayablePipelineOptions {
     | 'pan_left'
     | 'punch_zoom'
     | 'shake'
+    | 'breathing_micro'
+    | 'depth_zoom'
+    | 'parallax_pan'
     | 'static';
   motionIntensity?: number;
   bgmVolume?: number;
@@ -106,6 +109,8 @@ export class PlayableMangaPipelineService {
         camera_motion?: string;
         transition?: string;
         dialogue?: string;
+        dialogue_duration?: number;
+        dialogue_offset?: number;
       }> = [];
 
       // 2. 批量生成配音与画面资产
@@ -161,20 +166,29 @@ export class PlayableMangaPipelineService {
           }
         );
 
-        // 运镜机位自适应规划 (战斗张力 -> punch_zoom / shake, 叙事推进 -> zoom_in, 全景环境 -> zoom_out / pan)
+        // 运镜机位自适应规划 (战斗张力 -> punch_zoom / shake, 对白特写 -> breathing_micro, 悬念揭示 -> depth_zoom, 全景视差 -> parallax_pan)
         let cameraMotion: string;
         const isActionScene =
           /拔剑|斩|死|杀|爆|战|冲|逃|撞|击|雷|破/.test(dialogueText) ||
           /战斗|追捕|对决|天台|决战/.test(title);
+        const isDiscoveryOrMystery = /真相|秘密|难道|不可思议|神级|系统|觉醒/.test(dialogueText) || /天际|核心|矩阵/.test(title);
+        const isEmotionalDialogue = dialogueText.length > 0 && !isActionScene;
+
         if (isActionScene) {
           cameraMotion = i % 2 === 0 ? 'punch_zoom' : 'shake';
+        } else if (isDiscoveryOrMystery) {
+          cameraMotion = 'depth_zoom';
+        } else if (isEmotionalDialogue) {
+          cameraMotion = 'breathing_micro';
         } else {
-          const ambientMotions = ['zoom_in', 'zoom_out', 'pan_right', 'pan_left'];
+          const ambientMotions = ['parallax_pan', 'zoom_in', 'zoom_out'];
           cameraMotion = ambientMotions[i % ambientMotions.length];
         }
 
         // 自然语音呼吸留白 (+0.5s 确保尾音饱满自然)
         const sceneDuration = Math.max(3.0, voiceRes.duration + 0.5);
+        // 对白字幕发音对齐：0.1s进入，并在语音结束后+0.3s收尾
+        const dialogueDuration = Math.min(sceneDuration - 0.1, voiceRes.duration + 0.3);
 
         renderedScenes.push({
           id: sceneId,
@@ -184,6 +198,8 @@ export class PlayableMangaPipelineService {
           camera_motion: cameraMotion,
           transition: 'dissolve',
           dialogue: dialogueText ? `【${speaker}】${dialogueText}` : undefined,
+          dialogue_duration: dialogueDuration,
+          dialogue_offset: 0.1,
         });
       }
 

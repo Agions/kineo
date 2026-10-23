@@ -106,7 +106,11 @@ pub async fn render_full_manga_video(params: &RenderFullVideoParams) -> Result<R
 
         if let Some(ref text) = scene.dialogue {
             if !text.trim().is_empty() {
-                full_subtitles_entries.push((start_time, end_time, text.clone()));
+                let offset = scene.dialogue_offset.unwrap_or(0.0).max(0.0);
+                let sub_dur = scene.dialogue_duration.unwrap_or(duration).min(duration - offset);
+                let sub_start = start_time + offset;
+                let sub_end = (sub_start + sub_dur).min(end_time);
+                full_subtitles_entries.push((sub_start, sub_end, text.clone()));
             }
         }
         segment_paths.push(temp_dir.join(format!("scene_{:03}.mp4", idx)));
@@ -280,6 +284,18 @@ fn render_single_scene(
             "scale=8000:-1,zoompan=z='if(lte(on,15),1.0+0.25*(on/15),1.25+0.0006*on)':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
             frames, width, height
         ),
+        "breathing_micro" => format!(
+            "scale=8000:-1,zoompan=z='1.03+0.025*sin(2*3.14159*on/90)':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
+            frames, width, height
+        ),
+        "depth_zoom" => format!(
+            "scale=8000:-1,zoompan=z='min(1.0+0.20*pow(on/{:.1},1.3),1.35)':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
+            frames.max(1) as f64, frames, width, height
+        ),
+        "parallax_pan" => format!(
+            "scale=8000:-1,zoompan=z='1.12':d={}:x='(iw-iw/zoom)*0.5+0.05*iw*sin(2*3.14159*on/{:.1})':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
+            frames.max(1) as f64, frames, width, height
+        ),
         "zoom_out" => format!(
             "scale=8000:-1,zoompan=z='max({:.3}-{:.5}*on,1.0)':d={}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={}x{}:fps=30",
             max_zoom, step, frames, width, height
@@ -300,12 +316,15 @@ fn render_single_scene(
 
     let mut full_filter = format!("{},format=yuv420p", zoompan_filter);
 
-    // 字幕烧录（若有对白）
+    // 字幕烧录（若有对白，精准对齐语音起始与结束）
     if subtitle_enabled && scene.dialogue.as_deref().map(|d| !d.trim().is_empty()).unwrap_or(false) {
         let srt_path = temp_dir.join(format!("sub_{:03}.srt", idx));
         if let Ok(mut sf) = File::create(&srt_path) {
             let dialogue_text = scene.dialogue.as_deref().unwrap();
-            let _ = writeln!(sf, "1\n00:00:00,000 --> {}\n{}\n", format_srt_time(duration), dialogue_text);
+            let offset = scene.dialogue_offset.unwrap_or(0.0).max(0.0);
+            let sub_dur = scene.dialogue_duration.unwrap_or(duration).min(duration - offset);
+            let sub_end = (offset + sub_dur).min(duration);
+            let _ = writeln!(sf, "1\n{} --> {}\n{}\n", format_srt_time(offset), format_srt_time(sub_end), dialogue_text);
 
             let font_size = subtitle_style.and_then(|s| s.font_size).unwrap_or(if width >= 3840 { 44 } else { 22 });
             let font_family = subtitle_style.and_then(|s| s.font_family.as_deref()).unwrap_or("Arial");

@@ -322,6 +322,8 @@ class TauriService {
       camera_motion?: string;
       transition?: string;
       dialogue?: string;
+      dialogue_duration?: number;
+      dialogue_offset?: number;
     }>;
     bgm_path?: string;
     bgm_volume?: number;

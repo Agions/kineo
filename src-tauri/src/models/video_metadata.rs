@@ -54,6 +54,8 @@ pub struct MangaSceneParams {
     pub camera_motion: Option<String>,
     pub transition: Option<String>,
     pub dialogue: Option<String>,
+    pub dialogue_duration: Option<f64>,
+    pub dialogue_offset: Option<f64>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]

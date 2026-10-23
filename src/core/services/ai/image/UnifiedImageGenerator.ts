@@ -12,6 +12,7 @@ import type { Character } from '@/core/types';
 import { assetPersistenceBridge } from '@/core/services/data-bus/AssetPersistenceBridge';
 import { generateImage } from '@/core/services/ai/image/image-generation-service';
 import { CharacterPortraitService } from '@/core/services/ai/character/CharacterPortraitService';
+import { LocalDiffusionBridge } from '@/core/services/ai/image/LocalDiffusionBridge';
 import { hasAnyConfiguredModelProvider } from '@/core/config/model-providers';
 import { logger } from '@/core/utils/logger';
 
@@ -75,7 +76,54 @@ export class UnifiedImageGenerator {
       enhancedPrompt = `${characterTags.join(' ')} ${prompt}`;
     }
 
-    // 2. 检查是否有已配置的商业模型 Provider
+    // 2. 优先探测本地 ComfyUI / SD-WebUI 算力通道 (0 API Token 成本，角色特征注入)
+    const localDetection = await LocalDiffusionBridge.detectActiveProvider();
+    if (localDetection.available && localDetection.provider) {
+      try {
+        logger.info(
+          `[UnifiedImageGenerator] 检测到本地运行的生图后端 [${localDetection.provider}], 正在生成分镜画面...`
+        );
+        const characterDna = primaryCharacter?.visualDna?.length
+          ? primaryCharacter.visualDna
+          : primaryCharacter
+          ? CharacterPortraitService.deriveVisualDna(primaryCharacter)
+          : [];
+
+        let localBytes: Uint8Array | null = null;
+        if (localDetection.provider === 'comfyui') {
+          localBytes = await LocalDiffusionBridge.generateWithComfyUI({
+            endpoint: localDetection.endpoint,
+            prompt: enhancedPrompt,
+            characterDna,
+            referenceImageUrl: primaryCharacter?.referenceImageUrl,
+          });
+        } else {
+          localBytes = await LocalDiffusionBridge.generateWithWebUI({
+            endpoint: localDetection.endpoint,
+            prompt: enhancedPrompt,
+            characterDna,
+            referenceImageUrl: primaryCharacter?.referenceImageUrl,
+          });
+        }
+
+        if (localBytes && localBytes.length > 0) {
+          const meta = await assetPersistenceBridge.persistAsset(
+            projectId,
+            assetId,
+            localBytes,
+            { fileName, mimeType: 'image/png' }
+          );
+          return {
+            localDiskPath: meta.localDiskPath || meta.uri,
+            uri: meta.uri,
+          };
+        }
+      } catch (err) {
+        logger.warn('[UnifiedImageGenerator] 本地生图通道异常，尝试商业云端 API 或保底渲染:', err);
+      }
+    }
+
+    // 3. 检查是否有已配置的商业模型 Provider
     if (hasAnyConfiguredModelProvider()) {
       try {
         logger.info(

@@ -78,9 +78,9 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({
   const [quality, setQuality] = useState<'ultra' | 'high' | 'medium'>('high');
   const [customOutputPath, setCustomOutputPath] = useState<string>('');
 
-  // 2. 视觉运镜与音轨风格控制 (Task 3)
+  // 2. 视觉运镜与音轨风格控制 (Task 3: Ken Burns & 2.5D Parallax)
   const [cameraMotionMode, setCameraMotionMode] = useState<
-    'adaptive' | 'zoom_in' | 'zoom_out' | 'pan_right' | 'pan_left' | 'punch_zoom' | 'shake' | 'static'
+    'adaptive' | 'zoom_in' | 'zoom_out' | 'pan_right' | 'pan_left' | 'punch_zoom' | 'shake' | 'breathing_micro' | 'depth_zoom' | 'parallax_pan' | 'static'
   >('adaptive');
   const [motionIntensity, setMotionIntensity] = useState<number>(1.0);
   const [bgmVolume, setBgmVolume] = useState<number>(25); // 0 - 100%
@@ -393,7 +393,10 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({
                   onChange={(e) => setCameraMotionMode(e.target.value as any)}
                   className="p-2 rounded-lg bg-white/5 border border-white/10 text-zinc-100 focus:outline-none"
                 >
-                  <option value="adaptive">🎬 AI 多机位智能切换 (变焦+平移+冲击)</option>
+                  <option value="adaptive">🎬 AI 多机位智能切换 (2.5D视差+冲击+变焦)</option>
+                  <option value="breathing_micro">🫁 2.5D 对白呼吸微动 (Breathing Micro)</option>
+                  <option value="depth_zoom">🌌 2.5D 深度视差推进 (Depth Zoom)</option>
+                  <option value="parallax_pan">🎞️ 2.5D 多层视差横摇 (Parallax Pan)</option>
                   <option value="punch_zoom">⚡ 动作冲击推进 (Punch Zoom)</option>
                   <option value="shake">💥 战斗震感运镜 (Action Shake)</option>
                   <option value="zoom_in">🔍 平缓聚焦推进 (Zoom In)</option>

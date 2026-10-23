@@ -22,6 +22,36 @@ export interface VoiceSynthesisResult {
 export type SfxType = 'sword_clash' | 'thunder_strike' | 'impact_hit' | 'cyber_chime';
 
 export class AutoVoiceSynthesizer {
+  // TTS 并发限流队列与缓存
+  private static activeRequests = 0;
+  private static readonly MAX_CONCURRENT_REQUESTS = 3;
+  private static readonly requestQueue: Array<() => void> = [];
+  private static readonly memoryCache = new Map<string, VoiceSynthesisResult>();
+
+  private static async acquireSlot(): Promise<void> {
+    if (this.activeRequests < this.MAX_CONCURRENT_REQUESTS) {
+      this.activeRequests++;
+      return;
+    }
+    return new Promise<void>((resolve) => {
+      this.requestQueue.push(() => {
+        this.activeRequests++;
+        resolve();
+      });
+    });
+  }
+
+  private static releaseSlot(): void {
+    this.activeRequests = Math.max(0, this.activeRequests - 1);
+    if (this.requestQueue.length > 0) {
+      const next = this.requestQueue.shift();
+      next?.();
+    }
+  }
+
+  private static getCacheKey(text: string, voice: string, speed: number, pitch: number): string {
+    return `${voice}_s${speed}_p${pitch}_${text}`;
+  }
   /**
    * 根据角色信息推荐最佳音色
    */
@@ -71,19 +101,47 @@ export class AutoVoiceSynthesizer {
       }
     }
 
+    const cacheKey = this.getCacheKey(trimmed, voice, speed, pitch);
+    if (this.memoryCache.has(cacheKey)) {
+      const cached = this.memoryCache.get(cacheKey)!;
+      logger.info(`[AutoVoiceSynthesizer] 命中文本配音缓存 [${speaker}]: "${trimmed.slice(0, 16)}..."`);
+      return {
+        ...cached,
+        sfxPath: sfxPath || cached.sfxPath,
+      };
+    }
+
+    await this.acquireSlot();
     try {
-      logger.info(`[AutoVoiceSynthesizer] 正在合成角色 [${speaker}] 对白 (音色: ${voice}, 情绪张力: ${isActionCue ? '战斗' : '日常'}): "${trimmed.slice(0, 20)}..."`);
-      const response = await ttsService.synthesize({
-        text: trimmed,
-        config: {
-          provider: 'edge',
-          voice,
-          speed,
-          pitch,
-          volume: 1.0,
-          format: 'audio-24khz-48kbitrate-mono-mp3',
-        },
-      });
+      logger.info(`[AutoVoiceSynthesizer] 排队准入，正在合成角色 [${speaker}] 对白 (音色: ${voice}, 情绪张力: ${isActionCue ? '战斗' : '日常'}): "${trimmed.slice(0, 20)}..."`);
+      
+      let lastErr: unknown;
+      let response: { audio: ArrayBuffer; duration: number } | null = null;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          if (attempt > 0) {
+            await new Promise((r) => setTimeout(r, 600 * attempt));
+          }
+          response = await ttsService.synthesize({
+            text: trimmed,
+            config: {
+              provider: 'edge',
+              voice,
+              speed,
+              pitch,
+              volume: 1.0,
+              format: 'audio-24khz-48kbitrate-mono-mp3',
+            },
+          });
+          break;
+        } catch (e) {
+          lastErr = e;
+        }
+      }
+
+      if (!response) {
+        throw lastErr || new Error('TTS 合成重试失败');
+      }
 
       const audioBuffer = new Uint8Array(response.audio);
       const assetMeta = await assetPersistenceBridge.persistAsset(
@@ -96,16 +154,21 @@ export class AutoVoiceSynthesizer {
         }
       );
 
-      return {
+      const res: VoiceSynthesisResult = {
         audioDiskPath: assetMeta.localDiskPath || assetMeta.uri,
         audioUri: assetMeta.uri,
         duration: Math.max(1.5, response.duration),
         sfxPath,
       };
+
+      this.memoryCache.set(cacheKey, res);
+      return res;
     } catch (err) {
       logger.warn(`[AutoVoiceSynthesizer] 在线 TTS 合成异常，回退生成保底音频:`, err);
       const estimatedDuration = Math.max(2.0, trimmed.length * 0.28);
       return this.generateSilentAudio(projectId, sceneId, estimatedDuration);
+    } finally {
+      this.releaseSlot();
     }
   }
 
