@@ -12,7 +12,13 @@
  */
 
 import { BaseAgent } from './BaseAgent';
-import type { AuditMetric, AuditReport, ProjectBlackboard, ReflectionContext } from './ProjectBlackboard';
+import type {
+  ApprovalGate,
+  AuditMetric,
+  AuditReport,
+  ProjectBlackboard,
+  ReflectionContext,
+} from './ProjectBlackboard';
 
 export class QualityAuditorAgent extends BaseAgent {
   public static readonly PASSING_THRESHOLD = 85;
@@ -124,7 +130,7 @@ export class QualityAuditorAgent extends BaseAgent {
     const overallScore = Math.round(
       metrics.reduce((acc, m) => acc + m.score * m.weight, 0)
     );
-    const passed = overallScore >= QualityAuditorAgent.PASSING_THRESHOLD;
+    let passed = overallScore >= QualityAuditorAgent.PASSING_THRESHOLD;
 
     const failedMetric = metrics.find((m) => !m.passed);
     let reflection: ReflectionContext | null = null;
@@ -143,11 +149,49 @@ export class QualityAuditorAgent extends BaseAgent {
         maxRetries: 3,
       };
 
-      this.log(
-        blackboard,
-        `⚠️ 质检未达标 [总分: ${overallScore}/${QualityAuditorAgent.PASSING_THRESHOLD}]。原因: ${reflection.critique}，生成批评意见触发针对性重试...`,
-        'warn'
-      );
+      // 检查调度器是否挂载 (HITL 审批断点机制)
+      const scheduler = blackboard.getScheduler?.();
+      if (scheduler && typeof scheduler.waitForApproval === 'function') {
+        const gate: ApprovalGate = {
+          id: `gate-audit-${Date.now()}`,
+          taskId: 'task-auditor',
+          agentId: this.metadata.id,
+          agentName: this.metadata.name,
+          title: `四维质检审计未达标 (${overallScore}分 / 85分)`,
+          description: `审计员发现缺陷: ${reflection.critique}。建议打回自愈或由人类总导演特批放行。`,
+          type: 'quality_audit',
+          createdAt: new Date().toISOString(),
+          status: 'pending',
+          context: {
+            overallScore,
+            metrics,
+            failedMetric: failedMetric.name,
+            critique: reflection.critique,
+            remedySuggestions: reflection.remedySuggestions,
+          },
+          suggestedActions: [
+            { id: 'reflect_retry', label: '采纳建议打回重推 (Healing)', variant: 'default' },
+            { id: 'override_approve', label: '总导演特批强制放行 (Override)', variant: 'secondary' },
+          ],
+        };
+
+        this.log(blackboard, `🚨 质检未达标，向人类总导演提请审批决策 [Gate: ${gate.id}]...`, 'warn');
+        const decision = await scheduler.waitForApproval(gate);
+
+        if (decision.action === 'approve') {
+          this.log(blackboard, '🛡️ 人类总导演签署特批令，已强制放行质检！', 'warn');
+          passed = true;
+          reflection = null;
+        } else {
+          this.log(blackboard, `🔄 人类总导演裁决打回自愈: ${decision.userFeedback || '按原建议优化'}`, 'info');
+        }
+      } else {
+        this.log(
+          blackboard,
+          `⚠️ 质检未达标 [总分: ${overallScore}/${QualityAuditorAgent.PASSING_THRESHOLD}]。原因: ${reflection.critique}，生成批评意见触发针对性重试...`,
+          'warn'
+        );
+      }
     } else {
       this.log(
         blackboard,

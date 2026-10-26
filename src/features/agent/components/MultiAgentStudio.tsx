@@ -25,8 +25,11 @@ import {
   Film,
   FolderOpen,
   Loader2,
+  Gavel,
+  ShieldAlert,
+  Check,
 } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AgentConfigModal from './AgentConfigModal';
@@ -79,6 +82,28 @@ export const MultiAgentStudio: React.FC = () => {
   const [blackboardData, setBlackboardData] = useState<BlackboardData>(() =>
     director.getBlackboard().getData()
   );
+
+  // 人机共创审批断点状态 (HITL)
+  const [approvalFeedback, setApprovalFeedback] = useState<string>('');
+  const activeApprovalGate = useMemo(() => {
+    const gates = Object.values(blackboardData.activeApprovalGates || {});
+    return gates.length > 0 ? gates[0] : null;
+  }, [blackboardData.activeApprovalGates]);
+
+  const handleResolveApproval = (gateId: string, action: 'approve' | 'reject' | 'modify') => {
+    director.resolveApproval(gateId, {
+      action,
+      userFeedback: approvalFeedback.trim() || undefined,
+    });
+    setApprovalFeedback('');
+    toast.success(
+      action === 'approve'
+        ? '🛡️ 总导演特批通过，已恢复下行流水线！'
+        : action === 'reject'
+        ? '🔄 已下达打回自愈指令，智能体重新推导中...'
+        : '✏️ 修改已注入黑板，流水线继续！'
+    );
+  };
 
   // 获取所有已注册 Agent（包含原生 + 自定义）
   const [registeredAgents, setRegisteredAgents] = useState<BaseAgent[]>(() =>
@@ -357,17 +382,21 @@ export const MultiAgentStudio: React.FC = () => {
                 className={`p-2.5 rounded-xl border text-[11px] font-mono transition-all ${
                   status === 'completed'
                     ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
-                    : status === 'running'
-                      ? 'bg-[#00f5d4]/15 border-[#00f5d4] text-[#00f5d4] shadow-md shadow-[#00f5d4]/10'
-                      : status === 'healing'
-                        ? 'bg-amber-950/40 border-amber-500/60 text-amber-300 animate-pulse'
-                        : 'bg-slate-900/50 border-slate-800/80 text-slate-400'
+                    : status === 'awaiting_approval'
+                      ? 'bg-amber-950/70 border-amber-400 text-amber-200 shadow-lg shadow-amber-500/20 ring-1 ring-amber-400 animate-pulse'
+                      : status === 'running'
+                        ? 'bg-[#00f5d4]/15 border-[#00f5d4] text-[#00f5d4] shadow-md shadow-[#00f5d4]/10'
+                        : status === 'healing'
+                          ? 'bg-amber-950/40 border-amber-500/60 text-amber-300 animate-pulse'
+                          : 'bg-slate-900/50 border-slate-800/80 text-slate-400'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="font-bold truncate">{step.name}</span>
                   {status === 'completed' ? (
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  ) : status === 'awaiting_approval' ? (
+                    <Gavel className="w-3.5 h-3.5 text-amber-400 animate-bounce" />
                   ) : status === 'running' ? (
                     <RefreshCw className="w-3.5 h-3.5 text-[#00f5d4] animate-spin" />
                   ) : status === 'healing' ? (
@@ -385,6 +414,87 @@ export const MultiAgentStudio: React.FC = () => {
           })}
         </div>
       </div>
+
+      {/* 人机共创审批裁决控制台 (Human-in-the-Loop Gate) */}
+      {activeApprovalGate && (
+        <div className="p-5 bg-gradient-to-r from-amber-950/70 via-slate-950 to-amber-950/70 rounded-2xl border-2 border-amber-500/80 shadow-2xl space-y-4 animate-fadeIn">
+          <div className="flex items-center justify-between border-b border-amber-500/30 pb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400">
+                <Gavel className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-sm text-white">人机共创审批中断 · 等待人类总导演裁决</span>
+                  <Badge className="bg-amber-500/30 text-amber-300 border-amber-500/50 text-[10px] animate-pulse">
+                    AWAITING APPROVAL
+                  </Badge>
+                </div>
+                <p className="text-xs text-amber-200/80 mt-0.5">
+                  任务节点: [{activeApprovalGate.taskId}] · 提请智能体: [{activeApprovalGate.agentName}]
+                </p>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono text-slate-400">
+              {new Date(activeApprovalGate.createdAt).toLocaleTimeString()}
+            </span>
+          </div>
+
+          <div className="p-4 rounded-xl bg-black/50 border border-amber-500/20 space-y-2">
+            <h4 className="text-sm font-bold text-amber-300 flex items-center gap-1.5">
+              <ShieldAlert className="w-4 h-4 text-amber-400" />
+              {activeApprovalGate.title}
+            </h4>
+            <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              {activeApprovalGate.description}
+            </p>
+
+            {/* 若质检指标存在，展示审计指标列表 */}
+            {activeApprovalGate.context?.metrics && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-white/10 mt-2">
+                {activeApprovalGate.context.metrics.map((m: any, idx: number) => (
+                  <div key={idx} className="p-2 rounded-lg bg-white/5 border border-white/10 flex justify-between items-center text-xs">
+                    <span className="text-slate-300 font-medium truncate">{m.name}</span>
+                    <span className={`font-mono font-bold ${m.score >= 80 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                      {m.score}分
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 导演批示与决策按钮 */}
+          <div className="space-y-3">
+            <input
+              type="text"
+              value={approvalFeedback}
+              onChange={(e) => setApprovalFeedback(e.target.value)}
+              placeholder="输入总导演批示或改进要求（选填，如：特批通过、或强化主角面部眼神光）..."
+              className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+            />
+
+            <div className="flex items-center justify-end gap-2.5 pt-1">
+              <Button
+                size="sm"
+                onClick={() => handleResolveApproval(activeApprovalGate.id, 'reject')}
+                className="bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-500/50 text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer font-bold"
+              >
+                <RefreshCw className="w-3.5 h-3.5 text-rose-400" />
+                采纳建议打回自愈 (Reflect & Retry)
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => handleResolveApproval(activeApprovalGate.id, 'approve')}
+                className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-5 py-2 rounded-xl flex items-center gap-1.5 cursor-pointer font-extrabold shadow-lg shadow-emerald-500/20 border-0"
+              >
+                <Check className="w-3.5 h-3.5" />
+                总导演特批放行 (Override Approve)
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 两栏大格局：左侧输入与主控控制台，右侧 Multi-Agent Swarm 状态 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

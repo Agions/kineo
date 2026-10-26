@@ -8,7 +8,7 @@
  */
 
 import { BaseAgent } from './BaseAgent';
-import type { DAGNode, DAGNodeStatus, ProjectBlackboard } from './ProjectBlackboard';
+import type { ApprovalGate, DAGNode, DAGNodeStatus, ProjectBlackboard } from './ProjectBlackboard';
 
 export interface DAGTaskDefinition {
   id: string;
@@ -18,12 +18,73 @@ export interface DAGTaskDefinition {
   agentInstance: BaseAgent;
 }
 
+export interface ApprovalDecision {
+  action: 'approve' | 'reject' | 'modify';
+  userFeedback?: string;
+  modifications?: any;
+}
+
 export class DAGScheduler {
   private tasks: Map<string, DAGTaskDefinition> = new Map();
   private blackboard: ProjectBlackboard;
+  private pendingApprovals: Map<string, (decision: ApprovalDecision) => void> = new Map();
 
   constructor(blackboard: ProjectBlackboard) {
     this.blackboard = blackboard;
+    this.blackboard.setScheduler(this);
+  }
+
+  /**
+   * 注册人机共创审批断点挂起请求 (HITL)
+   * 挂起当前任务并等待人类总导演签署裁决令
+   */
+  public async waitForApproval(gate: ApprovalGate): Promise<ApprovalDecision> {
+    this.updateNodeStatus(gate.taskId, 'awaiting_approval');
+    this.blackboard.registerApprovalGate(gate);
+
+    return new Promise<ApprovalDecision>((resolve) => {
+      this.pendingApprovals.set(gate.id, resolve);
+    });
+  }
+
+  /**
+   * 人类总导演完成审批裁决并恢复调度
+   */
+  public resolveApproval(gateId: string, decision: ApprovalDecision): void {
+    const resolver = this.pendingApprovals.get(gateId);
+    if (resolver) {
+      this.pendingApprovals.delete(gateId);
+      this.blackboard.resolveApprovalGate(gateId, {
+        status:
+          decision.action === 'approve'
+            ? 'approved'
+            : decision.action === 'reject'
+            ? 'rejected'
+            : 'modified',
+        userFeedback: decision.userFeedback,
+        resolutionPayload: decision.modifications,
+      });
+
+      // 如果有人类自定义修改注入，立即落盘更新黑板
+      if (decision.modifications && typeof decision.modifications === 'object') {
+        this.blackboard.update(
+          decision.modifications,
+          'human-director',
+          'HumanDirector',
+          '人类总导演注入微调修改'
+        );
+      }
+
+      resolver(decision);
+    }
+  }
+
+  public hasPendingApprovals(): boolean {
+    return this.pendingApprovals.size > 0;
+  }
+
+  public getPendingGateIds(): string[] {
+    return Array.from(this.pendingApprovals.keys());
   }
 
   /** 注册 DAG 任务节点 */

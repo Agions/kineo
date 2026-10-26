@@ -16,11 +16,12 @@ import { pluginRegistry } from '@/core/plugins/PluginRegistry';
 
 import { agentRegistry } from './AgentRegistry';
 import { BaseAgent } from './BaseAgent';
-import { DAGScheduler } from './DAGScheduler';
+import { DAGScheduler, type ApprovalDecision } from './DAGScheduler';
 import { ProjectBlackboard, type InputContentType } from './ProjectBlackboard';
 
 export class MasterDirectorAgent extends BaseAgent {
   private blackboard: ProjectBlackboard;
+  private scheduler: DAGScheduler | null = null;
 
   constructor(initialInput: string = '', inputType: InputContentType = 'unknown', projectName: string = '漫剧工程 · 多 Agent 协作') {
     super({
@@ -39,6 +40,16 @@ export class MasterDirectorAgent extends BaseAgent {
 
   public getBlackboard(): ProjectBlackboard {
     return this.blackboard;
+  }
+
+  public getScheduler(): DAGScheduler | null {
+    return this.scheduler;
+  }
+
+  public resolveApproval(gateId: string, decision: ApprovalDecision): void {
+    if (this.scheduler) {
+      this.scheduler.resolveApproval(gateId, decision);
+    }
   }
 
   public async execute(targetBlackboard?: ProjectBlackboard): Promise<void> {
@@ -68,6 +79,8 @@ export class MasterDirectorAgent extends BaseAgent {
 
       // 2. 初始化并编排 DAG 任务拓扑
       const dag = new DAGScheduler(bb);
+      this.scheduler = dag;
+      bb.setScheduler(dag);
 
       if (scriptAgent) {
         dag.registerTask({

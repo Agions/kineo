@@ -65,7 +65,48 @@ export interface ReflectionContext {
   maxRetries: number;
 }
 
-export type DAGNodeStatus = 'pending' | 'running' | 'auditing' | 'healing' | 'completed' | 'failed' | 'skipped';
+export type DAGNodeStatus =
+  | 'pending'
+  | 'running'
+  | 'auditing'
+  | 'awaiting_approval'
+  | 'healing'
+  | 'completed'
+  | 'failed'
+  | 'skipped';
+
+export type ApprovalGateType =
+  | 'quality_audit'
+  | 'character_lock'
+  | 'storyboard_approval'
+  | 'video_render'
+  | 'custom';
+
+export type ApprovalGateStatus = 'pending' | 'approved' | 'rejected' | 'modified';
+
+export interface ApprovalActionOption {
+  id: string;
+  label: string;
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary';
+  description?: string;
+}
+
+export interface ApprovalGate {
+  id: string;
+  taskId: string;
+  agentId: string;
+  agentName: string;
+  title: string;
+  description: string;
+  type: ApprovalGateType;
+  createdAt: string;
+  status: ApprovalGateStatus;
+  context: Record<string, any>;
+  suggestedActions: ApprovalActionOption[];
+  resolvedAt?: string;
+  userFeedback?: string;
+  resolutionPayload?: any;
+}
 
 export interface DAGNode {
   id: string;
@@ -76,6 +117,7 @@ export interface DAGNode {
   startedAt?: string;
   completedAt?: string;
   error?: string;
+  approvalGateId?: string;
 }
 
 export interface SynchronizedSubtitle {
@@ -117,6 +159,10 @@ export interface BlackboardData {
   auditReports: AuditReport[];
   currentReflection: ReflectionContext | null;
 
+  // 人机共创审批断点机制 (Human-in-the-Loop Approval Gates)
+  activeApprovalGates: Record<string, ApprovalGate>;
+  approvalHistory: ApprovalGate[];
+
   // 黑板流转状态
   stage: ProjectStage;
   activeAgentId: string | null;
@@ -129,6 +175,7 @@ export interface BlackboardData {
 export class ProjectBlackboard {
   private data: BlackboardData;
   private listeners: Array<(data: BlackboardData) => void> = [];
+  private schedulerRef: any = null;
 
   constructor(initialInput: string = '', inputType: InputContentType = 'unknown', projectName: string = '新漫剧工程') {
     const now = new Date().toISOString();
@@ -153,6 +200,8 @@ export class ProjectBlackboard {
       dagNodes: {},
       auditReports: [],
       currentReflection: null,
+      activeApprovalGates: {},
+      approvalHistory: [],
       stage: 'idle',
       activeAgentId: null,
       completedAgentIds: [],
@@ -166,6 +215,75 @@ export class ProjectBlackboard {
         },
       ],
     };
+  }
+
+  public setScheduler(scheduler: any): void {
+    this.schedulerRef = scheduler;
+  }
+
+  public getScheduler(): any {
+    return this.schedulerRef;
+  }
+
+  /**
+   * 注册人机共创审批断点 (HITL)
+   */
+  public registerApprovalGate(gate: ApprovalGate): void {
+    const active = { ...(this.data.activeApprovalGates || {}) };
+    active[gate.id] = gate;
+    this.update(
+      { activeApprovalGates: active },
+      gate.agentId,
+      gate.agentName,
+      `🚨 触发人机共创审批断点 [${gate.title}]，等待总导演裁决`
+    );
+  }
+
+  /**
+   * 裁决人机共创审批断点
+   */
+  public resolveApprovalGate(
+    gateId: string,
+    resolution: {
+      status: ApprovalGateStatus;
+      userFeedback?: string;
+      resolutionPayload?: any;
+    }
+  ): ApprovalGate | null {
+    const active = { ...(this.data.activeApprovalGates || {}) };
+    const gate = active[gateId];
+    if (!gate) return null;
+
+    const resolvedGate: ApprovalGate = {
+      ...gate,
+      status: resolution.status,
+      userFeedback: resolution.userFeedback,
+      resolutionPayload: resolution.resolutionPayload,
+      resolvedAt: new Date().toISOString(),
+    };
+
+    delete active[gateId];
+    const history = [...(this.data.approvalHistory || []), resolvedGate];
+
+    this.update(
+      {
+        activeApprovalGates: active,
+        approvalHistory: history,
+      },
+      'human-director',
+      'HumanDirector',
+      `✅ 人类总导演完成审批断点裁决 [${gate.title}] -> ${resolution.status}`
+    );
+
+    return resolvedGate;
+  }
+
+  /**
+   * 获取当前首个待裁决的审批断点
+   */
+  public getActiveApprovalGate(): ApprovalGate | null {
+    const gates = Object.values(this.data.activeApprovalGates || {});
+    return gates.length > 0 ? gates[0] : null;
   }
 
   public getData(): Readonly<BlackboardData> {
