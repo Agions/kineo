@@ -15,6 +15,7 @@ import type { NovelScene } from '@/core/script/types/novel';
 import { AutoVoiceSynthesizer } from '@/core/services/audio/AutoVoiceSynthesizer';
 import { UnifiedImageGenerator } from '@/core/services/ai/image/UnifiedImageGenerator';
 import { assetPersistenceBridge } from '@/core/services/data-bus/AssetPersistenceBridge';
+import { CinematicShotDecomposer } from '@/core/services/cinematography/CinematicShotDecomposer';
 import { tauriService } from '@/infrastructure/tauri-bridge';
 import { logger } from '@/core/utils/logger';
 import { useProjectStore } from '@/stores';
@@ -95,9 +96,17 @@ export class PlayableMangaPipelineService {
         message: '正在梳理剧本分镜节奏与对白切片...',
       });
 
-      const scenes = this.extractScenes(project);
-      if (scenes.length === 0) {
+      const rawScenes = this.extractScenes(project);
+      if (rawScenes.length === 0) {
         throw new Error('未检测到有效的分镜场景，请先在剧本中拆解场景！');
+      }
+
+      // 1.5 影视级正反打预处理：将多角色对话场景自动拆解为双人全景、正打、反打与反应镜头
+      const projectCharacters = project.characters || [];
+      const scenes: NovelScene[] = [];
+      for (const sc of rawScenes) {
+        const decomposed = CinematicShotDecomposer.decomposeSceneToCinematicShots(sc, projectCharacters);
+        scenes.push(...decomposed.scenes);
       }
 
       const totalScenes = scenes.length;
@@ -123,10 +132,14 @@ export class PlayableMangaPipelineService {
         // 提取对白台词
         let dialogueText = '';
         let speaker = '旁白';
-        if (Array.isArray(scene.dialogues) && scene.dialogues.length > 0) {
+        const hasDialogues = Array.isArray(scene.dialogues) && scene.dialogues.length > 0;
+        if (hasDialogues) {
           speaker = scene.dialogues[0].character || '主角';
           dialogueText = scene.dialogues.map((d) => d.content).join(' ');
-        } else if (scene.content) {
+        } else if (title.includes('全景建立') || title.includes('反应特写')) {
+          // 纯视效/反应镜头留白，不合成文字对白，保持环境音与音效张力
+          dialogueText = '';
+        } else if (scene.content && !scene.content.startsWith('cinematic') && !scene.content.startsWith('master establishing')) {
           dialogueText = scene.content.slice(0, 80);
         }
 
@@ -137,17 +150,27 @@ export class PlayableMangaPipelineService {
           message: `正在合成第 ${i + 1}/${totalScenes} 幕角色语音 [${speaker}]: "${dialogueText.slice(0, 16)}..."`,
         });
 
-        const projectCharacters = project.characters || [];
         const matchedChar = projectCharacters.find((c) => c.name === speaker);
         const charVoice = matchedChar?.voiceId || matchedChar?.voice?.voiceId;
 
-        const voiceRes = await AutoVoiceSynthesizer.synthesizeDialogue(
-          projectId,
-          sceneId,
-          speaker,
-          dialogueText,
-          charVoice
-        );
+        let voiceRes: { audioDiskPath: string; duration: number };
+        if (dialogueText.trim().length > 0) {
+          voiceRes = await AutoVoiceSynthesizer.synthesizeDialogue(
+            projectId,
+            sceneId,
+            speaker,
+            dialogueText,
+            charVoice
+          );
+        } else if (title.includes('反应特写')) {
+          // 反应特写：自动叠加心跳/震撼重音
+          const sfxPath = await AutoVoiceSynthesizer.generateDramaticSfx(projectId, sceneId, 'impact_hit');
+          voiceRes = { audioDiskPath: sfxPath, duration: 1.8 };
+        } else {
+          // 全景建立或无声镜头：生成自然静音留白
+          const silentRes = await AutoVoiceSynthesizer.generateSilentAudio(projectId, sceneId, 2.5);
+          voiceRes = { audioDiskPath: silentRes.audioDiskPath, duration: silentRes.duration };
+        }
 
         // B. 视觉流：生成分镜画面（自动注入角色 Visual DNA 与主参考图）
         onProgress?.({
@@ -170,29 +193,37 @@ export class PlayableMangaPipelineService {
           }
         );
 
-        // 运镜机位自适应规划 (战斗张力 -> punch_zoom / shake, 对白特写 -> breathing_micro, 悬念揭示 -> depth_zoom, 全景视差 -> parallax_pan)
+        // 运镜机位自适应规划 (正反打 -> breathing_micro, 反应特写 -> punch_zoom, 全景建立 -> depth_zoom)
         let cameraMotion: string;
-        const isActionScene =
-          /拔剑|斩|死|杀|爆|战|冲|逃|撞|击|雷|破/.test(dialogueText) ||
-          /战斗|追捕|对决|天台|决战/.test(title);
-        const isDiscoveryOrMystery = /真相|秘密|难道|不可思议|神级|系统|觉醒/.test(dialogueText) || /天际|核心|矩阵/.test(title);
-        const isEmotionalDialogue = dialogueText.length > 0 && !isActionScene;
-
-        if (isActionScene) {
-          cameraMotion = i % 2 === 0 ? 'punch_zoom' : 'shake';
-        } else if (isDiscoveryOrMystery) {
-          cameraMotion = 'depth_zoom';
-        } else if (isEmotionalDialogue) {
+        if (title.includes('过肩正打') || title.includes('过肩反打')) {
           cameraMotion = 'breathing_micro';
+        } else if (title.includes('反应特写')) {
+          cameraMotion = 'punch_zoom';
+        } else if (title.includes('全景建立')) {
+          cameraMotion = 'depth_zoom';
         } else {
-          const ambientMotions = ['parallax_pan', 'zoom_in', 'zoom_out'];
-          cameraMotion = ambientMotions[i % ambientMotions.length];
+          const isActionScene =
+            /拔剑|斩|死|杀|爆|战|冲|逃|撞|击|雷|破/.test(dialogueText) ||
+            /战斗|追捕|对决|天台|决战/.test(title);
+          const isDiscoveryOrMystery = /真相|秘密|难道|不可思议|神级|系统|觉醒/.test(dialogueText) || /天际|核心|矩阵/.test(title);
+          const isEmotionalDialogue = dialogueText.length > 0 && !isActionScene;
+
+          if (isActionScene) {
+            cameraMotion = i % 2 === 0 ? 'punch_zoom' : 'shake';
+          } else if (isDiscoveryOrMystery) {
+            cameraMotion = 'depth_zoom';
+          } else if (isEmotionalDialogue) {
+            cameraMotion = 'breathing_micro';
+          } else {
+            const ambientMotions = ['parallax_pan', 'zoom_in', 'zoom_out'];
+            cameraMotion = ambientMotions[i % ambientMotions.length];
+          }
         }
 
         // 自然语音呼吸留白 (+0.5s 确保尾音饱满自然)
-        const sceneDuration = Math.max(3.0, voiceRes.duration + 0.5);
+        const sceneDuration = Math.max(2.5, voiceRes.duration + 0.5);
         // 对白字幕发音对齐：0.1s进入，并在语音结束后+0.3s收尾
-        const dialogueDuration = Math.min(sceneDuration - 0.1, voiceRes.duration + 0.3);
+        const dialogueDuration = dialogueText ? Math.min(sceneDuration - 0.1, voiceRes.duration + 0.3) : undefined;
 
         renderedScenes.push({
           id: sceneId,
@@ -203,7 +234,7 @@ export class PlayableMangaPipelineService {
           transition: 'dissolve',
           dialogue: dialogueText ? `【${speaker}】${dialogueText}` : undefined,
           dialogue_duration: dialogueDuration,
-          dialogue_offset: 0.1,
+          dialogue_offset: dialogueText ? 0.1 : undefined,
         });
       }
 

@@ -76,7 +76,16 @@ export class QualityAuditorAgent extends BaseAgent {
       if (uniqueMotions.size <= 1 && motions.length > 2) {
         cinematographyScore -= 20;
       } else if (uniqueMotions.has('Hitchcock_Zoom') || uniqueMotions.has('FPV_Fly')) {
-        cinematographyScore += 8;
+        cinematographyScore += 5;
+      }
+
+      // 检查影视级正反打与 180° 防跳轴语法
+      const hasDialogue = scenes.some((s) => s.dialogues && s.dialogues.length > 0);
+      const hasShotReverseShot = Object.values(cameraPlans).some(
+        (p) => p.shotType === 'over_the_shoulder_a' || p.shotType === 'reverse_shot_b'
+      );
+      if (hasDialogue && hasShotReverseShot) {
+        cinematographyScore += 6;
       }
     }
     cinematographyScore = Math.max(50, Math.min(100, cinematographyScore));

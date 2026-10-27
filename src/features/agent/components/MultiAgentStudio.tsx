@@ -658,6 +658,88 @@ export const MultiAgentStudio: React.FC = () => {
             </div>
           </div>
 
+          {/* 影视级正反打分镜视听规划流 (Cinematic Directing Stream) */}
+          {blackboardData.scenes.length > 0 && (
+            <div className="studio-card p-5 space-y-3 border border-slate-800 bg-slate-950/60 rounded-2xl shadow-xl">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                <span className="font-bold text-xs text-slate-100 flex items-center gap-2">
+                  <Film className="w-4 h-4 text-cyan-400" />
+                  影视级分镜规划流 (Shot-Reverse-Shot 视听矩阵 · {blackboardData.scenes.length} 幕)
+                </span>
+                <span className="text-[10px] font-mono text-cyan-400 font-bold">
+                  180° 轴线锁定保护中
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-56 overflow-y-auto pr-1">
+                {blackboardData.scenes.slice(0, 8).map((sc, idx) => {
+                  const plan = blackboardData.cameraDirectingPlans[sc.id];
+                  const isOts = plan?.shotType === 'over_the_shoulder_a' || sc.title?.includes('过肩正打');
+                  const isReverse = plan?.shotType === 'reverse_shot_b' || sc.title?.includes('过肩反打');
+                  const isReaction = plan?.shotType === 'reaction_listener' || sc.title?.includes('反应特写');
+                  const isMaster = plan?.shotType === 'establishing_two_shot' || sc.title?.includes('全景建立');
+
+                  return (
+                    <div
+                      key={sc.id || idx}
+                      className={`p-3 rounded-xl border text-[11px] space-y-1.5 transition-all ${
+                        isOts
+                          ? 'bg-blue-950/30 border-blue-500/40 text-blue-200'
+                          : isReverse
+                            ? 'bg-purple-950/30 border-purple-500/40 text-purple-200'
+                            : isReaction
+                              ? 'bg-rose-950/30 border-rose-500/40 text-rose-200'
+                              : isMaster
+                                ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-200'
+                                : 'bg-slate-900/40 border-slate-800 text-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between font-bold">
+                        <span className="truncate">{sc.title || `镜头 ${idx + 1}`}</span>
+                        <Badge
+                          className={`text-[9px] px-1.5 py-0.5 border ${
+                            isOts
+                              ? 'bg-blue-500/20 text-blue-300 border-blue-500/50'
+                              : isReverse
+                                ? 'bg-purple-500/20 text-purple-300 border-purple-500/50'
+                                : isReaction
+                                  ? 'bg-rose-500/20 text-rose-300 border-rose-500/50'
+                                  : 'bg-slate-800 text-slate-300 border-slate-700'
+                          }`}
+                        >
+                          {isOts
+                            ? '过肩正打 (OTS)'
+                            : isReverse
+                              ? '过肩反打 (Reverse)'
+                              : isReaction
+                                ? '反应特写 (Reaction)'
+                                : isMaster
+                                  ? '双人建立 (Master)'
+                                  : plan?.cameraDistance || 'Medium'}
+                        </Badge>
+                      </div>
+
+                      <div className="text-[10px] text-slate-400 font-mono flex items-center justify-between">
+                        <span>机位: {plan?.cameraMotion || 'Breathing_Micro'}</span>
+                        {plan?.gazeDirection && (
+                          <span className="text-amber-400/90 font-semibold">
+                            视线: {plan.gazeDirection === 'look_right' ? '朝右 ➔' : '⬅ 朝左'}
+                          </span>
+                        )}
+                      </div>
+
+                      {sc.dialogues && sc.dialogues.length > 0 && (
+                        <p className="text-[10px] text-slate-200 italic line-clamp-1 bg-black/30 p-1 rounded">
+                          "{sc.dialogues[0].character}": {sc.dialogues[0].content}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* ProjectBlackboard 共享黑板实时控制台与 Agent 日志 */}
           <div className="studio-card p-5 space-y-3 border border-slate-800 bg-slate-950/60 rounded-2xl shadow-xl">
             <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">

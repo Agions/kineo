@@ -31,10 +31,32 @@ export interface SpatialMemory {
   assetHitRate: number; // 90%+ 高成功率指标
 }
 
+export type CinematicShotType =
+  | 'establishing_two_shot'
+  | 'over_the_shoulder_a'
+  | 'reverse_shot_b'
+  | 'close_up_speaker'
+  | 'reaction_listener'
+  | 'ambient_cutaway';
+
 export interface CameraDirectingPlan {
-  cameraMotion: 'FPV_Fly' | 'Hitchcock_Zoom' | 'Pan_Right' | 'Tilt_Up' | 'Static';
-  cameraDistance: 'CloseUp' | 'Medium' | 'Wide';
+  cameraMotion:
+    | 'FPV_Fly'
+    | 'Hitchcock_Zoom'
+    | 'Pan_Right'
+    | 'Tilt_Up'
+    | 'Static'
+    | 'Dolly_In'
+    | 'Punch_Zoom'
+    | 'Breathing_Micro';
+  cameraDistance: 'CloseUp' | 'Medium' | 'Wide' | 'Extreme_CloseUp';
   pacingSeconds: number;
+  shotType?: CinematicShotType;
+  speaker?: string;
+  listener?: string;
+  gazeDirection?: 'look_left' | 'look_right' | 'center';
+  axisLocked?: boolean;
+  parentSceneId?: string;
 }
 
 export interface AuditMetric {
