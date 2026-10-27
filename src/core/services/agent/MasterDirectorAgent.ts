@@ -23,7 +23,12 @@ export class MasterDirectorAgent extends BaseAgent {
   private blackboard: ProjectBlackboard;
   private scheduler: DAGScheduler | null = null;
 
-  constructor(initialInput: string = '', inputType: InputContentType = 'unknown', projectName: string = '漫剧工程 · 多 Agent 协作') {
+  constructor(
+    initialInput: string = '',
+    inputType: InputContentType = 'unknown',
+    projectName: string = '漫剧工程 · 多 Agent 协作',
+    existingBlackboard?: ProjectBlackboard
+  ) {
     super({
       id: 'agent-chief',
       name: 'CHIEF',
@@ -35,7 +40,14 @@ export class MasterDirectorAgent extends BaseAgent {
       writeKeys: ['stage', 'activeAgentId', 'completedAgentIds', 'dagNodes'],
     });
 
-    this.blackboard = new ProjectBlackboard(initialInput, inputType, projectName);
+    this.blackboard = existingBlackboard || new ProjectBlackboard(initialInput, inputType, projectName);
+    // 自动挂载调度器
+    this.scheduler = new DAGScheduler(this.blackboard);
+  }
+
+  public setBlackboard(blackboard: ProjectBlackboard): void {
+    this.blackboard = blackboard;
+    this.scheduler = new DAGScheduler(this.blackboard);
   }
 
   public getBlackboard(): ProjectBlackboard {

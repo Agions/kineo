@@ -6,6 +6,12 @@ import type { AudioTrackConfig } from '@/core/audio/types/audio';
 import type { CompositionProject } from '@/core/audio/types/composition';
 import type { ProjectData } from '@/core/project/types/project';
 import type { StoryAnalysis, Character } from '@/core/script/types/novel';
+import type {
+  CameraDirectingPlan,
+  SpatialMemory,
+  AuditReport,
+  SynchronizedSubtitle,
+} from '@/core/services/agent/ProjectBlackboard';
 import { tauriService } from '@/core/services';
 import type { ScriptImportMetadata } from '@/features/storyboard/components/NovelImporter';
 
@@ -33,10 +39,10 @@ export interface ProjectLoadResult {
   script?: string;
   exportPreset?: '9:16' | '16:9' | '1:1';
   exportSettings?: Record<string, unknown>;
-  cameraDirectingPlans?: Record<string, unknown>;
-  spatialMemory?: Record<string, unknown>;
-  auditReports?: unknown[];
-  subtitles?: unknown[];
+  cameraDirectingPlans?: Record<string, CameraDirectingPlan>;
+  spatialMemory?: SpatialMemory;
+  auditReports?: AuditReport[];
+  subtitles?: SynchronizedSubtitle[];
   /** 根据 URL 参数或项目数据推断的初始 step */
   initialStep: number;
   /** URL 中的 frameId 参数（如有） */

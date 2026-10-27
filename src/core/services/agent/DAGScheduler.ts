@@ -32,6 +32,22 @@ export class DAGScheduler {
   constructor(blackboard: ProjectBlackboard) {
     this.blackboard = blackboard;
     this.blackboard.setScheduler(this);
+    this.hydratePendingApprovalsFromBlackboard();
+  }
+
+  /**
+   * 从黑板水合恢复已存在的待决审批门 (支持跨页面刷新与离线恢复)
+   */
+  public hydratePendingApprovalsFromBlackboard(): void {
+    const activeGates = this.blackboard.getData().activeApprovalGates || {};
+    for (const [gateId, gate] of Object.entries(activeGates)) {
+      if (gate.status === 'pending' && !this.pendingApprovals.has(gateId)) {
+        // 创建挂起的空 Promise resolver 占位
+        this.pendingApprovals.set(gateId, () => {
+          // 水合占位 resolver
+        });
+      }
+    }
   }
 
   /**
@@ -49,32 +65,37 @@ export class DAGScheduler {
 
   /**
    * 人类总导演完成审批裁决并恢复调度
+   * 支持离线恢复：即便进程重启/页面刷新后没有内存 Promise，也完整更新黑板与落盘
    */
   public resolveApproval(gateId: string, decision: ApprovalDecision): void {
     const resolver = this.pendingApprovals.get(gateId);
     if (resolver) {
       this.pendingApprovals.delete(gateId);
-      this.blackboard.resolveApprovalGate(gateId, {
-        status:
-          decision.action === 'approve'
-            ? 'approved'
-            : decision.action === 'reject'
-            ? 'rejected'
-            : 'modified',
-        userFeedback: decision.userFeedback,
-        resolutionPayload: decision.modifications,
-      });
+    }
 
-      // 如果有人类自定义修改注入，立即落盘更新黑板
-      if (decision.modifications && typeof decision.modifications === 'object') {
-        this.blackboard.update(
-          decision.modifications,
-          'human-director',
-          'HumanDirector',
-          '人类总导演注入微调修改'
-        );
-      }
+    // 无论是否命中内存 Promise，均更新黑板并记录裁决历史
+    this.blackboard.resolveApprovalGate(gateId, {
+      status:
+        decision.action === 'approve'
+          ? 'approved'
+          : decision.action === 'reject'
+          ? 'rejected'
+          : 'modified',
+      userFeedback: decision.userFeedback,
+      resolutionPayload: decision.modifications,
+    });
 
+    // 如果有人类自定义修改注入，立即落盘更新黑板
+    if (decision.modifications && typeof decision.modifications === 'object') {
+      this.blackboard.update(
+        decision.modifications,
+        'human-director',
+        'HumanDirector',
+        '人类总导演注入微调修改'
+      );
+    }
+
+    if (resolver) {
       resolver(decision);
     }
   }

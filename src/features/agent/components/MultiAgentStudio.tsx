@@ -51,6 +51,7 @@ import { agentRegistry } from '@/core/services/agent/AgentRegistry';
 import type { BaseAgent } from '@/core/services/agent/BaseAgent';
 import { MasterDirectorAgent } from '@/core/services/agent/MasterDirectorAgent';
 import type { BlackboardData, InputContentType } from '@/core/services/agent/ProjectBlackboard';
+import { ProjectBlackboardStoreBridge } from '@/core/services/data-bus/ProjectBlackboardStoreBridge';
 import {
   PlayableMangaPipelineService,
   type PlayablePipelineProgress,
@@ -77,8 +78,19 @@ export const MultiAgentStudio: React.FC = () => {
     encoderUsed?: string;
   } | null>(null);
 
-  // 实例化 MasterDirectorAgent 调度中心
-  const [director] = useState(() => new MasterDirectorAgent());
+  // 实例化 MasterDirectorAgent 调度中心（优先从当前项目水合黑板状态，支持审批断点离线恢复）
+  const [director] = useState(() => {
+    if (store.currentProject) {
+      const hydratedBb = ProjectBlackboardStoreBridge.createBlackboardFromProject(store.currentProject);
+      return new MasterDirectorAgent(
+        store.currentProject.script || store.currentProject.novelText || '',
+        'novel_text',
+        store.currentProject.name || '漫剧工程 · 多 Agent 协作',
+        hydratedBb
+      );
+    }
+    return new MasterDirectorAgent();
+  });
   const [blackboardData, setBlackboardData] = useState<BlackboardData>(() =>
     director.getBlackboard().getData()
   );
@@ -115,12 +127,33 @@ export const MultiAgentStudio: React.FC = () => {
   };
 
   useEffect(() => {
+    const bb = director.getBlackboard();
     // 订阅 Blackboard 共享黑板数据变更
-    const unsubscribe = director.getBlackboard().subscribe((data) => {
+    const unsubscribeBb = bb.subscribe((data) => {
       setBlackboardData(data);
     });
-    return () => unsubscribe();
-  }, [director]);
+
+    // 建立 Blackboard 到 useProjectStore 的双向反应式同步桥
+    let unbindBridge: (() => void) | undefined;
+    if (store.currentProject?.id) {
+      unbindBridge = ProjectBlackboardStoreBridge.bind(bb, store.currentProject.id);
+    }
+
+    return () => {
+      unsubscribeBb();
+      unbindBridge?.();
+    };
+  }, [director, store.currentProject?.id]);
+
+  // 从当前工程自动同步初始文本
+  useEffect(() => {
+    if (store.currentProject && !rawInput) {
+      const content = store.currentProject.script || store.currentProject.novelText || store.currentProject.content;
+      if (content) {
+        setRawInput(content);
+      }
+    }
+  }, [store.currentProject]);
 
   // 校验模型配置
   const checkModelConfigGate = (): boolean => {

@@ -8,9 +8,18 @@
 
 import type { AudioTrackConfig } from '@/core/audio/types/audio';
 import type { CompositionProject, ExportSettings } from '@/core/audio/types/composition';
-import type { Character, StoryAnalysis } from '@/core/script/types/novel';
+import type { Character, NovelScene, StoryAnalysis } from '@/core/script/types/novel';
 import type { Script } from '@/core/script/types/script';
 import type { StoryboardFrame } from '@/core/storyboard/types/storyboard';
+import type {
+  ApprovalGate,
+  AuditReport,
+  CameraDirectingPlan,
+  DAGNode,
+  ReflectionContext,
+  SpatialMemory,
+  SynchronizedSubtitle,
+} from '@/core/services/agent/ProjectBlackboard';
 
 /** 质量评分（原 core/services/project/evaluation-service.ts） */
 export interface EvaluationScores {
@@ -105,14 +114,18 @@ export interface ProjectData {
   // Script text (plain string form)
   script?: string;
   novelText?: string;
-  parsedScenes?: any[];
+  parsedScenes?: NovelScene[];
   sopStep?: number;
   stage?: string;
   // Multi-Agent Director 2.0 metadata extensions
-  cameraDirectingPlans?: Record<string, unknown>;
-  spatialMemory?: Record<string, unknown>;
-  auditReports?: unknown[];
-  subtitles?: unknown[];
+  cameraDirectingPlans?: Record<string, CameraDirectingPlan>;
+  spatialMemory?: SpatialMemory;
+  auditReports?: AuditReport[];
+  subtitles?: SynchronizedSubtitle[];
+  dagNodes?: Record<string, DAGNode>;
+  activeApprovalGates?: Record<string, ApprovalGate>;
+  approvalHistory?: ApprovalGate[];
+  currentReflection?: ReflectionContext | null;
   // Pipeline progress tracking
   currentStep?: PipelineStep;
 }
