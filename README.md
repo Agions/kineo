@@ -1,3 +1,5 @@
+> **声明**：本项目以 MIT 协议开源，官方唯一渠道为 GitHub 仓库与 Releases；任何第三方付费版本均与本项目无关。
+
 <div align="center">
 
 <picture>
@@ -34,16 +36,16 @@
 
 ## 🌟 核心特性 (Key Features)
 
-| 领域 | 功能特性 | 详细说明 |
-| :--- | :--- | :--- |
-| 🤖 | **Hub-and-Spoke 多智能体架构** | 摒弃线性 SOP，采用以 `ProjectBlackboard` 为核心的 Hub-and-Spoke 多智能体解耦协作体系 |
-| 📄 | **全输入类型智能介入** | 原生支持 **现成剧本文件 (.txt/.md/.docx/.json)**、**小说原文章节文本**与 **AI 创作提示词** 三类输入自动解析 |
-| ⚡ | **自定义 Agent 扩展插件** | 声明式自定义 Agent 体系，支持用户在 UI 界面一键注册自定义 Agent（定义名称、触发阶段如剧本后/分镜后、系统 Prompt） |
-| 🎬 | **零二次上传无缝流转** | 工作台一键推导后，无缝保存并载入分镜编辑器大盘（`Step 3`），无需重复粘贴或上传剧本素材 |
-| 👤 | **Master Consistency 锁脸** | 自动提取角色实体并生成人设 Prompt 与 IP-Adapter Consistent Anchor，有效消除二次元角色漂移 |
-| 📐 | **三大分类 AI 模型矩阵** | 对接 13 大 AI 提供商，涵盖文字大模型（DeepSeek-V4/R1, Qwen 3.8-Max, 混元 Hy3 等）、生图与 4K 视频引擎 |
-| 🚀 | **GPU 4K 硬件加速压制** | 自动调度 Apple Silicon **VideoToolbox** (Metal GPU) 与 NVIDIA **NVENC** 硬件加速，导出效率提升 40% ~ 70% |
-| 🔒 | **100% 本地数据与 Keyring** | API Key 加密存储于系统原生 Keyring，工程数据全量保存在本地，无云端数据泄漏风险 |
+| 领域 | 功能特性                       | 详细说明                                                                                                          |
+| :--- | :----------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| 🤖   | **Hub-and-Spoke 多智能体架构** | 摒弃线性 SOP，采用以 `ProjectBlackboard` 为核心的 Hub-and-Spoke 多智能体解耦协作体系                              |
+| 📄   | **全输入类型智能介入**         | 原生支持 **现成剧本文件 (.txt/.md/.docx/.json)**、**小说原文章节文本**与 **AI 创作提示词** 三类输入自动解析       |
+| ⚡   | **自定义 Agent 扩展插件**      | 声明式自定义 Agent 体系，支持用户在 UI 界面一键注册自定义 Agent（定义名称、触发阶段如剧本后/分镜后、系统 Prompt） |
+| 🎬   | **零二次上传无缝流转**         | 工作台一键推导后，无缝保存并载入分镜编辑器大盘（`Step 3`），无需重复粘贴或上传剧本素材                            |
+| 👤   | **Master Consistency 锁脸**    | 自动提取角色实体并生成人设 Prompt 与 IP-Adapter Consistent Anchor，有效消除二次元角色漂移                         |
+| 📐   | **三大分类 AI 模型矩阵**       | 对接 13 大 AI 提供商，涵盖文字大模型（DeepSeek-V4/R1, Qwen 3.8-Max, 混元 Hy3 等）、生图与 4K 视频引擎             |
+| 🚀   | **GPU 4K 硬件加速压制**        | 自动调度 Apple Silicon **VideoToolbox** (Metal GPU) 与 NVIDIA **NVENC** 硬件加速，导出效率提升 40% ~ 70%          |
+| 🔒   | **100% 本地数据与 Keyring**    | API Key 加密存储于系统原生 Keyring，工程数据全量保存在本地，无云端数据泄漏风险                                    |
 
 ---
 
@@ -78,6 +80,7 @@ graph TD
 您可以方便地在 UI 设置界面或通过代码扩展自定义 Agent：
 
 ### 界面一键扩展：
+
 1. 打开 **Multi-Agent 多智能体创作中心**；
 2. 点击右上角 **【+ 扩展自定义 Agent】** 按钮；
 3. 填入 Agent 名称、图标 Emoji、触发阶段（例如：`2. 剧本解析后`）与自定义系统 Prompt；
@@ -88,6 +91,7 @@ graph TD
 ## 🤖 2026 最新 13 大 AI 提供商与模型矩阵
 
 ### 1. 📝 文字大模型 (Text / LLM Models)
+
 - **腾讯混元 Hy3 (`hy3`)**：**2026 最新发布**，256K 超长上下文，极其擅长中文短剧台词创作。
 - **腾讯混元 Hunyuan-T1 (`hunyuan-t1-latest`)**：基于 Hybrid-Mamba MoE 架构的深度推理模型。
 - **百度文心 ERNIE 5.1 (`ERNIE-5.1`)**：**2026.05 最新旗舰**，强化学习 Agent 剧本创作与逻辑推演。
@@ -98,6 +102,7 @@ graph TD
 - **OpenAI GPT-5.6 Sol (`gpt-5.6-sol`)**：100万 Context 导演级推理编演。
 
 ### 2. 🎨 图片与视频引擎 (Image & Video Models)
+
 - **字节 Seedream 5.0 (`doubao-seedream-5.0`)**：4K 超高精国漫与二次元分镜生成。
 - **快手可灵 3.0 Omni (`kling-3.0-omni`)**：原生 4K 60fps 电影级画质与 Pan/Zoom 物理运镜。
 - **字节 Seedance 2.5 (`seedance-2.5`)**：30 秒连续视频生成与 50 种参考资产控制。
